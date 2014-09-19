@@ -1,5 +1,26 @@
 <?php
 
+
+/*
+|--------------------------------------------------------------------------
+| Change Blade Echo Tags for Laravel work together with AngularJS
+|--------------------------------------------------------------------------
+|
+| AngularJS and Laravel have the same syntax / rule to echo tags. 
+| To work properly together, it is necessary to change the Laravel Blade tags 
+| or change the AngularJS tags with $interceptor in App.config. 
+| As the Front-End was developed completely in AlgularJS, 
+| (and Blades was used to include the partials in the app.blade.php - index), 
+| so let's change the Laravel Blade tags.
+|
+*/
+// Variables and all things Blade
+Blade::setContentTags('{[', ']}');
+// Escaped data   
+Blade::setEscapedContentTags('{[[', ']]}');
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -79,3 +100,10 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+// events
+require app_path().'/events.php';
+
+
+
+
