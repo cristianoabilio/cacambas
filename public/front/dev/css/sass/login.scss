@@ -1,0 +1,726 @@
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+
+// Variables
+$login-width:320px;
+ $login-height:240px;
+ $login-radius:15px;
+ $image-path:"/front/dev/images";
+ $video-path:"/front/dev/images/videos";
+ $link-color:#0261C3;
+ $btn-login-color:#fff !default;
+ $btn-login-bg:#418BD9 !default;
+ $btn-login-border:darken($btn-login-bg, 20%) !default;
+ $title-color:#397FD2;
+ $text-bottom-shadow:0 1px 0 #fff;
+ $texto-color:#666;
+ $global-transition-duration:.2s;
+ $window-anim-dur:1.5s;
+ $global-overflow-timing-function:cubic-bezier(0.015, 0.695, 0.340, 1.365);
+ $error-bg : #F6EAEA;
+ $error-line: #EABBBC; 
+
+
+// Custom Mixings
+@mixin transform-style($val) {
+    -webkit-transform-style: $val;
+    -moz-transform-style: $val;
+    -ms-transform-style: $val;
+    transform-style: $val;
+}
+@mixin backface-visibility($val){
+    -webkit-backface-visibility: $val;
+    -moz-backface-visibility: $val;
+    -ms-backface-visibility: $val;
+    backface-visibility: $val;
+}
+@mixin transform($val) {
+    -webkit-transform: $val;
+    -moz-transform: $val;
+    -o-transform: $val;
+    -ms-transform: $val;
+    transform: $val;
+}
+@mixin transition($val) {
+    -webkit-transition: $val;
+    -moz-transition: $val;
+    -o-transition: $val;
+    -ms-transition: $val;
+    transition: $val;
+}
+@mixin perspective($val){
+    -webkit-perspective: $val;
+    -moz-perspective: $val;
+    -ms-perspective: $val;
+    perspective: $val;
+}
+@mixin gradient($cor) {
+    background: -webkit-gradient(radial, left top, left bottom, transparent 50%, $cor 200%);
+    background: -webkit-radial-gradient(50% 50%, ellipse closest-side, transparent 50%, $cor 200%);
+    background: -moz-radial-gradient(50% 50%, ellipse closest-side, transparent 50%, $cor 200%);
+    background: -ms-radial-gradient(50% 50%, ellipse closest-side, transparent 50%, $cor 200%);
+    background: -o-radial-gradient(50% 50%, ellipse closest-side, transparent 50%, $cor 200%);
+}
+@mixin ca-box-shadow($shadow1, $rgba1, $shadow2, $rgba2) {
+    -webkit-box-shadow: $shadow1 $rgba1, $shadow2 $rgba2;
+    -moz-box-shadow: $shadow1 $rgba1, $shadow2 $rgba2;
+    box-shadow: $shadow1 $rgba1, $shadow2 $rgba2;
+}
+// Mixins
+@mixin keyframes($animationName) {
+    @-webkit-keyframes $animationName {
+        @content;
+
+    }
+    @-moz-keyframes $animationName {
+        @content;
+
+    }
+    @keyframes $animationName {
+        @content;
+
+    }
+}
+@mixin animation($content) {
+    -webkit-animation: $content;
+    -moz-animation: $content;
+    animation: $content;
+}
+@mixin animation-delay($content) {
+    -webkit-animation-delay: $content;
+    -moz-animation-delay: $content;
+    animation-delay: $content;
+}
+@mixin animation-timing-function($content) {
+    -webkit-animation-timing-function: $content;
+    -moz-animation-timing-function: $content;
+    animation-timing-function: $content;
+}
+
+
+
+// Custom Class for view_login background
+body.view_login {
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: #333333 !important;
+    font-family: 'Open Sans', sans-serif;
+
+    @include perspective(1000px);
+}
+html {
+    height: 100%;
+}
+
+
+
+/* Fix the mm-menu problem on login */
+.view_login .mm-page {
+    background: inherit !important;
+    min-height: inherit !important;
+    position: inherit !important;
+}
+.view_login .mm-page, html.mm-opened .view_login .mm-page {
+    left: 0 !important;
+    margin-right: 0 !important;
+}
+.view_login .mm-menu {
+    display: none !important;
+}
+
+
+
+
+// Container Div
+#container {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+// Blur and Patter Effect in Video
+#effect  div{
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    opacity: 0.5;
+    /*@include gradient(black);*/
+}
+
+
+
+// Background for Waiting Loading Video
+#video_background {
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    z-index: -1000;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background-size: cover;
+}
+.video-bg-1 {
+    background: url($video-path+'/background-001.jpg') no-repeat center center; 
+}
+.video-bg-2 {
+    background: url($video-path+'/background-002.jpg') no-repeat center center;
+}
+/*#video_background[data-background="1"] {
+    background: url($video-path+'/background-001.jpg') no-repeat center center;
+    background-size: cover;
+}
+#video_background[data-background="2"] {
+    background: url($video-path+'/background-002.jpg') no-repeat center center;
+    background-size: cover;
+}*/
+
+
+.center {
+    width: $login-width;
+    height: 400px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    /* for break logo animation for not use JS*/
+    @include animation(0.1s hack linear none 0.1s);
+}
+
+@include keyframes(hack) {
+    from { opacity: 1; }
+    to   { opacity: 1; }
+}
+
+
+
+/*@include keyframes(opacy) {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}*/
+
+
+
+h1.logo {
+    text-indent: -20000px;
+    background: url($image-path+'/logo.png') no-repeat;
+    height: 45px;
+    display: block;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    opacity: 1;
+    @include animation(0.3s moving ease-in-out backwards 1.5s);
+    @include transform-style(preserve-3d);
+    @include transition-property(margin-top);
+}
+@include keyframes(moving) {
+    from { margin-top: 150px;  }
+    to   { margin-top: 0px;    }
+}
+
+
+
+
+// Begin: Flip Login / Reset Pass
+.flip-container {
+    @include perspective(1000);
+    -ms-transform: perspective(1000px);
+    -ms-transform-style: preserve-3d;
+}
+
+.flip-container.hover .back {
+    @include transform(rotateY(0deg));
+}
+
+.flip-container.hover .front {
+    @include transform(rotateY(180deg));
+}
+
+.flipper {
+    @include transition(0.5s);
+    @include transform-style(preserve-3d);
+    -moz-transform: perspective(1000px);
+    position: relative;
+    @include animation(0.4s fadeIn ease-in-out backwards 1.7s);
+    //@include transform-style(preserve-3d);
+    //@include transition-property(height width);
+}
+
+.front, .back {
+    @include backface-visibility(hidden);
+    @include transform-style(preserve-3d);
+    @include transition(0.6s);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.front {
+    -webkit-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    z-index: 2;
+    /* for loading animation */
+    overflow-y: hidden;
+}
+.back {
+    @include transform(rotateY(-180deg));
+    overflow-y: hidden;
+}
+// End: Flip Login / Reset Pass
+
+
+
+
+// Animation for loading 
+.card-login form {
+    @include transform-style(preserve-3d);
+}
+
+// Slide IN/Out for the form after click em submit
+.load form {
+    @include animation(0.4s slideOut ease forwards);
+}
+.unload form {
+    @include animation(0.3s slideIn ease-in both 0.5s);
+}
+
+// Slide IN/Out for the form after click em submit in Reset Form
+.reset-form .load form {
+    @include animation(0.4s slideOutReset ease forwards);
+}
+.reset-form .unload form {
+    @include animation(0.3s slideInReset ease-in both 0.5s);
+}
+
+// Login Loading Hide Form Animation
+@include keyframes(slideIn) {
+    0%   {  @include transform(translate3d(0, -190px, 0));  }
+    100% {  @include transform(translate3d(0, 0, 0));       }
+}
+@include keyframes(slideOut) {
+    0%   { @include transform(translate3d(0, 0, 0));        }
+    100% { @include transform(translate3d(0, -180px, 0));   }
+}
+
+// Reset Loading Hide Form Animation
+@include keyframes(slideOutReset) {
+    0%   { @include transform(translate3d(0, 0, 0));        }
+    100% { @include transform(translate3d(0, -280px, 0));   }
+} 
+@include keyframes(slideInReset) {
+    0%   { @include transform(translate3d(0, -280px, 0));        }
+    100% { @include transform(translate3d(0, 0, 0));   }
+}
+
+
+// Animation for Loading Text (Entrando) and Lost Pass (Esqueci minha Senha)
+.load-text {
+    display: none;
+    opacity: 1;
+    font-size: 27px;
+    font-weight: lighter;
+    color: #777;
+}
+.load .load-text {
+    display: block !important;
+    @include animation(0.4s fadeIn linear backwards);
+    
+}
+.unload .load-text {
+    display: block;
+    @include animation(0.4s fading linear forwards 0.1s);
+    margin-top: -15px;
+}
+
+
+
+@include keyframes(fading) {
+    0% {
+        opacity: 1;
+        margin-top: -15px;
+        display: block;
+    }
+    70% {
+        opacity: 0.7;
+        margin-top: -15px;
+        display: block;
+    }
+    100% {
+        opacity: 0;
+        margin-top: 0;
+    }
+}
+
+
+// Animation for Loader Spinner
+.load-spin {
+    top: 0;
+    left: 49%;
+    margin-top: 80px;
+    position: inherit;
+    display: none;
+}
+
+// Reset Load CSS
+.reset-form .load-spin {
+    margin-top: 135px !important;
+}
+
+.load .load-spin {
+    @include animation(0.6s fadeIn ease backwards 0.1s);
+    display: block;
+}
+.unload .load-spin {
+    @include animation(0.5s bounceOut ease-in-out forwards 0.2s);
+    display: block;
+}
+
+
+
+// Load animation for height morph on loading
+.load .card-bottom {
+    @include animation(0.2s slideUp ease-in forwards);
+}
+.unload .card-bottom {
+    @include animation(0.1s slideDown ease-in-out backwards 0.6s);
+}
+
+@include keyframes(slideUp) {
+    0% {
+        height: 50px;
+    }
+    100% {
+        height: 80px;
+        margin-top: -30px;
+        padding-top: 18px;
+    }
+}
+
+
+@include keyframes(slideDown) {
+    0% {
+        margin-top: -30px;
+        height: 80px;
+    }
+    100% {
+        margin-top: 0;
+    }
+}
+// End animation for loading       
+
+
+.ff_hide {display: none;}
+
+
+// Error Message
+.flipper .feedback, .pass-equal {
+    height: 50px;
+    padding: 16px 5px 5px 16px;
+    display: block;
+    background: $error-bg;
+    border-bottom: 1px solid $error-line;
+    border-radius: $login-radius $login-radius 0 0;
+    font-size: 13px;
+    text-shadow: $text-bottom-shadow;
+    color: #555;
+    position: relative;
+    z-index: -4;
+}
+.flipper .feedback {
+    @include animation(0.15s slideIn ease-in backwards 0.05s);
+}
+.pass-equal {
+    @include animation(0.3s fadeIn ease-in-out backwards 0.2s);
+}
+
+.pass-equal.ng-hide { 
+    @include animation(0.2s fadeOut ease-in-out backwards);
+}
+
+.flipper .feedback i {
+    color: #666;
+    padding: 0 3px 0 4px;
+}
+
+
+
+// Special Height for Error mEssage
+.show-error .card-login {
+    height: $login-height + 53px !important;
+    @include animation(0.05s slider ease-out backwards 0.1s);
+}
+@include keyframes(slider) {
+    0%   { height: $login-height;                   }
+    100% { height: $login-height + 53px !important; }
+}
+
+.show-error-pass .reset_card , .show-error .reset_card {
+    height: $login-height + 50px + 50px !important;
+    @include animation(0.2s slider1 ease-in-out both);
+}
+
+
+
+@include keyframes(slider1) {
+    0%   { height: $login-height + 50px;                   }
+    100% { height: $login-height + 50px + 50px !important; }
+}
+
+
+.card-login {
+    width: $login-width;
+    height: $login-height;
+    background: white;
+    border-radius: $login-radius;
+    @include ca-box-shadow(0px 1px 5px 0px, rgba(50, 50, 50, 0.7), 0px 0px 20px 0px, rgba(0, 0, 0, 0));
+
+    h4 {
+        color: $title-color !important;
+        font-size: 14px;
+        font-weight: 600;
+        text-shadow: $text-bottom-shadow;
+        padding: 5px 15px 0 15px;
+    }
+    .p {
+        color: $texto-color;
+        text-shadow: $text-bottom-shadow;
+        font-size: 12px;
+        text-align: justify;
+        line-height: 14px;
+        padding: 0 15px 0 15px;
+    }
+    .credentials {
+        padding: 10px 15px;
+    }
+    .credentials .btn-login {
+        margin: 15px 0 15px 0;
+        font-weight: normal;
+        font-size: 16px;
+        text-shadow: 0 1px 0 #000;
+        letter-spacing: 0.6px;
+        outline: none;
+        @include box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.2));
+        @include button-variant($btn-login-color, $btn-login-bg, $btn-login-border);
+        
+        &:hover {
+            background: darken($btn-login-bg, 5%);
+        }
+    }
+
+    .recover {
+        margin: 8px 0 5px 0 !important;
+    }
+    .credentials .fields {
+        padding: 10px 0 5px 2px;
+        margin-bottom: 5px;
+        width: 100%;
+        height: 45px;
+        font-size: 1.2em;
+        font-weight: lighter !important;
+        color: #333 !important;
+        border-radius: 0;
+        border-left: none;
+        border-top: none;
+        border-right: none;
+        border-bottom: 1px solid #D9D9D9;
+        outline: 0;
+        @include box-sizing(border-box);
+        @include placeholder(#C1C1C1);
+
+        &:focus {
+            //border-bottom: 1px solid #428BCA !important;
+            outline: none;
+        }
+
+    }
+
+}
+
+
+// Hack for height morph before message error
+.unload, .load {
+    @include transition(0s);
+   height: $login-height !important;
+}
+
+.unload h4, .unload .p {
+    visibility:inherit !important;
+    @include animation(0.4s fadeIn linear backwards 0.7s);
+}
+
+.load h4, .load .p {
+    visibility : hidden !important;
+}
+
+
+.load .recover-pass {
+    display: none;
+}
+.unload .recover-pass {
+    display: block;
+    @include animation(0.3s fadeIn linear backwards 0.6s);
+}
+
+
+// Remind Success Password
+
+.remind-success {
+    text-align: center;
+    padding: 0 0 0 0;
+    text-shadow: 1px 1px 0px #fff;
+    position: absolute !important;
+    z-index: 4000;
+    display: block;
+    margin-top: -193px;
+    @include animation(0.3s fadeIn ease-in-out both);
+
+    .check-white {
+        width: $login-width;
+        height: 120px;
+        display: block;
+        padding: 15px 0 15px 0;
+        background: url($image-path+'/checking.png') no-repeat center center;
+        background-color: #f9f9f9;
+       
+    }
+
+    .text {
+        padding: 10px 0 25px 0 !important;
+        background: #fff !important;
+    }
+
+    h3 {
+        color: #008358;
+        font-weight: lighter;
+        font-size: 24px;
+    }
+
+    h5 {
+        color: #777;
+        font-weight: lighter;
+        font-size: 16px;
+    }
+
+}
+
+.reset-success {
+    margin-top: -300px;
+    
+    .check-white {
+        padding-top: 20px !important;
+        height: 150px !important;
+    }
+
+   .text {
+        padding-bottom: 30px !important;
+   }
+}
+
+.reset_card {
+    height: $login-height + 50px !important;
+}
+
+
+
+
+
+// Error Class, for Display None
+.invisible {
+    display: none !important;
+}
+
+
+
+// Polymer Style input
+.group-poly { 
+  position:relative; 
+}
+
+.input-error input.fields, .error-user input.fields, .error-pass input.fields {
+    border-bottom: 1px solid $error-line !important;
+    color: #A42D1F !important;
+}
+
+.input-error .fa-input-error, .error-user .fa-input-error, .error-pass .fa-input-error {
+    color: #A42D1F; 
+    margin-top: -25px;
+    position: absolute;
+    margin-left: 98%;
+    opacity: 1;
+    width: 16px;
+    height: 16px;
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label {
+  top:-20px;
+  font-size:14px;
+  color:#5264AE;
+}
+
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after     {
+  content:'';
+  height:1px; 
+  width:0;
+  top:-6px; 
+  position:absolute;
+  background:#9CB2CB; 
+  @include transition(0.2s ease);
+}
+
+.input-error .bar:before, .input-error .bar:after     {
+    background: #BE7B7A !important;
+}
+
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+
+
+
+.card-bottom, .remind-success .text {
+    background: #F1F1F1;
+    border-top: 1px solid #d9d9d9;
+    text-align: center;
+    text-shadow: $text-bottom-shadow;
+    font-weight: normal;
+    font-size: 13px;
+    padding: 15px 0 15px 0;
+    border-radius: 0 0 15px 15px;
+}
+.card-bottom a {
+    color: $link-color;
+    outline: none;
+}
+
+
+.login_block {
+    display: none;
+}

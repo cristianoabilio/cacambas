@@ -1,0 +1,344 @@
+@media (max-width: 500px) {
+  #header{
+    border-radius: 0;
+    .navbar-brand{
+      font-size: 14px;
+    }
+  }
+  #profile-link{
+    width: 0;
+    overflow: hidden;
+  }
+  .mm-fixed-top{
+    left: 0;
+  }
+  .mm-opening #profile-link{
+    width: 190px;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 600px) {
+  .wizard{
+    ul li .chevron,
+    ul li .chevron:before,
+    ul li.complete .chevron,
+    ul li.complete .chevron:before,
+    ul li:hover .chevron:before{
+      border-left-width: 12px !important;
+    }
+    ul{
+      li{
+        font-size: .95em;
+        padding: 0 5px 0 20px !important;
+        .badge{
+          display: none;
+        }
+        &.complete:after{
+          font-size: 9px;
+        }
+        .chevron{
+          right: -12px;
+        }
+        &:first-child{
+          padding-left: 12px !important;
+        }
+        &.active{
+          .chevron{
+            width: 12px;
+            background-size: 100% 100%;
+          }
+        }
+      }
+    }
+    > .close{
+      font-size: 20px;
+      margin-top: 13px;
+      margin-right: 7px;
+    }
+  }
+}
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: $screen-xs-max) {
+  #header-nav{
+    float: right;
+    margin-top: 0;
+    margin-bottom: 0;
+    li{
+      float: left;
+    }
+  }
+  #push-header{
+    height: 46px;
+  }
+  #header{
+    height: 46px;
+    z-index: 4000;
+    .navbar-brand{
+      margin-left: 0;
+      padding-left: 3px;
+      padding-right: 3px;
+    }
+  }
+  #main-tabs{
+    position: static !important;
+    > li{
+      display: block;
+      margin: 0;
+      float: none !important;
+      &.pull-right:first-child{
+        display: none;
+      }
+      > a{
+        text-align: left;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 1px solid $nav-tabs-border-color;
+        padding-top: 8px;
+        padding-bottom: 8px !important;
+      }
+      &.active a{
+        border-left: 4px solid #0099ff;
+        border-bottom: 1px solid $nav-tabs-border-color !important;
+        padding-left: 14px;
+        &.text-success{
+          border-left-color: #0aa365;
+        }
+        &.text-warning{
+          border-left-color: #dbb002;
+        }
+        &.text-danger{
+          border-left-color: #cc0000;
+        }
+      }
+    }
+    input{
+      max-width: none;
+    }
+  }
+
+  #date-range > a{
+    border-top: 1px solid $tabsBorderColor !important;
+    text-align: right !important;
+    > span{
+      float: none;
+    }
+    .caret{
+      float: right;
+      margin-top: 9px;
+    }
+    &:hover:before{
+      top: 10px;
+    }
+  }
+
+  #locations{
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #location-modal{
+    .has-button{
+      max-width: none;
+      + div{
+        border-left: none;
+      }
+    }
+    form{
+      .col-xs-12{
+        margin-bottom: 15px;
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+    }
+    .radio.radio-inline{
+      margin-left: 20px !important;
+      display: block;
+      text-align: left;
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+    }
+    .radio + small.text-muted{
+      display: block;
+      border-top: 1px solid #ddd;
+      text-align: left;
+      font-weight: bold;
+      margin-top: 8px;
+      padding: 8px 0 10px 20px;
+      &:before{
+        display: none;
+      }
+    }
+  }
+
+  #header{
+    min-width: 360px;
+  }
+
+
+  .cacambas-form{
+    .col-sm-6,
+    .col-sm-3,
+    .col-sm-2{
+      max-width: none !important;
+      margin-right: 0;
+    }
+    label.pull-left{
+      float: none;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .col-xs-12{
+      padding-left: 0 !important;
+      padding-right: 0;
+    }
+    .col-sm-offset-1{
+      margin-left: 0;
+    }
+    .has-feedback.calendar .form-control-feedback{
+      left: 1px;
+    }
+  }
+  .dropdown.narrow-dropdown{
+    > .btn{
+      padding-left: 10px;
+      padding-right: 10px;
+      letter-spacing: 0;
+    }
+    &.col-sm-7{
+      max-width: none;
+    }
+  }
+  #total{
+    margin-top: 15px;
+    margin-bottom: 0;
+  }
+}
+
+
+
+/* Daterange picker responsive views (from 768px to 860px) */
+@media (min-width: $screen-sm-min) and (max-width: 860px) {
+  #date-range > a > span{
+    max-width: 82px;
+    font-size: 11px;
+  }
+}
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  #main-tabs.text-left #search-field{
+    input{
+      max-width: 100px;
+      padding-left: 22px;
+      padding-right: 27px;
+      font-size: 12px;
+      vertical-align: 0;
+      &::-webkit-input-placeholder{
+        color: #fff !important;
+      }
+      &:-moz-placeholder{
+        color: #fff !important;
+      }
+      &::-moz-placeholder{
+        color: #fff !important;
+      }
+      &:-ms-input-placeholder{
+        color: #fff !important;
+      }
+    }
+    > i{
+      left: 6px;
+      font-size: 1em;
+      top: 15px;
+    }
+    .clear_input{
+      max-width: 20px;
+      overflow: hidden;
+      i{
+        padding-right: 3px;
+        padding-left: 1px;
+      }
+    }
+  }
+  #date-range > a{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    > .caret{
+      margin-left: 7px;
+    }
+    &:hover:before{
+      right: 5px;
+    }
+  }
+  body > .daterangepicker{
+    position: fixed;
+    top: 89px !important;
+  }
+  #locations{
+    padding-left: 30px;
+    padding-right: 30px;
+    .panel-body a{
+      font-size: 17px;
+    }
+  }
+  html.mm-opened{
+    #date-range{
+      display: none;
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+  body > .daterangepicker{
+    position: fixed;
+    top: 89px !important;
+  }
+  #locations{
+    text-align: center;
+    > div{
+      display: inline-block;
+      max-width: 30%;
+      float: none !important;
+    }
+  }
+  html.mm-opened{
+    #date-range > a > span{
+      max-width: 82px;
+      font-size: 11px;
+    }
+    #search-field input{
+      max-width: 190px;
+    }
+  }
+
+  .table .alert-dismissable{
+    position: relative;
+    .close{
+      position: absolute;
+      right: 15px;
+      top: 0;
+    }
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: $screen-lg-min) {
+  body > .daterangepicker{
+    position: fixed;
+    top: 89px !important;
+  }
+  #locations{
+    text-align: center;
+    > div{
+      display: inline-block;
+      max-width: 23%;
+      float: none !important;
+    }
+  }
+}

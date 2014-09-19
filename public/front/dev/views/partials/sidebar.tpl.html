@@ -1,0 +1,16 @@
+<!-- Sidebar Menu -->
+<div id="menu"> 
+    
+    <ul ng-init="sidebar('#menu')">
+        <!-- Items Sidebar -->
+        <li ng-repeat="item in menu_items" ng-if="roles(item.role)" class="{{item.css}}" ng-mouseover="tooltip('side-tip')"  >
+            <a href="#{{ item.url }}" data-toggle="tooltip" title="{{ item.name }}" data-placement="right" class="side-tip"><i class="fa fa-{{ item.icon }}"></i> <span>{{ item.name }}</span></a>
+        </li>
+
+        <!-- Custom Item:Logout -->
+        <li class="bottom logout" ng-mouseover="tooltip('side-tip')">
+            <a href="" ng-click="logout()"  data-toggle="tooltip" title="Sair" data-placement="right" class="side-tip"><i class="fa fa-sign-out"></i> <span>Sair</span></a>
+        </li>
+    </ul>
+
+</div>

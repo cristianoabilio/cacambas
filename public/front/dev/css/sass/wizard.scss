@@ -1,0 +1,199 @@
+.wizard {
+
+  @include clearfix();
+  position: relative;
+  overflow: hidden;
+  background-color: #f3f3f3;
+  border-top-left-radius: $border-radius-large;
+  border-top-right-radius: $border-radius-large;
+
+  > .lead{
+    letter-spacing: 1px;
+    font-size: 19px;
+    color: #6c6c6c;
+    padding: 17px 20px;
+  }
+  > .close {
+    margin-right: 10px;
+    margin-top: 8px;
+  }
+  .close {
+    font-size: 28px;
+    opacity: 0.4;
+    &:hover{
+      opacity: 0.5;
+    }
+  }
+
+  ul {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+    width: 4000px;
+
+    &.previous-disabled {
+      li {
+        &.complete {
+          cursor: default;
+          &:hover {
+            background: #f3f4f5;
+            color: $state-success-text;
+            cursor: default;
+
+            .chevron:before {
+              border-left-color: #f3f4f5;
+            }
+          }
+        }
+      }
+    }
+    
+    li {
+      float: left;
+      margin: 0;
+      padding: 0 20px 0 40px;
+      height: 48px;
+      line-height: 48px;
+      position: relative;
+      color: #686868;
+      font-size: 18px;
+      font-weight: 300;
+      cursor: default;
+      text-shadow: 1px 1px 0 #fefefe;
+      letter-spacing: .5px;
+
+      .chevron {
+        border: 24px solid transparent;
+        border-left: 24px solid #c1c1c1;
+        border-right: 0;
+        display: block;
+        position: absolute;
+        right: -24px;
+        top: 0;
+        z-index: 1;
+      }
+
+      .chevron:before {
+        border: 24px solid transparent;
+        border-left: 24px solid #f3f3f3;
+        border-right: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        right: 1px;
+        top: -24px;
+      }
+
+      &.complete {
+        padding-right: 12px;
+        &:after{
+          display: inline-block;
+          vertical-align: super;
+          -moz-osx-font-smoothing: grayscale;
+          display: inline-block;
+          color: #019967;
+          font-family: FontAwesome;
+          font-style: normal;
+          font-weight: normal;
+          line-height: 1;
+          content: "\f00c";
+          font-size: 14px;
+        }
+        .badge{
+          border-color: #069b6a;
+          color: #009966;
+        }
+
+
+        .chevron:before {
+          border-left: 24px solid #f3f4f5;
+        }
+      }
+      &.complete,
+      &.activated{ 
+        &:hover {
+          background: #e7eff8;
+          cursor: pointer;
+
+          .chevron:before {
+            border-left: 24px solid #e7eff8;
+          }
+        }
+      }
+      &.active {
+        color: #fff;
+        border-top: 1px solid #93b8ed;
+        border-bottom: 1px solid #1e508b;
+        text-shadow: 1px 1px 0 #1e518c;
+
+        .chevron {
+          background: none;
+          background: url('../img/wizard-chevron.png') no-repeat left;
+          height: 48px;
+          width: 25px;
+          border: none;
+        }
+        .chevron:before {
+          border: none;
+          display: none;
+        }
+        .badge{
+          color: #1b73c3;
+          border-color: transparent;
+          @include box-shadow(-1px -1px 0 #1e508b);
+          height: 32px;
+          width: 33px;
+        }
+        &.complete:after{
+          text-shadow: none;
+          color: #fff;
+        }
+      }
+      &.active,
+      &.active:hover{
+        @include gradient-vertical($start-color: #4b89e1, $end-color: #1a73c3);
+      }
+      .badge {
+        padding: 0;
+        height: 34px;
+        width: 34px;
+        text-align: center;
+        line-height: 1.5;
+        margin-right: 8px;
+        font-size: 20px;
+        font-weight: 400;
+        background-color: #fbfbfb;
+        color: #a2a2a2;
+        border: 1px solid #cdcdcd;
+        border-radius: 50px;
+        text-shadow: none;
+        @include box-shadow(1px 1px 0 #fefefe);
+        vertical-align: 0;
+      }
+    }
+
+    li:first-child {
+      border-radius: 4px 0 0;
+      padding-left: 20px;
+    }
+  }
+
+}
+
+.step-content {
+
+  .step-pane,
+  .substep {
+    display: none;
+  }
+
+  .active {
+    display: block;
+    
+    .btn-group {
+      .active {
+        display: inline-block;
+      }
+    }
+  }
+}

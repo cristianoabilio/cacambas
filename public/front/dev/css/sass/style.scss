@@ -1,0 +1,23 @@
+// VARIABLES
+$navbarBg         : #35363a;
+$tabsLinkColor    : #686868;
+$tabsBorderColor  : #dddddd;
+$image-path:"/front/dev/images";
+
+
+// INCLUDES
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+@import "mmenu/jquery.mmenu";
+@import "navigation";
+
+@import "common";
+@import "header";
+@import "tabs";
+@import "table";
+@import "form-elements";
+@import "location";
+@import "wizard";
+@import "responsive";

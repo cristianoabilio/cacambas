@@ -1,0 +1,251 @@
+.clear_input{
+  cursor: pointer;
+  position: absolute;
+  @include gradient-vertical(#fefefe, #ececec);
+  border: 1px solid #e6e6e6 !important;
+  color: #999;
+  top: 7px;
+  right: 4px;
+  text-shadow: 1px 1px 0 #fefefe;
+  text-decoration: none !important;
+  white-space: nowrap;
+  font-size: 11px;
+  padding: 1px 3px;
+  border-radius: 10px;
+  line-height: 15.7167px;
+  i{
+    color: #d2d2d2;
+  }
+  &:hover,
+  &:hover i{
+    color: #7e7e7e;
+  }
+}
+
+.tab-content .alert{
+  margin-bottom: 0;
+}
+
+#main-tabs{
+  background-color: #fff;
+  min-height: 45px;
+  top: 48px;
+  z-index: 11;
+  &.has-shadow{
+    min-height: 43px;
+    border-bottom: 0;
+  }
+  > li{
+    display: inline-block;
+    float: none;
+    .fa-2x{
+      font-size: 1.4em;
+      vertical-align: -2px;
+      margin-right: 2px;
+    }
+    > a{
+      outline: none !important;
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: 0;
+      border: 0 none;
+      border-right: 1px solid $nav-tabs-border-color;
+      font-size: 13px;
+      padding: 12px 18px;
+      line-height: 20px;
+      &.text-muted{
+        color: #7e7e7e;
+        &:hover{
+          color: #272727;
+        }
+      }
+    }
+    &.active{
+      a{
+        border-bottom: 2px solid #5998da;
+        background-color: #fff;
+        padding-bottom: 10px;
+        color: #4774b1;
+      }
+    }
+    &:first-child{
+      a{
+        border-left: 1px solid $nav-tabs-border-color;
+      }
+    }
+  }
+}
+
+#search-field{
+  position: relative;
+  input{
+    border: 0 none;
+    display: inline-block;
+    outline: none;
+    margin: 0;
+    @include box-shadow(none !important);
+    padding-left: 36px;
+    padding-right: 67px;
+    color: #096bd0;
+    font-size: 16px;
+    max-width: 220px;
+    line-height: 2em;
+  }
+  > i{
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    font-size: 1.3em;
+    color: $tabsLinkColor;
+  }
+  input::-webkit-input-placeholder{
+    color: $tabsLinkColor;
+    font-size: 14px;
+  }
+  input:-moz-placeholder{
+    color: $tabsLinkColor;
+    font-size: 14px;
+  }
+  input::-moz-placeholder{
+    color: $tabsLinkColor;
+    font-size: 14px;
+  }
+  input:-ms-input-placeholder{
+    color: $tabsLinkColor;
+    font-size: 14px;
+  }
+  &:hover{
+    input::-webkit-input-placeholder{
+      color: #2f2f2f;
+    }
+    input:-moz-placeholder{
+      color: #2f2f2f;
+    }
+    input::-moz-placeholder{
+      color: #2f2f2f;
+    }
+    input:-ms-input-placeholder{
+      color: #2f2f2f;
+    }
+    > i{
+      color: #2f2f2f;
+    }
+  }
+  input:focus{
+    &::-webkit-input-placeholder{
+      color: #fff;
+    }
+    &:-moz-placeholder{
+      color: #fff;
+    }
+    &::-moz-placeholder{
+      color: #fff;
+    }
+    &:-ms-input-placeholder{
+      color: #fff;
+    }
+  }
+}
+
+.text-center #search-field > i{
+  position: absolute;
+  top: 8px;
+  left: 13px;
+  font-size: 1.3em;
+  color: $tabsLinkColor;
+}
+
+// CSS related to list.html
+#main-tabs.text-left{
+  > li{
+    float: left;
+    > a{
+      color: $tabsLinkColor;
+      background-color: #fafafa;
+      @include box-shadow(1px -1px 0px #fff inset);
+      i{
+        color: #999999;
+      }
+      &:hover{
+        color: #387bde;
+        i{
+          color: #387bde;
+        }
+      }
+      &.text-success:hover{
+        color: #198c5e;
+        i{
+          color: #0aa365;
+        }
+      }
+      &.text-warning:hover{
+        color: #be9807;
+        i{
+          color: #dbb002;
+        }
+      }
+      &.text-danger:hover{
+        color: #d32727;
+        i{
+          color: #cc0000;
+        }
+      }
+    }
+    &.active{
+      a{
+        border-bottom-width: 1px;
+        padding-bottom: 11px;
+        background-color: #fff;
+        color: #333333 !important;
+        i{
+          color: #387bde;
+        }
+        &.text-success{
+          border-bottom-color: #0aa365;
+          i{
+            color: #0aa365;
+          }
+        }
+        &.text-warning{
+          border-bottom-color: #dbb002;
+          i{
+            color: #dbb002;
+          }
+        }
+        &.text-danger{
+          border-bottom-color: #cc0000;
+          i{
+            color: #cc0000;
+          }
+        }
+      }
+    }
+  }
+  li.pull-right:first-child{
+    padding: 8px 36px 7px 9px;
+    border-left: 1px solid $tabsBorderColor;
+    height: 43px;
+    a{
+      width: 29px;
+      height: 28px;
+      padding: 0 0 0 2px;
+      border: 1px solid $tabsBorderColor;
+      border-radius: 2px;
+      background-color: #fff;
+      text-align: center;
+      line-height: 1.8em;
+      @include box-sizing(border-box);
+      i{
+        color: #787878;
+        font-size: 1.3em;
+      }
+      &:hover{
+        background-color: #fbfbfb;
+      }
+    }
+  }
+  #search-field{
+    padding-top: 5px;
+    padding-bottom: 4px;
+  }
+}

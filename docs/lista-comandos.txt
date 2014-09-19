@@ -1,0 +1,84 @@
+insert into login (select id,username,password,is_active,created_at,dt_ultacess from 763987_prod_cacambas.user);
+
+insert into perfil (select id,null,name,null,1,1,now() from 763987_prod_cacambas.user_type );
+insert into perfil values (2,null,'usuario','realizar atividades sem muitos privilégios',1,1,now())
+
+insert into cliente (
+select id,9999999,document,if (type = 'C',1,0),name,0,0,now(),0 from 763987_prod_cacambas.customer
+);
+
+insert into empresa (
+select id,name,company_name,document,0,0,if(is_active=1,1,if(is_approved=1,2,if(evaluation=1,3,if(deleted=1,0,99)))),now(),1 from 763987_prod_cacambas.company
+);
+
+insert into loginperfil (
+select user,company,if(is_master=1,1,2),0,1,now(),1 from 763987_prod_cacambas.employee
+)
+
+
+insert into EquipamentoBase values (1,'caçamba','entulho','5 m3','depositar entulhos de classe 1',now(),1);
+insert into EquipamentoBase values (2,'caçamba','entulho','6 m3','depositar entulhos de classe 1',now(),1);
+insert into EquipamentoBase values (3,'caçamba','entulho','7 m3','depositar entulhos de classe 1',now(),1);
+insert into EquipamentoBase values (4,'caçamba','entulho','8 m3','depositar entulhos de classe 1',now(),1);
+
+insert into EquipamentoBasePreco (
+select 1,company,value,period,0,0,0,0,is_active,1,now() from 763987_prod_cacambas.container_type
+where name='Entulho' and size = 5 and is_active=1
+)
+
+insert into Equipamento (
+select c.id,c.company,1,c.number,null,c.is_active,null,now(),1 from 763987_prod_cacambas.container_type t , 763987_prod_cacambas.container c
+where c.type=t.id 
+and t.name='Entulho' and t.size = 5 and t.is_active=1
+)
+
+insert into EquipamentoBasePreco (
+select 2,company,value,period,0,0,0,0,is_active,1,now() from 763987_prod_cacambas.container_type
+where name='Entulho' and size = 6 and is_active=1
+)
+
+insert into Equipamento (
+select c.id,c.company,2,c.number,null,c.is_active,null,now(),1 from 763987_prod_cacambas.container_type t , 763987_prod_cacambas.container c
+where c.type=t.id 
+and t.name='Entulho' and t.size = 6 and t.is_active=1
+)
+
+insert into EquipamentoBasePreco (
+select 3,company,value,period,0,0,0,0,is_active,1,now() from 763987_prod_cacambas.container_type
+where name='Entulho' and size = 7 and is_active=1
+)
+
+insert into Equipamento (
+select c.id,c.company,3,c.number,null,c.is_active,null,now(),1 from 763987_prod_cacambas.container_type t , 763987_prod_cacambas.container c
+where c.type=t.id 
+and t.name='Entulho' and t.size = 7 and t.is_active=1
+)
+
+insert into EquipamentoBasePreco (
+select 4,company,value,period,0,0,0,0,is_active,1,now() from 763987_prod_cacambas.container_type
+where name='Entulho' and size = 8 and is_active=1
+)
+
+insert into Equipamento (
+select c.id,c.company,4,c.number,null,c.is_active,null,now(),1 from 763987_prod_cacambas.container_type t , 763987_prod_cacambas.container c
+where c.type=t.id 
+and t.name='Entulho' and t.size = 8 and t.is_active=1
+)
+
+
+insert into Aluguel (
+select r.id,r.id,c.company,r.customer,r.address,0,c.id,f.driver,r.begin,r.end,(r.end -r.begin),b.value,0,null,0,0,b.value,f.driver,0,r.notes,0,now(),1 from
+763987_prod_cacambas.bill b , 763987_prod_cacambas.rent r , 763987_prod_cacambas.container c, 763987_prod_cacambas.freight f
+where b.rent=r.id and r.container=c.id and r.id=f.rent
+and r.change is null and f.type ='G'
+)
+
+insert into Contrato (select IDAluguel,IDEmpresa,IDCliente,IDEnderecoEmpresa,IDEnderecoCliente,valor_final,null,0,0,valor_final,null,0,now(),1 from aluguel)
+
+address
+postal_code
+customer_address
+payment
+plan
+plan_type
+settings

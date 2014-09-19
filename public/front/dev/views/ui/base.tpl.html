@@ -1,0 +1,25 @@
+<div id="ui-base" ng-controller="UIBaseCtrl" data-ng-open="startUI()">
+	
+	<!-- Overlay for Logout Loading -->
+	<div class="overlay" ng-class="{'hide' : !overlay_loading}"><div class="overlay_loading"></div></div>
+
+	<!-- Profile Bar -->
+	<ng-include src="ui.profile" ng-if="authorized"></ng-include>
+
+	<!-- Main page -->
+	<div id="page" class="clearfix" >
+
+		<!-- Header (Top Bar - Blue) -->
+	    <ng-include src="ui.header" ng-if="authorized"></ng-include>
+		<!-- SubNav Header (Sub Navigation Bar - White) -->
+	    <ng-include src="ui.subnav" ng-if="authorized"></ng-include>
+		<!-- Sidebar (Left Menu) -->
+	    <ng-include src="ui.sidebar" ng-if="!login_block || authorized"></ng-include>
+
+		<!-- Nested Views (Segments) on First Level -->
+	    <div app-view-segment="1" ng-hide="!authorized"></div>
+
+	</div>
+
+</div>
+

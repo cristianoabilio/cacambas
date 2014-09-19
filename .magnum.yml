@@ -1,0 +1,11 @@
+before_install:
+  - sudo apt-get install -y php5-mcrypt
+install:
+  - composer install --dev
+before_script:
+  - chmod -R 777 app/storage/logs
+script:
+  - phpunit
+services:
+  - redis-server
+  - memcached

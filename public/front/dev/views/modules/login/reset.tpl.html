@@ -1,0 +1,76 @@
+<div class="container" ng-if="show_login_page" ng-init="resetToken()">
+
+	<!-- Video BG -->
+    <video id="video_background" data-background="{{getBG().background}}" class="video-bg-{{getBG().background}}" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+        <source src="{{getBG().video.mp4}}" type="video/mp4" />
+        <source src="{{getBG().video.webm}}" type='video/webm; codecs="vp8, vorbis"' />
+        <source src="{{getBG().video.ogv}}" type='video/ogg; codecs="theora, vorbis"' />Video not supported!
+    </video>
+
+	<!-- Overley Effect-->
+    <div id="effect">
+        <div></div>
+    </div>
+
+
+    <div class="center">
+
+        <h1 class="logo">Caçambas.com</h1>
+  
+		<!-- cards for login and reset  -->
+        <div class="flip-container {{ff_hide}} {{flip}} {{shake}}" ng-class="{'show-error' : error_msg, 'show-error-pass' : error_compare_pass}">
+            <div class="flipper reset-form">
+
+				<!-- Card Login -->
+                <div class="card-login front reset_card {{load}}">
+
+					<!-- Feedback Message -->
+                    <span ng-if="!(error_match(form_data.senha, form_data.senha2) || !match()) || error_msg" class="feedback">{{message || 'As senhas devem ser iguais'}}</span>
+
+
+
+                    <h4>Redefina sua Senha</h4>
+                    <div class="p">Informe uma nova senha de no mínimo 6 dígitos:</div>
+
+					<!-- form for data and with angular validation -->
+                    <form class="credentials" name="form_data" ng-submit="reset(form_data.$valid && !match())" method="POST" novalidate>
+                        
+                        <div class="group-poly" ng-class="{'input-error' : validation(form_data.email, error_email)}" ng-keypress="error_email = false">
+                            <input type="email" class="fields" placeholder="Seu email" id="email" name="email" ng-model="reset_pass.email" required autofocus />
+                            <span class="bar"></span>
+                            <i ng-show="validation(form_data.email, error_email)" class="fa fa-exclamation fa-input-error"></i>
+                        </div>
+
+                        <div class="group-poly" ng-class="{'input-error' : validation(form_data.senha, error_pass)}" ng-keypress="error_pass = false">
+                            <input type="password" class="fields" placeholder="Senha" id="senha" name="senha" ng-model="reset_pass.pass_a" ng-minlength="6" required />
+                            <span class="bar"></span>
+                            <i ng-show="validation(form_data.senha, error_pass)" class="fa fa-exclamation fa-input-error"></i>
+                        </div>
+
+                         <div class="group-poly" ng-class="{'input-error' : validation(form_data.senha2, error_pass2) || error_compare_pass}" ng-keypress="error_pass2 = false">
+                            <input type="password" class="fields" placeholder="Senha" id="senha2" name="senha2" ng-model="reset_pass.pass_b" ng-minlength="6" required />
+                            <span class="bar"></span>
+                            <i ng-show="validation(form_data.senha2, error_pass2) || error_compare_pass" class="fa fa-exclamation fa-input-error"></i>
+                        </div>
+
+                        <button class="btn btn-lg btn-login btn-block">Salvar &rsaquo;</button>
+                    </form>
+
+					<!-- Spinner -->
+                    <div ng-hide="!load_spin" class="load-spin"></div>
+
+                    <!-- Sent Success -->
+                    <div ng-hide="!reset_sent" class="remind-success reset-success">
+                        <div class="check-white"></div>
+                        <div class="text">
+                            <h3>Sucesso!</h3>
+                            <h5>Sua nova senha já está funcionando.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	<!-- Center -->
+    </div>
+</div>
