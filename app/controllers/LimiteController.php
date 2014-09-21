@@ -22,7 +22,7 @@ class limitedata{
 			,array('fluxo_caixa',0)
 			,array('relatorio_avancado',0)
 			,array('benchmarks',0)
-			,array('IDSessao',0)
+			,array('sessao_id',0)
 			,array('dthr_cadastro',0)
 
 			)
@@ -86,6 +86,10 @@ class LimiteController extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -100,7 +104,6 @@ class LimiteController extends \BaseController {
 					,'fluxo_caixa'=>	'required'
 					,'relatorio_avancado'=>	'required'
 					,'benchmarks'=>	'required'
-					,'IDSessao'=>	'required'
 
 					),
 				array(	
@@ -131,7 +134,8 @@ class LimiteController extends \BaseController {
 			$e->fluxo_caixa			=Input::get('fluxo_caixa');
 			$e->relatorio_avancado	=Input::get('relatorio_avancado');
 			$e->benchmarks			=Input::get('benchmarks');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();
 
@@ -197,6 +201,10 @@ class LimiteController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
@@ -211,7 +219,6 @@ class LimiteController extends \BaseController {
 					,'fluxo_caixa'=>	'required'
 					,'relatorio_avancado'=>	'required'
 					,'benchmarks'=>	'required'
-					,'IDSessao'=>	'required'
 					),	
 				array(		
 					'required'=>'Required field'	
@@ -241,7 +248,8 @@ class LimiteController extends \BaseController {
 			$e->fluxo_caixa			=Input::get('fluxo_caixa');
 			$e->relatorio_avancado	=Input::get('relatorio_avancado');
 			$e->benchmarks			=Input::get('benchmarks');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();	
 

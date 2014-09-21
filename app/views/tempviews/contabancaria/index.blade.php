@@ -23,7 +23,7 @@ index
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='nome_banco')
-						<a href="{[URL::to('contabancaria/'.$e->IDConta)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('contabancaria/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

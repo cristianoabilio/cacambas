@@ -14,7 +14,6 @@
 		celular <input type="text" name="celular" id="celular"><br>
 		observacao <input type="text" name="observacao" id="observacao"><br>
 		afiliado <input type="text" name="afiliado" id="afiliado"><br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao"><br>
 
 		<br>
 		<input type="submit" value='create'>

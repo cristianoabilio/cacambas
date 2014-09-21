@@ -4,7 +4,7 @@ Edit
 BR	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($empresa, array('route' => array('empresa.update', $empresa->IDEmpresa), 'method' => 'PUT')) ]}
+	{[ Form::model($empresa, array('route' => array('empresa.update', $empresa->id), 'method' => 'PUT')) ]}
 
 
 		nome <input type="text" name="nome" id="nome" value="{[$empresa->nome]}">
@@ -17,14 +17,12 @@ BR
 		celular <input type="text" name="celular" id="celular" value="{[$empresa->celular]}">
 		observacao <input type="text" name="observacao" id="observacao" value="{[$empresa->observacao]}">
 		afiliado <input type="text" name="afiliado" id="afiliado" value="{[$empresa->afiliado]}">
-		IDSessao <input type="text" name="IDSessao" id="IDSessao" value="{[$empresa->IDSessao]}">
-
-
+	
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
 	</form>
 
-	{[ Form::model($empresa, array('route' => array('empresa.destroy', $empresa->IDEmpresa), 'method' => 'DELETE')) ]}
+	{[ Form::model($empresa, array('route' => array('empresa.destroy', $empresa->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 </div>

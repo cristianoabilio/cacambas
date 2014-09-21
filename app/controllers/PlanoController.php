@@ -18,7 +18,7 @@ class planodata{
 			,array('validade_meses',0)
 			,array('valiade_dias',0)
 			,array('disponivel',0)
-			,array('IDSessao',0)
+			,array('sessao_id',0)
 			,array('dthr_cadastro',0)
 			)
 		;
@@ -98,6 +98,10 @@ class PlanoController extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -107,7 +111,6 @@ class PlanoController extends \BaseController {
 					,'descricao'=>				'required'
 					,'valor_total'=>			'required'
 					,'disponivel'=>				'required'
-					,'IDSessao'=>				'required'
 					),
 				array(	
 					'required'=>'Required field'
@@ -137,7 +140,8 @@ class PlanoController extends \BaseController {
 			$e->validade_meses		=Input::get('validade_meses');
 			$e->valiade_dias		=Input::get('valiade_dias');
 			$e->disponivel			=Input::get('disponivel');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();
 
@@ -212,6 +216,10 @@ class PlanoController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
@@ -221,8 +229,6 @@ class PlanoController extends \BaseController {
 					,'descricao'=>				'required'
 					,'valor_total'=>			'required'
 					,'disponivel'=>				'required'
-					,'IDSessao'=>				'required'
-					,'dthr_cadastro'=>			'required'
 					),	
 				array(		
 					'required'=>'Required field'	
@@ -252,7 +258,8 @@ class PlanoController extends \BaseController {
 			$e->validade_meses		=Input::get('validade_meses');
 			$e->valiade_dias		=Input::get('valiade_dias');
 			$e->disponivel			=Input::get('disponivel');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();	
 

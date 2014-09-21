@@ -16,7 +16,12 @@
 
 <a href="{[URL::to('empresa/'.$id.'/edit')]} "> ....  Edit .... </a>
 <br>
-{[ Form::model($empresa, array('route' => array('empresa.destroy', $empresa->IDEmpresa), 'method' => 'DELETE')) ]}
+{[ Form::model($empresa, 
+	array(
+	'route' => array('empresa.destroy', 
+	$empresa->id
+	)
+	, 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 	<br>

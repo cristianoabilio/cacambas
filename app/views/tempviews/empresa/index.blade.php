@@ -21,7 +21,7 @@ view with no style at all
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='nome')
-						<a href="{[URL::to('empresa/'.$e->IDEmpresa)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif
@@ -55,7 +55,7 @@ view with no style at all
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='nome')
-						<a href="{[URL::to('empresa/'.$e->IDEmpresa)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

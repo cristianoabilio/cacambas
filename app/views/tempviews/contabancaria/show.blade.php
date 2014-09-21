@@ -15,7 +15,7 @@
 
 <a href="{[URL::to('contabancaria/'.$id.'/edit')]} "> ....  Edit .... </a>
 <br>
-{[ Form::model($conta, array('route' => array('contabancaria.destroy', $conta->IDConta), 'method' => 'DELETE')) ]}
+{[ Form::model($conta, array('route' => array('contabancaria.destroy', $conta->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 	<br>

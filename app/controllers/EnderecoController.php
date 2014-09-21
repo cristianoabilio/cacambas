@@ -23,7 +23,7 @@ class enderecodata{
 			,array('restricao_hr_inicio',0)
 			,array('restricao_hr_fim',0)
 			,array('dthr_cadastro',0)
-			,array('IDSessao',0)
+			,array('sessao_id',0)
 			)
 		;	
 		return $enderecoheader;
@@ -96,7 +96,6 @@ class EnderecoController extends \BaseController {
 					,'longitude'=>			'required'
 					,'restricao_hr_inicio'=>'required'
 					,'restricao_hr_fim'=>	'required'
-					,'IDSessao'=>			'required'
 					),
 				array(	
 					'required'=>'Required field'
@@ -123,7 +122,8 @@ class EnderecoController extends \BaseController {
 			$e->restricao_hr_inicio	=Input::get('restricao_hr_inicio');
 			$e->restricao_hr_fim	=Input::get('restricao_hr_fim');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->IDSessao	=Input::get('IDSessao');
+			$e->sessao_id	=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();
 
 
@@ -200,8 +200,6 @@ class EnderecoController extends \BaseController {
 					,'longitude'			=>	'required'
 					,'restricao_hr_inicio'	=>	'required'
 					,'restricao_hr_fim'		=>	'required'
-					,'IDSessao' 			=>	'required'
-
 					),	
 				array(		
 					'required'=>'Required field'	
@@ -228,7 +226,8 @@ class EnderecoController extends \BaseController {
 			$e->restricao_hr_inicio	=Input::get('restricao_hr_inicio');
 			$e->restricao_hr_fim	=Input::get('restricao_hr_fim');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->IDSessao	=Input::get('IDSessao');
+			$e->sessao_id	=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
 			$res=$res = array(

@@ -5,11 +5,13 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "4.2.*"
+		"laravel/framework": "4.2.*",
+		"way/generators": "*"
 	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
+			"app/helpers",
 			"app/controllers",
 			"app/models",
 			"app/database/migrations",

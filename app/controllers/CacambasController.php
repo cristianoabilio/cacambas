@@ -54,7 +54,7 @@ class CacambasController extends BaseController {
 			$r->gps = Input::get('gps',null);
 			$r->status = Input::get('status',1);
 			$r->IDStatus = Input::get('IDStatus',0);
-			$r->IDSessao = $this->id_sessao;
+			$r->sessao_id = $this->id_sessao;
 			$r->dthr_cadastro = date("Y-m-d H:i:s");
 
 			$r->save();
@@ -117,7 +117,7 @@ class CacambasController extends BaseController {
 			$r->gps = Input::get('gps',null);
 			$r->status = Input::get('status',1);
 			$r->IDStatus = Input::get('IDStatus',0);
-			$r->IDSessao = $this->id_sessao;
+			$r->sessao_id = $this->id_sessao;
 			$r->save();
 
 			$res = array('status'=>'success','msg' => 'Registro salvo com sucesso!');

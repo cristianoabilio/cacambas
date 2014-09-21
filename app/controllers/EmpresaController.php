@@ -1,21 +1,21 @@
 <?php
 
 /**
- * empresaheader class only contains data related to
+ * empresadata class only contains data related to
  * the table Empresa
  */
-class empresaheader{
+class empresadata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
 	*/
 	public function header(){
 		/*
-		$empresaheader= headers on table empresas
+		$header= headers on table empresas
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$empresaheader=array(	
+		$header=array(	
 			array('nome',1)
 			,array('nome_fantasia',1)
 			,array('cnpj',0)
@@ -27,10 +27,8 @@ class empresaheader{
 			,array('observacao',0)
 			,array('afiliado',0)
 			,array('status',0)
-			,array('dthr_cadastro',0)
-			,array('IDSessao',0)
 		);	
-		return $empresaheader;
+		return $header;
 	}
 	
 	/**
@@ -41,11 +39,48 @@ class empresaheader{
 	}
 
 	public function show($id){
-		return Empresa::where('IDEmpresa','=',$id)->first();
+		return Empresa::find($id)->first();
 	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formdata(){
+
+		return array(
+				'nome'			=>Input::get('nome'),
+				'nome_fantasia'	=>Input::get('nome_fantasia'),
+				'cnpj'			=>Input::get('cnpj'),
+				'insc_estadual'	=>Input::get('insc_estadual'),
+				'responsavel'	=>Input::get('responsavel'),
+				'email'			=>Input::get('email'),
+				'telefone'		=>Input::get('telefone'),
+				'celular'		=>Input::get('celular'),
+				'observacao'	=>Input::get('observacao'),
+				'afiliado'		=>Input::get('afiliado')
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'nome'=>			'required'
+			,'nome_fantasia'=>	'required'
+			,'cnpj'=>			'required'
+			,'insc_estadual'=>	'required'
+			,'responsavel'=>	'required'
+			,'email'=>			'required'
+			,'telefone'=>		'required'
+			,'celular'=>		'required'
+			,'observacao'=>		'required'
+			,'afiliado'=>		'required'
+			)
+		;
+	}
+
 }
 
-class Empresa2Controller extends \BaseController {
+class EmpresaController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -54,7 +89,7 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function index()
 	{
-		$h=new empresaheader;
+		$h=new empresadata;
 		
 		$data=array(
 			//retrieving all "Empresas" 
@@ -101,22 +136,17 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fakeuser;
+
+		$d=new empresadata;
+		$success=$d->formdata();
+
 		try{
 			$validator= Validator::make(			
-				Input::All(),	
-				array(		
-					'nome'=>			'required'
-					,'nome_fantasia'=>	'required'
-					,'cnpj'=>			'required'
-					,'insc_estadual'=>	'required'
-					,'responsavel'=>	'required'
-					,'email'=>			'required'
-					,'telefone'=>		'required'
-					,'celular'=>		'required'
-					,'observacao'=>		'required'
-					,'afiliado'=>		'required'
-					,'IDSessao'=>		'required'
-					),	
+				Input::All(),
+				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -135,35 +165,39 @@ class Empresa2Controller extends \BaseController {
 			}
 
 			$e=new Empresa;	
-			$e->nome			=Input::get('nome');
-			$e->nome_fantasia	=Input::get('nome_fantasia');
-			$e->cnpj			=Input::get('cnpj');
-			$e->insc_estadual	=Input::get('insc_estadual');
-			$e->responsavel		=Input::get('responsavel');
-			$e->email			=Input::get('email');
-			$e->telefone		=Input::get('telefone');
-			$e->celular			=Input::get('celular');
-			$e->observacao		=Input::get('observacao');
-			$e->afiliado		=Input::get('afiliado');
-
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			//default status when Empresa is created=1
 			$e->status			=1;
 
 			//timestamp
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 
-			$e->IDSessao		=Input::get('IDSessao');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id		=$this->id_sessao;
+			
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'Empresa',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Empresa',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
 		return Response::json($res);
 	}
@@ -177,7 +211,7 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$h=new empresaheader;
+		$h=new empresadata;
 		$data=array(
 			'empresa'=>$h->show($id),
 			'header'=>$h->header(),
@@ -196,7 +230,7 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$h=new empresaheader;
+		$h=new empresadata;
 		$data=array(
 			'empresa'=>$h->show($id),
 			'header'=>$h->header(),
@@ -215,22 +249,17 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fakeuser;
+
+		$d=new empresadata;
+		$success=$d->formdata();
+
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				array(		
-					'nome'=>			'required'
-					,'nome_fantasia'=>	'required'
-					,'cnpj'=>			'required'
-					,'insc_estadual'=>	'required'
-					,'responsavel'=>	'required'
-					,'email'=>			'required'
-					,'telefone'=>		'required'
-					,'celular'=>		'required'
-					,'observacao'=>		'required'
-					,'afiliado'=>		'required'
-					,'IDSessao'=>		'required'
-					),	
+				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -249,29 +278,35 @@ class Empresa2Controller extends \BaseController {
 			}
 
 			$e=Empresa::find($id);
-			$e->nome			=Input::get('nome');
-			$e->nome_fantasia	=Input::get('nome_fantasia');
-			$e->cnpj			=Input::get('cnpj');
-			$e->insc_estadual	=Input::get('insc_estadual');
-			$e->responsavel		=Input::get('responsavel');
-			$e->email			=Input::get('email');
-			$e->telefone		=Input::get('telefone');
-			$e->celular			=Input::get('celular');
-			$e->observacao		=Input::get('observacao');
-			$e->afiliado		=Input::get('afiliado');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->status			=1;
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->IDSessao		=Input::get('IDSessao');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'Empresa',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Empresa',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
 		return Response::json($res);
 	}
@@ -285,20 +320,34 @@ class Empresa2Controller extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-			/**/
+		$d=new empresadata;
 		try{
 
 			$e=Empresa::find($id);
 			$e->status=0;
 			$e->save();	
 
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			$res=$d->responsedata(
+				'Empresa',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
 
 		}catch(Exception $e){
 
 			SysAdminHelper::NotifyError($e->getMessage());
 
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Empresa',
+				true,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
 
 		}
 

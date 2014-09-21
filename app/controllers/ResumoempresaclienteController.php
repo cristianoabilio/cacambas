@@ -31,6 +31,10 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		//
 	}
 
@@ -67,6 +71,10 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		//
 	}
 

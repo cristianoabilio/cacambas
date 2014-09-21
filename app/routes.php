@@ -32,8 +32,9 @@ Route::get('/login',  array('as' => 'login.index',         'uses' => 'LoginContr
 
 Route::resource('compras', 'ComprasController');
 Route::resource('contabancaria', 'ContabancariaController');
+Route::controller('contaempresa', 'ContabancariaEmpresaController');
 Route::resource('convenio', 'ConvenioController');
-Route::resource('empresa', 'Empresa2Controller');
+Route::resource('empresa', 'EmpresaController');
 Route::resource('endereco','EnderecoController');
 Route::resource('fatura', 'FaturaController');
 Route::resource('limite', 'LimiteController');

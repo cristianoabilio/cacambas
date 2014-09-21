@@ -24,7 +24,7 @@ class produtodata{
 			,array('status',1)
 			,array('observacao',1)
 			,array('IDPerfil',1)
-			,array('IDSessao',1)
+			,array('sessao_id',1)
 			,array('dthr_cadastro',1)
 			)
 		;	
@@ -92,6 +92,10 @@ class ProdutoController extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -108,9 +112,6 @@ class ProdutoController extends \BaseController {
 					,'status'=>	'required'
 					,'observacao'=>	'required'
 					,'IDPerfil'=>	'required'
-					,'IDSessao'=>	'required'
-					,'dthr_cadastro'=>	'required'
-
 					),
 				array(	
 					'required'=>'Required field'
@@ -142,8 +143,8 @@ class ProdutoController extends \BaseController {
 			$e->status	=Input::get('status');
 			$e->observacao	=Input::get('observacao');
 			$e->IDPerfil	=Input::get('IDPerfil');
-			$e->IDSessao	=Input::get('IDSessao');
-			$e->dthr_cadastro	=Input::get('dthr_cadastro');
+			$e->sessao_id	=Input::get('sessao_id');
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 
 			$e->save();
 
@@ -208,6 +209,10 @@ class ProdutoController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
@@ -224,8 +229,6 @@ class ProdutoController extends \BaseController {
 					,'status'=>	'required'
 					,'observacao'=>	'required'
 					,'IDPerfil'=>	'required'
-					,'IDSessao'=>	'required'
-					,'dthr_cadastro'=>	'required'
 					),	
 				array(		
 					'required'=>'Required field'	
@@ -257,8 +260,8 @@ class ProdutoController extends \BaseController {
 			$e->status	=Input::get('status');
 			$e->observacao	=Input::get('observacao');
 			$e->IDPerfil	=Input::get('IDPerfil');
-			$e->IDSessao	=Input::get('IDSessao');
-			$e->dthr_cadastro	=Input::get('dthr_cadastro');
+			$e->sessao_id	=Input::get('sessao_id');
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->save();	
 
 			$res=$res = array(

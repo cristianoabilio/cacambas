@@ -1,23 +1,22 @@
 <?php
 
 /**
- * empresaheader class only contains data related to
- * the table Empresa
+ * contabancariadata class only contains data related to
+ * the table ContaBancaria
  */
-class contabancariaheader{
+class contabancariadata extends StandardResponse {
 	/** 
 	* function name: header.
 	* @param header with headers of contabancaria table
 	*/
 	public function header(){
 		/*
-		$contabancariaheader= headers on table contabancarias
+		$contabancariadata= headers on table contabancarias
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$contabancariaheader=array(	
-			array('IDEmpresa',0)
-			,array('nome_banco',1)
+		$header=array(	
+			array('nome_banco',1)
 			,array('codigo_banco',1)
 			,array('conta',1)
 			,array('conta_dig',1)
@@ -28,25 +27,66 @@ class contabancariaheader{
 			,array('pj',0)
 			,array('titular',0)
 			,array('dthr_cadastro',0)
-			,array('IDSessao',0)
+			,array('sessao_id',0)
 			)
 		;	
-		return $contabancariaheader;
+		return $header;
 	}
 	
 	/**
-	* @param edata retrieves all data from table "empresa"
+	* @return all records from table "contabancaria"
 	*/
 	public function edata () {
 		return 
 		Contabancaria::all();
 	}
 
+	public function edataempresa ($empresa) {
+		return 
+		Empresa::find($empresa)->contabancaria;
+	}
+
 	public function show($id){
 		return 
-		Contabancaria::where('IDConta','=',$id)
-		->first();
+		Contabancaria::find($id);
 	}
+
+	/**
+	* @return array with form values
+	*/
+	public function forminputdata(){
+
+		return array(
+			'nome_banco'	=>Input::get('nome_banco'),
+			'codigo_banco'	=>Input::get('codigo_banco'),
+			'conta'			=>Input::get('conta'),
+			'conta_dig'		=>Input::get('conta_dig'),
+			'conta_tipo'	=>Input::get('conta_tipo'),
+			'agencia'		=>Input::get('agencia'),
+			'agencia_dig'	=>Input::get('agencia_dig'),
+			'cpf_cnpj'		=>Input::get('cpf_cnpj'),
+			'pj'			=>Input::get('pj'),
+			'titular'		=>Input::get('titular')
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'nome_banco'		=>	'required | min:8'
+			,'codigo_banco'		=>	'required'
+			,'conta'			=>	'required'
+			,'conta_dig'		=>	'required'
+			,'conta_tipo'		=>	'required'
+			,'agencia'			=>	'required'
+			,'agencia_dig'		=>	'required'
+			,'cpf_cnpj'			=>	'required'
+			,'pj'				=>	'required'
+			,'titular'			=>	'required'
+			)
+		;
+	}
+
 }
 
 class ContabancariaController extends \BaseController {
@@ -58,7 +98,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new contabancariaheader;
+		$d=new contabancariadata;
 		$data=array(
 			'conta'=>$d->edata(),
 			'header'=>$d->header()
@@ -92,26 +132,23 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function store()
 	{
+		/**
+		* instantiating fake user (for empresa and sessao)
+		* through "fakenuser" class
+		* Should be deleted in original project
+		*/
+		$fake=new fakeuser;
+		// -delete up to here
+
+		//instantiating data for the json response
+		$d=new contabancariadata;
+		$succesdata=$d->forminputdata();
+
 		try{
 			$validator= Validator::make(			
-				Input::All(),	
-				array(		
-					'IDEmpresa'			=>	'required'
-					,'nome_banco'		=>	'required'
-					,'codigo_banco'		=>	'required'
-					,'conta'			=>	'required'
-					,'conta_dig'		=>	'required'
-					,'conta_tipo'		=>	'required'
-					,'agencia'			=>	'required'
-					,'agencia_dig'		=>	'required'
-					,'cpf_cnpj'			=>	'required'
-					,'pj'				=>	'required'
-					,'titular'			=>	'required'
-					,'IDSessao'			=>	'required'
-					),
-				array(		
-					'required'=>'Required field'	
-					)	
+				Input::All(),
+				$d->validrules(),
+				$d->validationmssg()
 				)		
 			;
 
@@ -127,32 +164,40 @@ class ContabancariaController extends \BaseController {
 			}
 
 			$e=new Contabancaria;	
-			$e->IDEmpresa	=Input::get('IDEmpresa');
-			$e->nome_banco	=Input::get('nome_banco');
-			$e->codigo_banco	=Input::get('codigo_banco');
-			$e->conta	=Input::get('conta');
-			$e->conta_dig	=Input::get('conta_dig');
-			$e->conta_tipo	=Input::get('conta_tipo');
-			$e->agencia	=Input::get('agencia');
-			$e->agencia_dig	=Input::get('agencia_dig');
-			$e->cpf_cnpj	=Input::get('cpf_cnpj');
-			$e->pj	=Input::get('pj');
-			$e->titular	=Input::get('titular');
+			$e->empresa_id		=$fake->empresa();
+
+			// $succes variable contains array name=>value
+			//from the form required in this controller
+			foreach ($succesdata as $key => $value) {
+				$e->$key = $value;
+			}
+
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->IDSessao	=Input::get('IDSessao');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res = $d->responsedata(
+				'contabancaria',
+				true,
+				'store',
+				$succesdata
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res = $d->responsedata(
+				'contabancaria',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -164,7 +209,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new contabancariaheader;
+		$d=new contabancariadata;
 		$data=array(
 			'conta'=>$d->show($id),
 			'header'=>$d->header(),
@@ -185,7 +230,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new contabancariaheader;
+		$d=new contabancariadata;
 		$data=array(
 			'conta'=>$d->show($id),
 			'header'=>$d->header(),
@@ -204,23 +249,22 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		/**
+		* instantiating fake user (for empresa and sessao)
+		* through "fakenuser" class
+		* Should be deleted in original project
+		*/
+		$fake=new fakeuser;
+		// -delete up to here
+
+		//instantiating data for the json response
+		$d=new contabancariadata;
+		$succesdata=$d->forminputdata();
+		
 		try{
 			$validator= Validator::make(			
-				Input::All(),	
-				array(		
-					'IDEmpresa'			=>	'required'
-					,'nome_banco'		=>	'required'
-					,'codigo_banco'		=>	'required'
-					,'conta'			=>	'required'
-					,'conta_dig'		=>	'required'
-					,'conta_tipo'		=>	'required'
-					,'agencia'			=>	'required'
-					,'agencia_dig'		=>	'required'
-					,'cpf_cnpj'			=>	'required'
-					,'pj'				=>	'required'
-					,'titular'			=>	'required'
-					,'IDSessao'			=>	'required'
-					),	
+				Input::All(),
+				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -239,32 +283,40 @@ class ContabancariaController extends \BaseController {
 			}
 
 			$e=Contabancaria::find($id);
-			$e->IDEmpresa	=Input::get('IDEmpresa');
-			$e->nome_banco	=Input::get('nome_banco');
-			$e->codigo_banco	=Input::get('codigo_banco');
-			$e->conta	=Input::get('conta');
-			$e->conta_dig	=Input::get('conta_dig');
-			$e->conta_tipo	=Input::get('conta_tipo');
-			$e->agencia	=Input::get('agencia');
-			$e->agencia_dig	=Input::get('agencia_dig');
-			$e->cpf_cnpj	=Input::get('cpf_cnpj');
-			$e->pj	=Input::get('pj');
-			$e->titular	=Input::get('titular');
+			$e->empresa_id		=$fake->empresa();
+
+			// $succes variable contains array name=>value
+			//from the form required in this controller
+			foreach ($succesdata as $key => $value) {
+				$e->$key = $value;
+			}
+
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->IDSessao	=Input::get('IDSessao');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			$res = $d->responsedata(
+				'contabancaria',
+				true,
+				'update',
+				$succesdata
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res = $d->responsedata(
+				'contabancaria',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -276,21 +328,36 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		$d=new contabancariadata;
 		try{
 
-			Contabancaria::where('IDConta','=',$id)
+			Contabancaria::whereId($id)
 			->delete();	
 
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			$res = $d->responsedata(
+				'contabancaria',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
 
 		}catch(Exception $e){
 
 			SysAdminHelper::NotifyError($e->getMessage());
 
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res = $d->responsedata(
+				'contabancaria',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
 
 		}
 
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 }

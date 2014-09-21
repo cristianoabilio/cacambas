@@ -1,0 +1,1 @@
+app/views/tempviews/compras/show.blade.php

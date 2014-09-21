@@ -32,7 +32,7 @@ class faturadata{
 			,array('pagarme',0)
 			,array('NFSe',0)
 			,array('dthr_cadastro',0)
-			,array('IDSessao',0)
+			,array('sessao_id',0)
 
 
 			)
@@ -90,6 +90,10 @@ class FaturaController extends \BaseController {
 	 */
 	public function store()
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -113,8 +117,6 @@ class FaturaController extends \BaseController {
 					,'ajuste_percentual'=>	'required'
 					,'pagarme'=>	'required'
 					,'NFSe'=>	'required'
-					,'dthr_cadastro'=>	'required'
-					,'IDSessao'=>	'required'
 					),
 				array(	
 					'required'=>'Required field'
@@ -153,8 +155,9 @@ class FaturaController extends \BaseController {
 			$e->ajuste_percentual	=Input::get('ajuste_percentual');
 			$e->pagarme				=Input::get('pagarme');
 			$e->NFSe				=Input::get('NFSe');
-			$e->dthr_cadastro		=Input::get('dthr_cadastro');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->dthr_cadastro		=date('Y-m-d H:i:s');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
 
@@ -220,6 +223,10 @@ class FaturaController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fake;
+		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
@@ -243,9 +250,6 @@ class FaturaController extends \BaseController {
 					,'ajuste_percentual'=>		'required'
 					,'pagarme'=>				'required'
 					,'NFSe'=>					'required'
-					,'dthr_cadastro'=>			'required'
-					,'IDSessao'=>				'required'
-
 					),	
 				array(		
 					'required'=>'Required field'	
@@ -284,8 +288,9 @@ class FaturaController extends \BaseController {
 			$e->ajuste_percentual	=Input::get('ajuste_percentual');
 			$e->pagarme				=Input::get('pagarme');
 			$e->NFSe				=Input::get('NFSe');
-			$e->dthr_cadastro		=Input::get('dthr_cadastro');
-			$e->IDSessao			=Input::get('IDSessao');
+			$e->dthr_cadastro		=date('Y-m-d H:i:s');
+			$e->sessao_id			=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
 			$res=$res = array(

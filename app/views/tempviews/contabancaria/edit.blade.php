@@ -1,13 +1,17 @@
 Edit 
+<?php 
+$fake=new fakeuser;
+ ?>
+{[ Empresa::find($fake->empresa())->nome ]}
+<br>
+conta 
 {[$conta->nome_banco]}
 <br>
 BR	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($conta, array('route' => array('contabancaria.update', $conta->IDConta), 'method' => 'PUT')) ]}
+	{[ Form::model($conta, array('route' => array('contabancaria.update', $conta->id), 'method' => 'PUT')) ]}
 
-
-		IDEmpresa <input type="text" name="IDEmpresa" id="IDEmpresa" value="{[$conta->IDEmpresa]}">	<br>
 		nome_banco <input type="text" name="nome_banco" id="nome_banco" value="{[$conta->nome_banco]}">	<br>
 		codigo_banco <input type="text" name="codigo_banco" id="codigo_banco" value="{[$conta->codigo_banco]}">	<br>
 		conta <input type="text" name="conta" id="conta" value="{[$conta->conta]}">	<br>
@@ -18,16 +22,13 @@ BR
 		cpf_cnpj <input type="text" name="cpf_cnpj" id="cpf_cnpj" value="{[$conta->cpf_cnpj]}">	<br>
 		pj <input type="text" name="pj" id="pj" value="{[$conta->pj]}">	<br>
 		titular <input type="text" name="titular" id="titular" value="{[$conta->titular]}">	<br>
-		dthr_cadastro <input type="text" name="dthr_cadastro" id="dthr_cadastro" value="{[$conta->dthr_cadastro]}">	<br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao" value="{[$conta->IDSessao]}">	<br>
-
-
+		
 
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
 	</form>
 
-	{[ Form::model($conta, array('route' => array('contabancaria.destroy', $conta->IDConta), 'method' => 'DELETE')) ]}
+	{[ Form::model($conta, array('route' => array('contabancaria.destroy', $conta->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 </div>

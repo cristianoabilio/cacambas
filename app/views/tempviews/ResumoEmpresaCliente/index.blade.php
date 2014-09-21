@@ -1,0 +1,1 @@
+app/views/tempviews/ResumoEmpresaCliente/index.blade.php
