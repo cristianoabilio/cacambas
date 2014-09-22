@@ -1,18 +1,20 @@
+<h1>Funcionario {[$resumoatividade->Funcionario->nome]}</h1>
+<p>
+	empresa <b> {[$resumoatividade->Funcionario->Empresa->nome]}</b>
+</p>
+
+
 <?php  
 $fake=new fakeuser;
 ?>
-Edit 
-{[$resumoatividade->funcionario_id]}
+Edit register number
+{[$resumoatividade->id]}
 
-for empresa 
-{[Empresa::find($fake->empresa())->nome]}
-<br>
-BR	
+
 <div style='margin-left:200px'>
 	
-	{[ Form::model($resumoatividade, array('route' => array('resumoatividade.update', $resumoatividade->id), 'method' => 'PUT')) ]}
+	{[ Form::model($resumoatividade, array('route' => array('funcionario.resumoatividade.update',$resumoatividade->Funcionario->id,$resumoatividade->id), 'method' => 'PUT')) ]}
 
-		funcionario_id <input type="text" name="funcionario_id" id="funcionario_id" value="{[$resumoatividade->funcionario_id]}">	<br>
 		mes_referencia <input type="text" name="mes_referencia" id="mes_referencia" value="{[$resumoatividade->mes_referencia]}">	<br>
 		ano_referencia <input type="text" name="ano_referencia" id="ano_referencia" value="{[$resumoatividade->ano_referencia]}">	<br>
 		total_os_colocada <input type="text" name="total_os_colocada" id="total_os_colocada" value="{[$resumoatividade->total_os_colocada]}">	<br>

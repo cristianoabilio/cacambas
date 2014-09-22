@@ -1,8 +1,8 @@
 <div style='margin-left:200px'>
-	Add a new "resumoatividade"
+	<h1>New resumoatividade for <b>{[$funcionario->nome]}</b></h1>
+	Add a new "resumoatividade" for <b>{[$funcionario->nome]}</b>
 
-	<form action="{[URL::to('resumoatividade')]}" method="post">
-		funcionario_id <input type="text" name="funcionario_id" id="funcionario_id"><br>
+	<form action="{[URL::to('funcionario/'.$funcionario->id.'/resumoatividade')]}" method="post">
 		mes_referencia <input type="text" name="mes_referencia" id="mes_referencia"><br>
 		ano_referencia <input type="text" name="ano_referencia" id="ano_referencia"><br>
 		total_os_colocada <input type="text" name="total_os_colocada" id="total_os_colocada"><br>

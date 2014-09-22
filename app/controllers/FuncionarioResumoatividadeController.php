@@ -1,26 +1,95 @@
 <?php
+/**						
+* resumoatividadedata class only contains data related to						
+ * the table resumoatividade						
+ */						
+class ResumoatividadeData extends StandardResponse{						
+	/** 					
+	* function name: header.					
+	* @param header with headers of empresa table					
+	*/					
+	public function header(){					
+		/*				
+		$header= headers on table resumoatividade				
+		In order to display or hide on HTML table, set as				
+		1 (visible) or 2 (not shown)				
+		*/				
+		$header=array(				
+			array('funcionario_id',0)			
+			,array('empresa_id',0)			
+			,array('mes_referencia',1)			
+			,array('ano_referencia',1)			
+			,array('total_os_colocada',1)			
+			,array('total_os_troca',0)			
+			,array('total_os_retirada',0)			
+		);				
+		return $header;				
+	}					
+						
+	/**					
+	* @param edata retrieves all data from table "empresa"					
+	*/
+	public function edata ($funcionario) {					
+		return Funcionario::find($funcionario)->resumoatividade;				
+	}					
+						
+	public function show($id){					
+		return Resumoatividade::find($id);				
+	}					
+						
+	/**					
+	* @param formdata returns array with form values					
+	*/					
+	public function formatdata(){					
+						
+		return array(
+			'mes_referencia'		=>Input::get('mes_referencia'),
+			'ano_referencia'		=>Input::get('ano_referencia'),
+			'total_os_colocada'		=>Input::get('total_os_colocada'),
+			'total_os_troca'		=>Input::get('total_os_troca'),
+			'total_os_retirada'		=>Input::get('total_os_retirada')
+			)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'mes_referencia'	=>	'required'
+			,'ano_referencia'	=>	'required'
+			,'total_os_colocada'=>	'required'
+			,'total_os_troca'	=>	'required'
+			,'total_os_retirada'=>	'required'
+
+			)
+		;
+	}
+}						
 
 
 
-
-class ResumoatividadeController extends \BaseController {
+class FuncionarioResumoatividadeController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($id)
 	{
+		$e=Funcionario::find($id);
 		$fake=new fakeuser;
-		$d=new resumoatividadedata;
+		$d=new ResumoatividadeData;
 		$data=array(
 			//all compras
-			'resumoatividade'=>$d->edata($fake->empresa() ),
+			'funcionario'=>$e,
+			'resumoatividade'=>$d->edata($id ),
 			'header'=>$d->header()
 			)
 		;
-		return View::make('tempviews.resumoatividade.index',$data);
+
+		return //$e->Resumoatividade
+		View::make('tempviews.resumoatividade.index',$data);
+		;
 	}
 
 
@@ -29,9 +98,12 @@ class ResumoatividadeController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($id)
 	{
-		$data=array();
+		$data=array(
+			'funcionario'=>Funcionario::find($id)
+			)
+		;
 		return View::make('tempviews.resumoatividade.create',$data);
 	}
 
@@ -41,14 +113,14 @@ class ResumoatividadeController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
 
-		$d=new resumoatividadedata;
+		$d=new ResumoatividadeData;
 		$success=$d->formatdata();
 
 		try{
@@ -73,6 +145,7 @@ class ResumoatividadeController extends \BaseController {
 			}
 
 			$e=new Resumoatividade;	
+			$e->funcionario_id=$id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -110,14 +183,14 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($funcionario,$id)
 	{
-		//resumoatividadedata
-		$d=new resumoatividadedata;
-		$data=array(
+		//$func=Funcionario::find($funcionario);
+		$d=new ResumoatividadeData;$data=array(
+			'funcionario'=>Funcionario::find($funcionario),
 			'resumoatividade'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
+			'header'			=>$d->header(),
+			'id'				=>$id
 			)
 		;
 		return View::make('tempviews.resumoatividade.show',$data);
@@ -130,11 +203,10 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($funcionario,$id)
 	{
-		//resumoatividadedata
-		$d=new resumoatividadedata;
-		$data=array(
+		$d=new ResumoatividadeData;$data=array(
+			'funcionario'=>Funcionario::find($funcionario),
 			'resumoatividade'	=>$d->show($id),
 			'header'			=>$d->header(),
 			'id'				=>$id
@@ -150,13 +222,13 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($funcionario,$id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new resumoatividadedata;
+		$d=new ResumoatividadeData;
 		$success=$d->formatdata();
 
 		try{
@@ -181,6 +253,8 @@ class ResumoatividadeController extends \BaseController {
 			}
 
 			$e=Resumoatividade::find($id);
+			$e->funcionario_id=$funcionario;
+			//
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -220,7 +294,7 @@ class ResumoatividadeController extends \BaseController {
 	/*public function destroy($id)
 	{
 		//
-	}*/
-
+	}
+*/
 
 }

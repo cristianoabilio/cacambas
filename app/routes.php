@@ -47,3 +47,4 @@ Route::resource('resumofinanceiro', 'ResumofinanceiroController');
 
 //nested controllers
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
+Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');

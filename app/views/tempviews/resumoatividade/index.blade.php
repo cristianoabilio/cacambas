@@ -2,15 +2,24 @@
 $fake=new fakeuser;
 
  ?>
-{[Empresa::find($fake->empresa())->nome ]}
+ <h1> {[$funcionario->nome ]} </h1> - 
+ <small>{[$funcionario->Empresa->nome ]}
+ 	</small>
 <br>	
 <hr>
-<a href="{[URL::to('resumoatividade/create')]}">Add new "resumoatividade"</a>
+<a href="{[URL::to('funcionario/'.$funcionario->id.'/resumoatividade/create')]}">
+	Add new "resumoatividade"
+	for <b>{[$funcionario->nome ]}</b>
+</a>
 <br>
 
  <table>
  	<!-- $h var comes from controller Empresa2, containing
  	the header names on table Empresa -->
+ 	<tr>
+ 		<th>
+ 			Register
+ 		</th>
  	@foreach($header as $h)
 		@if($h[1]==1)
 			<th>
@@ -18,14 +27,20 @@ $fake=new fakeuser;
 			</th>
 		@endif
 	@endforeach
-
+	</tr>
 	@foreach($resumoatividade as $e)
 		<tr>
+			<td>
+				<a href="{[URL::to('funcionario/'.$funcionario->id.'/resumoatividade/'.$e->id)]}">Number {[$e->id]}</a>
+				
+			</td>
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='empresa_id')
-						<a href="{[URL::to('resumoatividade/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('funcionario/'.$funcionario->id.'resumoatividade/'.$e->id)]}">{[ $e->$h[0]  ]}</a>
+						@elseif($h[0]=='funcionario_id')
+						{[Funcionario::find($e->$h[0] )->nome ]}
 						@else
 						{[$e->$h[0]  ]}
 						@endif
