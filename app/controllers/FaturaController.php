@@ -1,6 +1,6 @@
 <?php
 
-class faturadata{
+class faturadata  extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of fatura table
@@ -11,9 +11,9 @@ class faturadata{
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$faturaheader=array(	
-			array('IDConvenio',1)
-			,array('IDEmpresa',1)
+		$header=array(	
+			array('convenio_id',1)
+			,array('empresa_id',1)
 			,array('mes_referencia',0)
 			,array('semestre_referencia',0)
 			,array('ano_referencia',0)
@@ -37,7 +37,7 @@ class faturadata{
 
 			)
 		;	
-		return $faturaheader;
+		return $header;
 	}
 	
 	/**
@@ -49,6 +49,60 @@ class faturadata{
 
 	public function show($id){
 		return Fatura::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'convenio_id'			=>Input::get('convenio_id'),
+			'mes_referencia'		=>Input::get('mes_referencia'),
+			'semestre_referencia'	=>Input::get('semestre_referencia'),
+			'ano_referencia'		=>Input::get('ano_referencia'),
+			'data_vencimento'		=>Input::get('data_vencimento'),
+			'data_pagamento'		=>Input::get('data_pagamento'),
+			'forma_pagamento'		=>Input::get('forma_pagamento'),
+			'status_pagamento'	=>Input::get('status_pagamento'),
+			'valor_plano'			=>Input::get('valor_plano'),
+			'valor_prod_compra'	=>Input::get('valor_prod_compra'),
+			'valor_prod_uso'		=>Input::get('valor_prod_uso'),
+			'valor_boleto'		=>Input::get('valor_boleto'),
+			'valor_total'			=>Input::get('valor_total'),
+			'ajuste_tipo'			=>Input::get('ajuste_tipo'),
+			'ajuste_valor'		=>Input::get('ajuste_valor'),
+			'ajuste_percentual'	=>Input::get('ajuste_percentual'),
+			'pagarme'				=>Input::get('pagarme'),
+			'NFSe'				=>Input::get('NFSe')
+			)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'convenio_id'=>	'required'
+			,'mes_referencia'=>	'required'
+			,'semestre_referencia'=>	'required'
+			,'ano_referencia'=>	'required'
+			,'data_vencimento'=>	'required'
+			,'data_pagamento'=>	'required'
+			,'forma_pagamento'=>	'required'
+			,'status_pagamento'=>	'required'
+			,'valor_plano'=>	'required'
+			,'valor_prod_compra'=>	'required'
+			,'valor_prod_uso'=>	'required'
+			,'valor_boleto'=>	'required'
+			,'valor_total'=>	'required'
+			,'ajuste_tipo'=>	'required'
+			,'ajuste_valor'=>	'required'
+			,'ajuste_percentual'=>	'required'
+			,'pagarme'=>	'required'
+			,'NFSe'=>	'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
 	}
 }
 
@@ -92,32 +146,16 @@ class FaturaController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new faturadata;
+		$success=$d->formatdata();
+
 		try{
 			$validator= Validator::make(		
-				Input::All(),	
-				array(	
-					'IDConvenio'=>	'required'
-					,'IDEmpresa'=>	'required'
-					,'mes_referencia'=>	'required'
-					,'semestre_referencia'=>	'required'
-					,'ano_referencia'=>	'required'
-					,'data_vencimento'=>	'required'
-					,'data_pagamento'=>	'required'
-					,'forma_pagamento'=>	'required'
-					,'status_pagamento'=>	'required'
-					,'valor_plano'=>	'required'
-					,'valor_prod_compra'=>	'required'
-					,'valor_prod_uso'=>	'required'
-					,'valor_boleto'=>	'required'
-					,'valor_total'=>	'required'
-					,'ajuste_tipo'=>	'required'
-					,'ajuste_valor'=>	'required'
-					,'ajuste_percentual'=>	'required'
-					,'pagarme'=>	'required'
-					,'NFSe'=>	'required'
-					),
+				Input::All(),
+				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
@@ -136,43 +174,40 @@ class FaturaController extends \BaseController {
 			}
 
 			$e=new Fatura;	
-			$e->IDConvenio			=Input::get('IDConvenio');
-			$e->IDEmpresa			=Input::get('IDEmpresa');
-			$e->mes_referencia		=Input::get('mes_referencia');
-			$e->semestre_referencia	=Input::get('semestre_referencia');
-			$e->ano_referencia		=Input::get('ano_referencia');
-			$e->data_vencimento		=Input::get('data_vencimento');
-			$e->data_pagamento		=Input::get('data_pagamento');
-			$e->forma_pagamento		=Input::get('forma_pagamento');
-			$e->status_pagamento	=Input::get('status_pagamento');
-			$e->valor_plano			=Input::get('valor_plano');
-			$e->valor_prod_compra	=Input::get('valor_prod_compra');
-			$e->valor_prod_uso		=Input::get('valor_prod_uso');
-			$e->valor_boleto		=Input::get('valor_boleto');
-			$e->valor_total			=Input::get('valor_total');
-			$e->ajuste_tipo			=Input::get('ajuste_tipo');
-			$e->ajuste_valor		=Input::get('ajuste_valor');
-			$e->ajuste_percentual	=Input::get('ajuste_percentual');
-			$e->pagarme				=Input::get('pagarme');
-			$e->NFSe				=Input::get('NFSe');
+			$e->empresa_id			=$fake->empresa();
+			//
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			//
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'Fatura',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 
 
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Fatura',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -225,36 +260,18 @@ class FaturaController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+		$d=new comprasdata;
+		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				array(	
-					'IDConvenio'=>				'required'
-					,'IDEmpresa'=>				'required'
-					,'mes_referencia'=>			'required'
-					,'semestre_referencia'=>	'required'
-					,'ano_referencia'=>			'required'
-					,'data_vencimento'=>		'required'
-					,'data_pagamento'=>			'required'
-					,'forma_pagamento'=>		'required'
-					,'status_pagamento'=>		'required'
-					,'valor_plano'=>			'required'
-					,'valor_prod_compra'=>		'required'
-					,'valor_prod_uso'=>			'required'
-					,'valor_boleto'=>			'required'
-					,'valor_total'=>			'required'
-					,'ajuste_tipo'=>			'required'
-					,'ajuste_valor'=>			'required'
-					,'ajuste_percentual'=>		'required'
-					,'pagarme'=>				'required'
-					,'NFSe'=>					'required'
-					),	
+				$d->validrules(),
 				array(		
 					'required'=>'Required field'	
 					)	
-				)		
+				)
 			;
 
 			if ($validator->fails()){
@@ -269,41 +286,38 @@ class FaturaController extends \BaseController {
 			}
 
 			$e=Fatura::find($id);	
-			$e->IDConvenio			=Input::get('IDConvenio');
-			$e->IDEmpresa			=Input::get('IDEmpresa');
-			$e->mes_referencia		=Input::get('mes_referencia');
-			$e->semestre_referencia	=Input::get('semestre_referencia');
-			$e->ano_referencia		=Input::get('ano_referencia');
-			$e->data_vencimento		=Input::get('data_vencimento');
-			$e->data_pagamento		=Input::get('data_pagamento');
-			$e->forma_pagamento		=Input::get('forma_pagamento');
-			$e->status_pagamento	=Input::get('status_pagamento');
-			$e->valor_plano			=Input::get('valor_plano');
-			$e->valor_prod_compra	=Input::get('valor_prod_compra');
-			$e->valor_prod_uso		=Input::get('valor_prod_uso');
-			$e->valor_boleto		=Input::get('valor_boleto');
-			$e->valor_total			=Input::get('valor_total');
-			$e->ajuste_tipo			=Input::get('ajuste_tipo');
-			$e->ajuste_valor		=Input::get('ajuste_valor');
-			$e->ajuste_percentual	=Input::get('ajuste_percentual');
-			$e->pagarme				=Input::get('pagarme');
-			$e->NFSe				=Input::get('NFSe');
+			$e->empresa_id			=$fake->empresa();
+			//
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			//
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			$res=$d->responsedata(
+				'Fatura',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Fatura',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 

@@ -243,7 +243,7 @@ class ComprasController extends \BaseController {
 				array(		
 					'required'=>'Required field'	
 					)	
-				)		
+				)
 			;
 
 			if ($validator->fails()){
