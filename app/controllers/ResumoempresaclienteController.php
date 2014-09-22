@@ -1,5 +1,76 @@
 <?php
 
+/**
+ * comprasdata class only contains data related to
+ * the table Compras
+ */
+class resumoempresaclientedata extends StandardResponse{
+	/** 
+	* function name: header.
+	* @param header with headers of empresa table
+	*/
+	public function header(){
+		/*
+		$header= headers on table empresas
+		In order to display or hide on HTML table, set as
+		1 (visible) or 2 (not shown)
+		*/
+		$header=array(
+			array('cliente_id',1)
+			,array('mes_referencia',0)
+			,array('ano_referencia',0)
+			,array('total_locacoes',0)
+			,array('total_aberto',0)
+			,array('total_recebido',0)
+			,array('total_atrasado',0)
+		);	
+		return $header;
+	}
+	
+	/**
+	* @param edata retrieves all data from table "empresa"
+	*/
+	public function edata ($empresa) {
+		return Empresa::find($empresa)->Resumoempresacliente;
+	}
+
+	public function show($id){
+		return Resumoempresacliente::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'cliente_id'		=>Input::get('cliente_id'),
+			'mes_referencia'	=>Input::get('mes_referencia'),
+			'ano_referencia'	=>Input::get('ano_referencia'),
+			'total_locacoes'	=>Input::get('total_locacoes'),
+			'total_aberto'		=>Input::get('total_aberto'),
+			'total_recebido'	=>Input::get('total_recebido'),
+			'total_atrasado'	=>Input::get('total_atrasado')
+			)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'cliente_id'		=>	'required'
+			,'mes_referencia'	=>	'required'
+			,'ano_referencia'	=>	'required'
+			,'total_locacoes'	=>'required'
+			,'total_aberto'		=>	'required'
+			,'total_recebido'	=>	'required'
+			,'total_atrasado'	=>	'required'
+			
+			)
+		;
+	}
+
+}
+
 class ResumoempresaclienteController extends \BaseController {
 
 	/**
@@ -9,7 +80,16 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$fake=new fakeuser;
+		$d=new resumoempresaclientedata;
+		$data=array(
+			//all compras
+			'resumoempresacliente'=>$d->edata($fake->empresa()),
+			'header'=>$d->header()
+			)
+		;
+		return View::make('tempviews.ResumoEmpresaCliente.index',$data);
+
 	}
 
 
@@ -20,7 +100,8 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('tempviews.ResumoEmpresaCliente.create');
+
 	}
 
 
@@ -33,9 +114,61 @@ class ResumoempresaclienteController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
-		//
+
+		$d=new resumoempresaclientedata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=new Resumoempresacliente;
+			$e->empresa_id = $fake->empresa();	
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->save();	
+
+			$res=$d->responsedata(
+				'Resumoempresacliente',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'Resumoempresacliente',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -47,7 +180,15 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$d=new resumoempresaclientedata;
+		$data=array(
+			'resumoempresacliente'	=>$d->show($id),
+			'header'				=>$d->header(),
+			'id'					=>$id
+			)
+		;
+		return View::make('tempviews.ResumoEmpresaCliente.show',$data);
+
 	}
 
 
@@ -59,7 +200,14 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$d=new resumoempresaclientedata;
+		$data=array(
+			'resumoempresacliente'	=>$d->show($id),
+			'header'				=>$d->header(),
+			'id'					=>$id
+			)
+		;
+		return View::make('tempviews.ResumoEmpresaCliente.edit',$data);
 	}
 
 
@@ -73,9 +221,60 @@ class ResumoempresaclienteController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
-		//
-		//
+		$fake=new fakeuser;
+
+		$d=new resumoempresaclientedata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),	
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=Resumoempresacliente::find($id);
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->save();	
+
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'Resumoempresacliente',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'Resumoempresacliente',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -85,10 +284,10 @@ class ResumoempresaclienteController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
-		//
-	}
+	// public function destroy($id)
+	// {
+	// 	//
+	// }
 
 
 }

@@ -42,6 +42,10 @@ class Empresa extends Eloquent {
 		return $this->hasMany('Resumoempresacliente');
 	}
 
+	public function resumoatividade() {
+		return $this->hasMany('Resumoatividade');
+	}
+
 	public function Contabancaria() {
 		return $this->hasMany('Contabancaria');
 	}

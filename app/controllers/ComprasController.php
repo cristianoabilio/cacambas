@@ -4,7 +4,7 @@
  * comprasdata class only contains data related to
  * the table Compras
  */
-class comprasdata{
+class comprasdata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -25,8 +25,6 @@ class comprasdata{
 			,array('data_compra',0)
 			,array('data_ativacao',0)
 			,array('data_desativacao',0)
-			,array('dthr_cadastro',0)
-			,array('IDSessao',0)
 		);	
 		return $header;
 	}
@@ -39,13 +37,13 @@ class comprasdata{
 	}
 
 	public function show($id){
-		return Compras::find($id)->first();
+		return Compras::find($id);
 	}
 
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formdata(){
+	public function formatdata(){
 
 		return array(
 				'produto_id'			=>Input::get('produto_id'),
@@ -61,6 +59,23 @@ class comprasdata{
 		;
 	}
 
+	public function validrules(){
+		return array(
+			'produto_id'		=>	'required'
+			,'convenio_id'		=>	'required'
+			,'limite'			=>	'required'
+			,'desconto_valor'	=>	'required'
+			,'desconto_percentual'=>'required'
+			,'ativado'			=>	'required'
+			,'data_compra'		=>	'required'
+			,'data_ativacao'	=>	'required'
+			,'data_desativacao'	=>	'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
+	}
+
 }
 
 class ComprasController extends \BaseController {
@@ -72,7 +87,13 @@ class ComprasController extends \BaseController {
 	 */
 	public function index()
 	{
-		$data=array();
+		$d=new comprasdata;
+		$data=array(
+			//all compras
+			'compras'=>$d->edata(),
+			'header'=>$d->header()
+			)
+		;
 		return View::make('tempviews.compras.index',$data);
 	}
 
@@ -98,8 +119,67 @@ class ComprasController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new comprasdata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=new Compras;	
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+
+			//timestamp
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
+
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id		=$this->id_sessao;
+			
+			$e->save();	
+
+			$res=$d->responsedata(
+				'Compras',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -111,7 +191,13 @@ class ComprasController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$data=array();
+		$d=new comprasdata;
+		$data=array(
+			'compras'	=>$d->show($id),
+			'header'	=>$d->header(),
+			'id'		=>$id
+			)
+		;
 		return View::make('tempviews.compras.show',$data);
 	}
 
@@ -124,7 +210,13 @@ class ComprasController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$data=array();
+		$d=new comprasdata;
+		$data=array(
+			'compras'	=>$d->show($id),
+			'header'	=>$d->header(),
+			'id'		=>$id
+			)
+		;
 		return View::make('tempviews.compras.edit',$data);
 	}
 
@@ -139,8 +231,64 @@ class ComprasController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
-		//
+		$fake=new fakeuser;
+
+		$d=new comprasdata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),	
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=Compras::find($id);
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
+			$e->save();	
+
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'Compras',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -152,7 +300,36 @@ class ComprasController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$d=new comprasdata;
+		try{
+
+			$e=Compras::whereId($id)->delete();
+
+			$res=$d->responsedata(
+				'Compras',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
+
+		}catch(Exception $e){
+
+			SysAdminHelper::NotifyError($e->getMessage());
+
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+
+		}
+
+		return Response::json($res,$code);
 	}
 
 

@@ -2,11 +2,10 @@
 $fake=new fakeuser;
 
  ?>
- for empresa 
 {[Empresa::find($fake->empresa())->nome ]}
 <br>	
 <hr>
-<a href="{[URL::to('resumoempresacliente/create')]}">Add new "resumoempresacliente"</a>
+<a href="{[URL::to('resumoatividade/create')]}">Add new "resumoatividade"</a>
 <br>
 
  <table>
@@ -20,13 +19,13 @@ $fake=new fakeuser;
 		@endif
 	@endforeach
 
-	@foreach($resumoempresacliente as $e)
+	@foreach($resumoatividade as $e)
 		<tr>
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<td>
-						@if($h[0]=='cliente_id')
-						<a href="{[URL::to('resumoempresacliente/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+						@if($h[0]=='empresa_id')
+						<a href="{[URL::to('resumoatividade/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

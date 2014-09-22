@@ -14,8 +14,7 @@
 		fluxo_caixa <input type="text" name="fluxo_caixa" id="fluxo_caixa"><br>
 		relatorio_avancado <input type="text" name="relatorio_avancado" id="relatorio_avancado"><br>
 		benchmarks <input type="text" name="benchmarks" id="benchmarks"><br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao"><br>
-
+		
 		<br>
 		<input type="submit" value='create'>
 		<br>

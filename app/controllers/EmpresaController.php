@@ -199,7 +199,7 @@ class EmpresaController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -308,7 +308,7 @@ class EmpresaController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -342,7 +342,7 @@ class EmpresaController extends \BaseController {
 
 			$res=$d->responsedata(
 				'Empresa',
-				true,
+				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))
 				)
@@ -351,7 +351,7 @@ class EmpresaController extends \BaseController {
 
 		}
 
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 }

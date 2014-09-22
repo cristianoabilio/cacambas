@@ -23,7 +23,7 @@ index
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='nome')
-						<a href="{[URL::to('plano/'.$e->IDLimite)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('plano/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif
@@ -59,7 +59,7 @@ Deleted
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='nome')
-						<a href="{[URL::to('plano/'.$e->IDLimite)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('plano/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

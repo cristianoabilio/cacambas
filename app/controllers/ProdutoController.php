@@ -1,6 +1,6 @@
 <?php
 
-class produtodata{
+class produtodata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of produto table
@@ -23,7 +23,7 @@ class produtodata{
 			,array('limite',1)
 			,array('status',1)
 			,array('observacao',1)
-			,array('IDPerfil',1)
+			,array('perfil_id',1)
 			,array('sessao_id',1)
 			,array('dthr_cadastro',1)
 			)
@@ -32,7 +32,7 @@ class produtodata{
 	}
 	
 	/**
-	* @param edata retrieves all data from table "limite"
+	* @param edata retrieves all data from table "produto"
 	*/
 	public function edata () {
 		return Produto::all();
@@ -48,6 +48,47 @@ class produtodata{
 
 	public function statusdeleted () {
 		return Produto::whereStatus(0)->get();
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'nome'			=>Input::get('nome'),
+			'descricao'		=>Input::get('descricao'),
+			'requisitos'	=>Input::get('requisitos'),
+			'url_imagem'	=>Input::get('url_imagem'),
+			'url_video'		=>Input::get('url_video'),
+			'valor'			=>Input::get('valor'),
+			'custo_extra'	=>Input::get('custo_extra'),
+			'servico'		=>Input::get('servico'),
+			'limite'		=>Input::get('limite'),
+			'status'		=>1,
+			'observacao'	=>Input::get('observacao'),
+			'perfil_id'		=>Input::get('perfil_id')
+			)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'nome'=>	'required'
+					,'descricao'=>	'required'
+					,'requisitos'=>	'required'
+					,'url_imagem'=>	'required'
+					,'url_video'=>	'required'
+					,'valor'=>	'required'
+					,'custo_extra'=>	'required'
+					,'servico'=>	'required'
+					,'limite'=>	'required'
+					,'observacao'=>	'required'
+					,'perfil_id'=>	'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
 	}
 }
 
@@ -94,25 +135,16 @@ class ProdutoController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new produtodata;
+		$success=$d->formatdata();
+
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
-				array(
-					'nome'=>	'required'
-					,'descricao'=>	'required'
-					,'requisitos'=>	'required'
-					,'url_imagem'=>	'required'
-					,'url_video'=>	'required'
-					,'valor'=>	'required'
-					,'custo_extra'=>	'required'
-					,'servico'=>	'required'
-					,'limite'=>	'required'
-					,'status'=>	'required'
-					,'observacao'=>	'required'
-					,'IDPerfil'=>	'required'
-					),
+				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
@@ -131,35 +163,38 @@ class ProdutoController extends \BaseController {
 			}
 
 			$e=new Produto;	
-			$e->nome	=Input::get('nome');
-			$e->descricao	=Input::get('descricao');
-			$e->requisitos	=Input::get('requisitos');
-			$e->url_imagem	=Input::get('url_imagem');
-			$e->url_video	=Input::get('url_video');
-			$e->valor	=Input::get('valor');
-			$e->custo_extra	=Input::get('custo_extra');
-			$e->servico	=Input::get('servico');
-			$e->limite	=Input::get('limite');
-			$e->status	=Input::get('status');
-			$e->observacao	=Input::get('observacao');
-			$e->IDPerfil	=Input::get('IDPerfil');
-			$e->sessao_id	=Input::get('sessao_id');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+
+			$e->sessao_id	= $fake->sessao_id();
+			//$e->sessao_id		=$this->id_sessao;
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 
 			$e->save();
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'Produto',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 
 
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Produto',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -211,25 +246,15 @@ class ProdutoController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
-		//
+		$fake=new fakeuser;
+
+		$d=new produtodata;
+		$success=$d->formatdata();
+
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				array(
-					'nome'=>	'required'
-					,'descricao'=>	'required'
-					,'requisitos'=>	'required'
-					,'url_imagem'=>	'required'
-					,'url_video'=>	'required'
-					,'valor'=>	'required'
-					,'custo_extra'=>	'required'
-					,'servico'=>	'required'
-					,'limite'=>	'required'
-					,'status'=>	'required'
-					,'observacao'=>	'required'
-					,'IDPerfil'=>	'required'
-					),	
+				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -248,33 +273,36 @@ class ProdutoController extends \BaseController {
 			}
 
 			$e=Produto::find($id);	
-			$e->nome	=Input::get('nome');
-			$e->descricao	=Input::get('descricao');
-			$e->requisitos	=Input::get('requisitos');
-			$e->url_imagem	=Input::get('url_imagem');
-			$e->url_video	=Input::get('url_video');
-			$e->valor	=Input::get('valor');
-			$e->custo_extra	=Input::get('custo_extra');
-			$e->servico	=Input::get('servico');
-			$e->limite	=Input::get('limite');
-			$e->status	=Input::get('status');
-			$e->observacao	=Input::get('observacao');
-			$e->IDPerfil	=Input::get('IDPerfil');
-			$e->sessao_id	=Input::get('sessao_id');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'Produto',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -286,6 +314,7 @@ class ProdutoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		$d=new comprasdata;
 		try{
 			$e=Produto::find($id);
 
@@ -293,13 +322,29 @@ class ProdutoController extends \BaseController {
 			$e->status=0;
 			$e->save();
 			//
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			$res=$d->responsedata(
+				'Produto',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
 		}
+
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 

@@ -1,6 +1,6 @@
 <?php
 
-class limitedata{
+class limitedata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of limite table
@@ -39,6 +39,44 @@ class limitedata{
 
 	public function show($id){
 		return Limite::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'motoristas'			=>Input::get('motoristas'),
+			'caminhoes'				=>Input::get('caminhoes'),
+			'rastreamento'			=>Input::get('rastreamento'),
+			'cacambas'				=>Input::get('cacambas'),
+			'NFSe'					=>Input::get('NFSe'),
+			'manutencao'			=>Input::get('manutencao'),
+			'pagamentos'			=>Input::get('pagamentos'),
+			'fluxo_caixa'			=>Input::get('fluxo_caixa'),
+			'relatorio_avancado'	=>Input::get('relatorio_avancado'),
+			'benchmarks'			=>Input::get('benchmarks')
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'motoristas'=>	'required'
+			,'caminhoes'=>	'required'
+			,'rastreamento'=>	'required'
+			,'cacambas'=>	'required'
+			,'NFSe'=>	'required'
+			,'manutencao'=>	'required'
+			,'pagamentos'=>	'required'
+			,'fluxo_caixa'=>	'required'
+			,'relatorio_avancado'=>	'required'
+			,'benchmarks'=>	'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
 	}
 }
 
@@ -88,24 +126,15 @@ class LimiteController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new limitedata;
+		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
-				array(	
-					'motoristas'=>	'required'
-					,'caminhoes'=>	'required'
-					,'rastreamento'=>	'required'
-					,'cacambas'=>	'required'
-					,'NFSe'=>	'required'
-					,'manutencao'=>	'required'
-					,'pagamentos'=>	'required'
-					,'fluxo_caixa'=>	'required'
-					,'relatorio_avancado'=>	'required'
-					,'benchmarks'=>	'required'
-
-					),
+				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
@@ -124,34 +153,37 @@ class LimiteController extends \BaseController {
 			}
 
 			$e=new Limite;	
-			$e->motoristas			=Input::get('motoristas');
-			$e->caminhoes			=Input::get('caminhoes');
-			$e->rastreamento		=Input::get('rastreamento');
-			$e->cacambas			=Input::get('cacambas');
-			$e->NFSe				=Input::get('NFSe');
-			$e->manutencao			=Input::get('manutencao');
-			$e->pagamentos			=Input::get('pagamentos');
-			$e->fluxo_caixa			=Input::get('fluxo_caixa');
-			$e->relatorio_avancado	=Input::get('relatorio_avancado');
-			$e->benchmarks			=Input::get('benchmarks');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();
 
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'limite',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 
 
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'limite',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -203,23 +235,16 @@ class LimiteController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new limitedata;
+		$success=$d->formatdata();
+
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				array(	
-					'motoristas'=>	'required'
-					,'caminhoes'=>	'required'
-					,'rastreamento'=>	'required'
-					,'cacambas'=>	'required'
-					,'NFSe'=>	'required'
-					,'manutencao'=>	'required'
-					,'pagamentos'=>	'required'
-					,'fluxo_caixa'=>	'required'
-					,'relatorio_avancado'=>	'required'
-					,'benchmarks'=>	'required'
-					),	
+				$d->validrules(),
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -238,30 +263,33 @@ class LimiteController extends \BaseController {
 			}
 
 			$e=Limite::find($id);	
-			$e->motoristas			=Input::get('motoristas');
-			$e->caminhoes			=Input::get('caminhoes');
-			$e->rastreamento		=Input::get('rastreamento');
-			$e->cacambas			=Input::get('cacambas');
-			$e->NFSe				=Input::get('NFSe');
-			$e->manutencao			=Input::get('manutencao');
-			$e->pagamentos			=Input::get('pagamentos');
-			$e->fluxo_caixa			=Input::get('fluxo_caixa');
-			$e->relatorio_avancado	=Input::get('relatorio_avancado');
-			$e->benchmarks			=Input::get('benchmarks');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			$res=$d->responsedata(
+				'limite',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'limite',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
 		return Response::json($res);
 	}
@@ -275,13 +303,30 @@ class LimiteController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		$d=new limitedata;
 		try{
-			Limite::where('IDLimite','=',$id)->delete();
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			Limite::whereId($id)->delete();
+			$res=$d->responsedata(
+				'limite',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
+
 		}
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'limite',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+
 		}
 
 		return Response::json($res);

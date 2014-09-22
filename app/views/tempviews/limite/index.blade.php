@@ -23,7 +23,7 @@ index
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='motoristas')
-						<a href="{[URL::to('limite/'.$e->IDLimite)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('limite/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

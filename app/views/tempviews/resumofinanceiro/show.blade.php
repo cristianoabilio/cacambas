@@ -4,7 +4,7 @@
 </div>
 <div style='width:300px;float:left'>
 	<b>
-		{[$resumoempresacliente->$h[0]   ]}
+		{[$resumofinanceiro->$h[0]   ]}
 	</b>
 </div>
 <div style='clear:both'></div>
@@ -14,8 +14,7 @@
 <br>
 
 
-<a href="{[URL::to('resumoempresacliente/'.$id.'/edit')]} "> ....  Edit .... </a>
-<br>
-
+	<a href="{[URL::to('resumofinanceiro/'.$id.'/edit')]} "> ....  Edit .... </a>
 	<br>
-<a href="{[URL::to('resumoempresacliente')]}       ">Back to empresas</a>
+	<br>
+<a href="{[URL::to('resumofinanceiro')]}">Back to empresas</a>

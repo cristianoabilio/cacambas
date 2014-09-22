@@ -1,6 +1,6 @@
 <?php
 
-class planodata{
+class planodata extends StandardResponse{
 
 	/** 
 	* function name: header.
@@ -8,8 +8,7 @@ class planodata{
 	*/
 	public function header(){
 		$planodata=array(	
-			array('IDLimite',0)
-			,array('nome',1)
+			array('nome',1)
 			,array('descricao',1)
 			,array('valor_total',1)
 			,array('percentual_desconto',0)
@@ -48,7 +47,37 @@ class planodata{
 	public function show($id){
 		return Plano::find($id);
 	}
-		
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'nome'				=>Input::get('nome'),
+			'descricao'			=>Input::get('descricao'),
+			'valor_total'			=>Input::get('valor_total'),
+			'percentual_desconto'	=>Input::get('percentual_desconto'),
+			'valor_desconto'		=>Input::get('valor_desconto'),
+			'status'				=>1,
+			'validade_meses'		=>Input::get('validade_meses'),
+			'valiade_dias'		=>Input::get('valiade_dias'),
+			'disponivel'			=>Input::get('disponivel')
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'nome'=>					'required'
+			,'descricao'=>				'required'
+			,'valor_total'=>			'required'
+			,'disponivel'=>				'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
+	}
 
 }
 
@@ -100,18 +129,15 @@ class PlanoController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new planodata;
+		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
-				array(
-					'IDLimite'=>				'required'
-					,'nome'=>					'required'
-					,'descricao'=>				'required'
-					,'valor_total'=>			'required'
-					,'disponivel'=>				'required'
-					),
+				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
@@ -130,33 +156,36 @@ class PlanoController extends \BaseController {
 			}
 
 			$e=new Plano;	
-			$e->IDLimite			=Input::get('IDLimite');
-			$e->nome				=Input::get('nome');
-			$e->descricao			=Input::get('descricao');
-			$e->valor_total			=Input::get('valor_total');
-			$e->percentual_desconto	=Input::get('percentual_desconto');
-			$e->valor_desconto		=Input::get('valor_desconto');
-			$e->status				=1;
-			$e->validade_meses		=Input::get('validade_meses');
-			$e->valiade_dias		=Input::get('valiade_dias');
-			$e->disponivel			=Input::get('disponivel');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'Plano',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 
 
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Plano',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -218,18 +247,15 @@ class PlanoController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
+
+		$d=new planodata;
+		$success=$d->formatdata();
 		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				array(
-					'IDLimite'=>				'required'
-					,'nome'=>					'required'
-					,'descricao'=>				'required'
-					,'valor_total'=>			'required'
-					,'disponivel'=>				'required'
-					),	
+				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -248,32 +274,35 @@ class PlanoController extends \BaseController {
 			}
 
 			$e=Plano::find($id);	
-			$e->IDLimite			=Input::get('IDLimite');
-			$e->nome				=Input::get('nome');
-			$e->descricao			=Input::get('descricao');
-			$e->valor_total			=Input::get('valor_total');
-			$e->percentual_desconto	=Input::get('percentual_desconto');
-			$e->valor_desconto		=Input::get('valor_desconto');
-			$e->status				=1;
-			$e->validade_meses		=Input::get('validade_meses');
-			$e->valiade_dias		=Input::get('valiade_dias');
-			$e->disponivel			=Input::get('disponivel');
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->sessao_id			=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();	
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			$res=$d->responsedata(
+				'Plano',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Plano',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -285,6 +314,7 @@ class PlanoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		$d=new planodata;
 		try{
 			$e=Plano::find($id);
 
@@ -292,11 +322,26 @@ class PlanoController extends \BaseController {
 			$e->status=0;
 			$e->save();
 			//
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			$res=$d->responsedata(
+				'Plano',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
 		}
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+
 		}
 		return Response::json($res);
 	}

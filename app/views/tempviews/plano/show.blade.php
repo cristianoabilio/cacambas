@@ -18,7 +18,7 @@
 
 <a href="{[URL::to('plano/'.$id.'/edit')]} "> ....  Edit .... </a>
 <br>
-{[ Form::model($plano, array('route' => array('plano.destroy', $plano->IDPlano), 'method' => 'DELETE')) ]}
+{[ Form::model($plano, array('route' => array('plano.destroy', $plano->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 	<br>

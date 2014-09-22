@@ -1,10 +1,10 @@
 Edit 
-{[$limite->numero]}
+{[$limite->id]}
 <br>
 <br>	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($limite, array('route' => array('limite.update', $limite->IDLimite), 'method' => 'PUT')) ]}
+	{[ Form::model($limite, array('route' => array('limite.update', $limite->id), 'method' => 'PUT')) ]}
 
 
 		motoristas <input type="text" name="motoristas" id="motoristas" value="{[$limite->motoristas]}">	<br>
@@ -17,15 +17,13 @@ Edit
 		fluxo_caixa <input type="text" name="fluxo_caixa" id="fluxo_caixa" value="{[$limite->fluxo_caixa]}">	<br>
 		relatorio_avancado <input type="text" name="relatorio_avancado" id="relatorio_avancado" value="{[$limite->relatorio_avancado]}">	<br>
 		benchmarks <input type="text" name="benchmarks" id="benchmarks" value="{[$limite->benchmarks]}">	<br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao" value="{[$limite->IDSessao]}">	<br>
-		dthr_cadastro <input type="text" name="dthr_cadastro" id="dthr_cadastro" value="{[$limite->dthr_cadastro]}">	<br>
-
+		
 		<br>
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
 	</form>
 
-	{[ Form::model($limite, array('route' => array('limite.destroy', $limite->IDLimite), 'method' => 'DELETE')) ]}
+	{[ Form::model($limite, array('route' => array('limite.destroy', $limite->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 </div>

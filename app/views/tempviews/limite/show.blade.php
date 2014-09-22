@@ -18,7 +18,7 @@
 
 <a href="{[URL::to('limite/'.$id.'/edit')]} "> ....  Edit .... </a>
 <br>
-{[ Form::model($limite, array('route' => array('limite.destroy', $limite->IDLimite), 'method' => 'DELETE')) ]}
+{[ Form::model($limite, array('route' => array('limite.destroy', $limite->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 	<br>

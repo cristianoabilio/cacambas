@@ -4,7 +4,7 @@ Edit
 <br>	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($produto, array('route' => array('produto.update', $produto->IDProduto), 'method' => 'PUT')) ]}
+	{[ Form::model($produto, array('route' => array('produto.update', $produto->id), 'method' => 'PUT')) ]}
 
 
 		nome <input type="text" name="nome" id="nome" value="{[$produto->nome]}">	<br>
@@ -16,12 +16,9 @@ Edit
 		custo_extra <input type="text" name="custo_extra" id="custo_extra" value="{[$produto->custo_extra]}">	<br>
 		servico <input type="text" name="servico" id="servico" value="{[$produto->servico]}">	<br>
 		limite <input type="text" name="limite" id="limite" value="{[$produto->limite]}">	<br>
-		status <input type="text" name="status" id="status" value="{[$produto->status]}">	<br>
 		observacao <input type="text" name="observacao" id="observacao" value="{[$produto->observacao]}">	<br>
-		IDPerfil <input type="text" name="IDPerfil" id="IDPerfil" value="{[$produto->IDPerfil]}">	<br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao" value="{[$produto->IDSessao]}">	<br>
-		dthr_cadastro <input type="text" name="dthr_cadastro" id="dthr_cadastro" value="{[$produto->dthr_cadastro]}">	<br>
-
+		perfil_id <input type="text" name="perfil_id" id="perfil_id" value="{[$produto->perfil_id]}">	<br>
+		
 
 
 		<br>
@@ -29,7 +26,7 @@ Edit
 		<input type="submit" value='SAVE CHANGES'>
 	</form>
 
-	{[ Form::model($produto, array('route' => array('produto.destroy', $produto->IDProduto), 'method' => 'DELETE')) ]}
+	{[ Form::model($produto, array('route' => array('produto.destroy', $produto->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 </div>

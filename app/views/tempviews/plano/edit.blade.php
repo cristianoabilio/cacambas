@@ -4,10 +4,9 @@ Edit
 <br>	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($plano, array('route' => array('plano.update', $plano->IDPlano), 'method' => 'PUT')) ]}
+	{[ Form::model($plano, array('route' => array('plano.update', $plano->id), 'method' => 'PUT')) ]}
 
 
-		IDLimite <input type="text" name="IDLimite" id="IDLimite" value="{[$plano->IDLimite]}">	<br>
 		nome <input type="text" name="nome" id="nome" value="{[$plano->nome]}">	<br>
 		descricao <input type="text" name="descricao" id="descricao" value="{[$plano->descricao]}">	<br>
 		valor_total <input type="text" name="valor_total" id="valor_total" value="{[$plano->valor_total]}">	<br>
@@ -26,7 +25,7 @@ Edit
 		<input type="submit" value='SAVE CHANGES'>
 	</form>
 
-	{[ Form::model($plano, array('route' => array('plano.destroy', $plano->IDPlano), 'method' => 'DELETE')) ]}
+	{[ Form::model($plano, array('route' => array('plano.destroy', $plano->id), 'method' => 'DELETE')) ]}
 	<input type="submit" value='DELETE'>
 	</form>
 </div>

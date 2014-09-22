@@ -4,7 +4,7 @@
 * resumoatividadedata class only contains data related to						
  * the table resumoatividade						
  */						
-class resumoatividadedata{						
+class resumoatividadedata extends StandardResponse{						
 	/** 					
 	* function name: header.					
 	* @param header with headers of empresa table					
@@ -29,23 +29,22 @@ class resumoatividadedata{
 						
 	/**					
 	* @param edata retrieves all data from table "empresa"					
-	*/					
-	public function edata () {					
-		return Empresa::all();				
+	*/
+	public function edata ($empresa) {					
+		return Empresa::find($empresa)->resumoatividade;				
 	}					
 						
 	public function show($id){					
-		return Empresa::find($id)->first();				
+		return Resumoatividade::find($id);				
 	}					
 						
 	/**					
 	* @param formdata returns array with form values					
 	*/					
-	public function formdata(){					
+	public function formatdata(){					
 						
 		return array(				
 			'funcionario_id'		=>Input::get('funcionario_id'),
-			'empresa_id'			=>Input::get('empresa_id'),
 			'mes_referencia'		=>Input::get('mes_referencia'),
 			'ano_referencia'		=>Input::get('ano_referencia'),
 			'total_os_colocada'		=>Input::get('total_os_colocada'),
@@ -53,7 +52,20 @@ class resumoatividadedata{
 			'total_os_retirada'		=>Input::get('total_os_retirada')
 			)
 		;
-	}					
+	}
+
+	public function validrules(){
+		return array(
+			'funcionario_id'	=>	'required'
+			,'mes_referencia'	=>	'required'
+			,'ano_referencia'	=>	'required'
+			,'total_os_colocada'=>	'required'
+			,'total_os_troca'	=>	'required'
+			,'total_os_retirada'=>	'required'
+
+			)
+		;
+	}
 }						
 
 
@@ -67,8 +79,15 @@ class ResumoatividadeController extends \BaseController {
 	 */
 	public function index()
 	{
-		$data=array();
-		return View::make('tempviews.ResumoEmpresaCliente.index',$data);
+		$fake=new fakeuser;
+		$d=new resumoatividadedata;
+		$data=array(
+			//all compras
+			'resumoatividade'=>$d->edata($fake->empresa() ),
+			'header'=>$d->header()
+			)
+		;
+		return View::make('tempviews.resumoatividade.index',$data);
 	}
 
 
@@ -79,8 +98,8 @@ class ResumoatividadeController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
-		return View::make('tempviews.ResumoEmpresaCliente.create',$data);
+		$data=array();
+		return View::make('tempviews.resumoatividade.create',$data);
 	}
 
 
@@ -93,9 +112,62 @@ class ResumoatividadeController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
-		//
+
+		$d=new resumoatividadedata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=new Resumoatividade;	
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->empresa_id= $fake->empresa();
+			
+			$e->save();	
+
+			$res=$d->responsedata(
+				'resumoatividade',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'resumoatividade',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -107,8 +179,15 @@ class ResumoatividadeController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
-		return View::make('tempviews.ResumoEmpresaCliente.show',$data);
+		//resumoatividadedata
+		$d=new resumoatividadedata;
+		$data=array(
+			'resumoatividade'	=>$d->show($id),
+			'header'	=>$d->header(),
+			'id'		=>$id
+			)
+		;
+		return View::make('tempviews.resumoatividade.show',$data);
 	}
 
 
@@ -120,8 +199,15 @@ class ResumoatividadeController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
-		return View::make('tempviews.ResumoEmpresaCliente.edit',$data);
+		//resumoatividadedata
+		$d=new resumoatividadedata;
+		$data=array(
+			'resumoatividade'	=>$d->show($id),
+			'header'			=>$d->header(),
+			'id'				=>$id
+			)
+		;
+		return View::make('tempviews.resumoatividade.edit',$data);
 	}
 
 
@@ -135,9 +221,60 @@ class ResumoatividadeController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
-		//
-		//
+		$fake=new fakeuser;
+
+		$d=new resumoatividadedata;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),	
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=Resumoatividade::find($id);
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->save();	
+
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'Resumoatividade',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'Resumoatividade',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -147,10 +284,10 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	/*public function destroy($id)
 	{
 		//
-	}
+	}*/
 
 
 }

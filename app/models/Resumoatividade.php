@@ -13,4 +13,8 @@ class Resumoatividade extends Eloquent {
 	public function Funcionario() { 
 			return $this->belongsTo('Funcionario');
 	}
+
+	public function Empresa(){
+		return $this->belongsTo('Empresa');
+	}
 }

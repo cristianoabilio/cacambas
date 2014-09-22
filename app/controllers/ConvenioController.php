@@ -1,5 +1,5 @@
 <?php
-class conveniodata{
+class conveniodata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of convenio table
@@ -11,16 +11,15 @@ class conveniodata{
 		1 (visible) or 2 (not shown)
 		*/
 		$convenioheader=array(	
-			array('IDEmpresa',1)
-			,array('IDPlano',1)
-			,array('IDLimite',0)
+			array('plano_id',1)
+			,array('limite_id',0)
 			,array('total_nfse',0)
 			,array('dia_fatura',0)
 			,array('tipo_pagamento',0)
 			,array('dt_inicio',0)
 			,array('dt_fim',0)
-			,array('dthr_cadastro',0)
-			,array('sessao_id',0)
+			// ,array('dthr_cadastro',0)
+			// ,array('sessao_id',0)
 
 
 			)
@@ -37,6 +36,36 @@ class conveniodata{
 
 	public function show($id){
 		return Convenio::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+			'plano_id'			=>Input::get('plano_id'),
+			'limite_id'			=>Input::get('limite_id'),
+			'total_nfse'		=>Input::get('total_nfse'),
+			'dia_fatura'		=>Input::get('dia_fatura'),
+			'tipo_pagamento'	=>Input::get('tipo_pagamento'),
+			'dt_inicio'			=>Input::get('dt_inicio'),
+			'dt_fim'			=>Input::get('dt_fim')
+			)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'plano_id'=>		'required'
+			,'dia_fatura'=>		'required'
+			,'tipo_pagamento'=>	'required'
+			,'dt_inicio'=>		'required'
+			,'dt_fim'=>			'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
 	}
 }
 
@@ -84,21 +113,16 @@ class ConvenioController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+
+		$d=new conveniodata;
+
+		$success= $d->formatdata();
 		try{
 			$validator= Validator::make(		
-				Input::All(),	
-				array(	
-					'IDEmpresa'=>		'required'
-					,'IDPlano'=>		'required'
-					,'IDLimite'=>		'required'
-					,'total_nfse'=>		'required'
-					,'dia_fatura'=>		'required'
-					,'tipo_pagamento'=>	'required'
-					,'dt_inicio'=>		'required'
-					,'dt_fim'=>			'required'
-					),
+				Input::All(),
+				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
@@ -117,34 +141,41 @@ class ConvenioController extends \BaseController {
 			}
 
 			$e=new Convenio;
-			$e->IDEmpresa	=Input::get('IDEmpresa');
-			$e->IDPlano	=Input::get('IDPlano');
-			$e->IDLimite	=Input::get('IDLimite');
-			$e->total_nfse	=Input::get('total_nfse');
-			$e->dia_fatura	=Input::get('dia_fatura');
-			$e->tipo_pagamento	=Input::get('tipo_pagamento');
-			$e->dt_inicio	=Input::get('dt_inicio');
-			$e->dt_fim	=Input::get('dt_fim');
+			$e->empresa_id		=$fake->empresa();
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->sessao_id	=$fake->sessao_id();
+			$e->sessao_id		=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 
 			$e->save();	
 
 
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY SAVED!'
+			$res=$d->responsedata(
+				'Convenio',
+				true,
+				'store',
+				$success
 				)
 			;
+			$code=200;
 
 
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Compras',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -196,25 +227,18 @@ class ConvenioController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fake;
+		$fake=new fakeuser;
 		//
+		$d=new conveniodata;
+		$success=$d->formatdata();
 		try{
-			$validator= Validator::make(			
-				Input::All(),	
+			$validator= Validator::make(		
+				Input::All(),
+				$d->validrules(),
 				array(	
-					'IDEmpresa'=>		'required'
-					,'IDPlano'=>		'required'
-					,'IDLimite'=>		'required'
-					,'total_nfse'=>		'required'
-					,'dia_fatura'=>		'required'
-					,'tipo_pagamento'=>	'required'
-					,'dt_inicio'=>		'required'
-					,'dt_fim'=>			'required'
-					),	
-				array(		
-					'required'=>'Required field'	
-					)	
-				)		
+					'required'=>'Required field'
+					)
+				)	
 			;
 
 			if ($validator->fails()){
@@ -229,29 +253,37 @@ class ConvenioController extends \BaseController {
 			}
 
 			$e=Convenio::find($id);	
-			$e->IDEmpresa	=Input::get('IDEmpresa');
-			$e->IDPlano	=Input::get('IDPlano');
-			$e->IDLimite	=Input::get('IDLimite');
-			$e->total_nfse	=Input::get('total_nfse');
-			$e->dia_fatura	=Input::get('dia_fatura');
-			$e->tipo_pagamento	=Input::get('tipo_pagamento');
-			$e->dt_inicio	=Input::get('dt_inicio');
-			$e->dt_fim	=Input::get('dt_fim');
+			$e->empresa_id	=$fake->empresa();
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
 
-			$res=$res = array(
-				'status'=>'success',
-				'msg' => 'SUCCESFULLY UPDATED!'
+			$e->save();
+
+			$res=$d->responsedata(
+				'Convenio',
+				true,
+				'update',
+				$success
 				)
 			;
+			$code=200;
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Convenio',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
