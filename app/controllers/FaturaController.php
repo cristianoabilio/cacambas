@@ -64,41 +64,41 @@ class faturadata  extends StandardResponse{
 			'data_vencimento'		=>Input::get('data_vencimento'),
 			'data_pagamento'		=>Input::get('data_pagamento'),
 			'forma_pagamento'		=>Input::get('forma_pagamento'),
-			'status_pagamento'	=>Input::get('status_pagamento'),
+			'status_pagamento'		=>Input::get('status_pagamento'),
 			'valor_plano'			=>Input::get('valor_plano'),
-			'valor_prod_compra'	=>Input::get('valor_prod_compra'),
+			'valor_prod_compra'		=>Input::get('valor_prod_compra'),
 			'valor_prod_uso'		=>Input::get('valor_prod_uso'),
-			'valor_boleto'		=>Input::get('valor_boleto'),
+			'valor_boleto'			=>Input::get('valor_boleto'),
 			'valor_total'			=>Input::get('valor_total'),
 			'ajuste_tipo'			=>Input::get('ajuste_tipo'),
-			'ajuste_valor'		=>Input::get('ajuste_valor'),
-			'ajuste_percentual'	=>Input::get('ajuste_percentual'),
+			'ajuste_valor'			=>Input::get('ajuste_valor'),
+			'ajuste_percentual'		=>Input::get('ajuste_percentual'),
 			'pagarme'				=>Input::get('pagarme'),
-			'NFSe'				=>Input::get('NFSe')
+			'NFSe'					=>Input::get('NFSe')
 			)
 		;
 	}
 
 	public function validrules(){
 		return array(
-			'convenio_id'=>	'required'
-			,'mes_referencia'=>	'required'
-			,'semestre_referencia'=>	'required'
-			,'ano_referencia'=>	'required'
-			,'data_vencimento'=>	'required'
-			,'data_pagamento'=>	'required'
-			,'forma_pagamento'=>	'required'
-			,'status_pagamento'=>	'required'
-			,'valor_plano'=>	'required'
-			,'valor_prod_compra'=>	'required'
-			,'valor_prod_uso'=>	'required'
-			,'valor_boleto'=>	'required'
-			,'valor_total'=>	'required'
-			,'ajuste_tipo'=>	'required'
-			,'ajuste_valor'=>	'required'
-			,'ajuste_percentual'=>	'required'
-			,'pagarme'=>	'required'
-			,'NFSe'=>	'required'
+			'convenio_id'			=>	'required'
+			,'mes_referencia'		=>	'required'
+			,'semestre_referencia'	=>	'required'
+			,'ano_referencia'		=>	'required'
+			,'data_vencimento'		=>	'required'
+			,'data_pagamento'		=>	'required'
+			,'forma_pagamento'		=>	'required'
+			,'status_pagamento'		=>	'required'
+			,'valor_plano'			=>	'required'
+			,'valor_prod_compra'	=>	'required'
+			,'valor_prod_uso'		=>	'required'
+			,'valor_boleto'			=>	'required'
+			,'valor_total'			=>	'required'
+			,'ajuste_tipo'			=>	'required'
+			,'ajuste_valor'			=>	'required'
+			,'ajuste_percentual'	=>	'required'
+			,'pagarme'				=>	'required'
+			,'NFSe'					=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)
@@ -262,7 +262,7 @@ class FaturaController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
-		$d=new comprasdata;
+		$d=new faturadata;
 		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(			

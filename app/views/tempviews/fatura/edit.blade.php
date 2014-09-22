@@ -1,14 +1,13 @@
 Edit 
-{[$fatura->IDEmpresa]}
+{[$fatura->id]}
 <br>
 <br>	
 <div style='margin-left:200px'>
 	
-	{[ Form::model($fatura, array('route' => array('fatura.update', $fatura->IDFatura), 'method' => 'PUT')) ]}
+	{[ Form::model($fatura, array('route' => array('fatura.update', $fatura->id), 'method' => 'PUT')) ]}
 
 
-		IDConvenio <input type="text" name="IDConvenio" id="IDConvenio" value="{[$fatura->IDFatura]}">	<br>
-		IDEmpresa <input type="text" name="IDEmpresa" id="IDEmpresa" value="{[$fatura->IDEmpresa]}">	<br>
+		convenio_id <input type="text" name="convenio_id" id="convenio_id" value="{[$fatura->convenio_id]}">	<br>
 		mes_referencia <input type="text" name="mes_referencia" id="mes_referencia" value="{[$fatura->mes_referencia]}">	<br>
 		semestre_referencia <input type="text" name="semestre_referencia" id="semestre_referencia" value="{[$fatura->semestre_referencia]}">	<br>
 		ano_referencia <input type="text" name="ano_referencia" id="ano_referencia" value="{[$fatura->ano_referencia]}">	<br>
@@ -26,9 +25,7 @@ Edit
 		ajuste_percentual <input type="text" name="ajuste_percentual" id="ajuste_percentual" value="{[$fatura->ajuste_percentual]}">	<br>
 		pagarme <input type="text" name="pagarme" id="pagarme" value="{[$fatura->pagarme]}">	<br>
 		NFSe <input type="text" name="NFSe" id="NFSe" value="{[$fatura->NFSe]}">	<br>
-		dthr_cadastro <input type="text" name="dthr_cadastro" id="dthr_cadastro" value="{[$fatura->dthr_cadastro]}">	<br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao" value="{[$fatura->IDSessao]}">	<br>
-
+		
 
 		<br>
 		<br>

@@ -14,6 +14,7 @@
 <a href="{[URL::to('contabancaria') ]}" >contabancaria</a> <br>
 <a href="{[URL::to('convenio') ]}" >convenio</a> <br>
 <a href="{[URL::to('empresa') ]}" >empresa</a> <br>
+<a href="{[URL::to('funcionario') ]}" >funcionario</a> <br>
 <a href="{[URL::to('endereco') ]}" >endereco</a> <br>
 <a href="{[URL::to('fatura') ]}" >fatura</a> <br>
 <a href="{[URL::to('limite') ]}" >limite</a> <br>

@@ -3,8 +3,7 @@
 
 	<form action="{[URL::to('fatura')]}" method="post">
 
-		IDConvenio <input type="text" name="IDConvenio" id="IDConvenio"><br>
-		IDEmpresa <input type="text" name="IDEmpresa" id="IDEmpresa"><br>
+		convenio_id <input type="text" name="convenio_id" id="convenio_id"><br>
 		mes_referencia <input type="text" name="mes_referencia" id="mes_referencia"><br>
 		semestre_referencia <input type="text" name="semestre_referencia" id="semestre_referencia"><br>
 		ano_referencia <input type="text" name="ano_referencia" id="ano_referencia"><br>
@@ -22,9 +21,6 @@
 		ajuste_percentual <input type="text" name="ajuste_percentual" id="ajuste_percentual"><br>
 		pagarme <input type="text" name="pagarme" id="pagarme"><br>
 		NFSe <input type="text" name="NFSe" id="NFSe"><br>
-		dthr_cadastro <input type="text" name="dthr_cadastro" id="dthr_cadastro"><br>
-		IDSessao <input type="text" name="IDSessao" id="IDSessao"><br>
-
 
 		<br>
 		<input type="submit" value='create'>

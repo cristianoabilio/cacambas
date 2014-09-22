@@ -22,8 +22,8 @@ index
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<td>
-						@if($h[0]=='IDEmpresa')
-						<a href="{[URL::to('fatura/'.$e->IDEmpresa)]}">{[$e->$h[0]  ]}</a>
+						@if($h[0]=='empresa_id')
+						<a href="{[URL::to('fatura/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

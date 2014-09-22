@@ -21,7 +21,7 @@ view with no style at all
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='numero')
-						<a href="{[URL::to('endereco/'.$e->IDEndereco)]}">{[$e->$h[0]  ]}</a>
+						<a href="{[URL::to('endereco/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 						@else
 						{[$e->$h[0]  ]}
 						@endif

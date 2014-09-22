@@ -4,7 +4,7 @@
  * empresaheader class only contains data related to
  * the table Empresa
  */
-class enderecodata{
+class enderecodata extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of endereco table
@@ -15,8 +15,8 @@ class enderecodata{
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$enderecoheader=array(	
-			array('IDEnderecoBase',0)
+		$header=array(	
+			array('enderecobase_id',0)
 			,array('numero',1)
 			,array('latitude',1)
 			,array('longitude',1)
@@ -26,18 +26,48 @@ class enderecodata{
 			,array('sessao_id',0)
 			)
 		;	
-		return $enderecoheader;
+		return $header;
 	}
 	
 	/**
 	* @param edata retrieves all data from table "endereco"
 	*/
-	public function edata () {
-		return Endereco::all();
+	public function edata ($empresa) {
+		return Empresa::find($empresa)->Enderecoempresa;
 	}
 
 	public function show($id){
 		return Endereco::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function formatdata(){
+
+		return array(
+				'enderecobase_id'		=>Input::get('enderecobase_id'),
+				'numero'				=>Input::get('numero'),
+				'latitude'				=>Input::get('latitude'),
+				'longitude'				=>Input::get('longitude'),
+				'restricao_hr_inicio'	=>Input::get('restricao_hr_inicio'),
+				'restricao_hr_fim'		=>Input::get('restricao_hr_fim'),
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			'enderecobase_id'		=>	'required'
+			,'numero'				=>	'required'
+			,'latitude'				=>	'required'
+			,'longitude'			=>	'required'
+			,'restricao_hr_inicio'	=>	'required'
+			,'restricao_hr_fim'		=>	'required'
+			// ,'dthr_cadastro'=> timestamp, not required
+			// ,'sessao_id'=> sessao, not required
+			)
+		;
 	}
 }
 
@@ -51,9 +81,10 @@ class EnderecoController extends \BaseController {
 	public function index()
 	{
 		$d=new enderecodata;
+		$fake=new fakeuser;
 		$data=array(
 			//retrieve all "endereco"
-			'endereco'=>$d->edata(),
+			'endereco'=>$d->edata($fake->empresa() ),
 
 			//retrieving table headers
 			'header'=>$d->header()

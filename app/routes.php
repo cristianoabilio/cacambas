@@ -35,6 +35,7 @@ Route::resource('contabancaria', 'ContabancariaController');
 Route::controller('contaempresa', 'ContabancariaEmpresaController');
 Route::resource('convenio', 'ConvenioController');
 Route::resource('empresa', 'EmpresaController');
+Route::resource('funcionario', 'FuncionarioController');
 Route::resource('endereco','EnderecoController');
 Route::resource('fatura', 'FaturaController');
 Route::resource('limite', 'LimiteController');
