@@ -445,15 +445,39 @@ class EnderecoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		$d=new enderecodata;
 		try{
-			Endereco::where('IDEndereco','=',$id)->delete();
-			$res = array('status'=>'success','msg' => 'Registro excluído com sucesso!');
+			//$enderecoempresaid=$id;
+			$enderecobaseid=Enderecoempresa::find($id)->enderecobase_id;
+			$enderecoid=Enderecobase::find($enderecobaseid)->endereco->first()->id;
+			
+			//Deleting associated records to enderecoempresa
+			Endereco::whereId($enderecoid)->delete();
+			Enderecobase::whereId($enderecobaseid)->delete();
+			Enderecoempresa::whereId($id)->delete();
+
+			//Response
+			$res=$d->responsedata(
+				'Endereco',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
 		}
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
-			$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+			$res=$d->responsedata(
+				'Endereco',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
 		}
 
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 }
