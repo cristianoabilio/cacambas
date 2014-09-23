@@ -57,11 +57,11 @@ class conveniodata extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'plano_id'=>		'required'
-			,'dia_fatura'=>		'required'
-			,'tipo_pagamento'=>	'required'
-			,'dt_inicio'=>		'required'
-			,'dt_fim'=>			'required'
+			'plano_id'=>		'required|integer'
+			//,'dia_fatura'=>		'required'
+			,'tipo_pagamento'=>	'required|integer'
+			,'dt_inicio'=>		'required|date'
+			//,'dt_fim'=>			'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)

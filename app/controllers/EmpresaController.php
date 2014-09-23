@@ -65,15 +65,15 @@ class empresadata extends StandardResponse{
 	public function validrules(){
 		return array(
 			'nome'=>			'required'
-			,'nome_fantasia'=>	'required'
+			/*,'nome_fantasia'=>	'required'
 			,'cnpj'=>			'required'
 			,'insc_estadual'=>	'required'
-			,'responsavel'=>	'required'
-			,'email'=>			'required'
-			,'telefone'=>		'required'
+			,'responsavel'=>	'required'*/
+			,'email'=>			'email|required'
+			/*,'telefone'=>		'required'
 			,'celular'=>		'required'
 			,'observacao'=>		'required'
-			,'afiliado'=>		'required'
+			,'afiliado'=>		'required'*/
 			)
 		;
 	}

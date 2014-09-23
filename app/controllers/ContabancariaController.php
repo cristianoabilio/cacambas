@@ -73,15 +73,15 @@ class contabancariadata extends StandardResponse {
 
 	public function validrules(){
 		return array(
-			'nome_banco'		=>	'required | min:8'
-			,'codigo_banco'		=>	'required'
+			'nome_banco'		=>	'required'
+			,'codigo_banco'		=>	'required|integer'
 			,'conta'			=>	'required'
 			,'conta_dig'		=>	'required'
 			,'conta_tipo'		=>	'required'
 			,'agencia'			=>	'required'
 			,'agencia_dig'		=>	'required'
 			,'cpf_cnpj'			=>	'required'
-			,'pj'				=>	'required'
+			//,'pj'				=>	'required'
 			,'titular'			=>	'required'
 			)
 		;

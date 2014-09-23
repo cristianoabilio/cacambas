@@ -69,10 +69,10 @@ class planodata extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'nome'=>					'required'
-			,'descricao'=>				'required'
-			,'valor_total'=>			'required'
-			,'disponivel'=>				'required'
+			'nome'			=>'required'
+			//,'descricao'	=>'required'
+			,'valor_total'	=>'required'
+			,'disponivel'	=>'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)

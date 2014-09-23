@@ -60,7 +60,7 @@ class resumoempresaclientedata extends StandardResponse{
 			'cliente_id'		=>	'required'
 			,'mes_referencia'	=>	'required'
 			,'ano_referencia'	=>	'required'
-			,'total_locacoes'	=>'required'
+			,'total_locacoes'	=>	'required'
 			,'total_aberto'		=>	'required'
 			,'total_recebido'	=>	'required'
 			,'total_atrasado'	=>	'required'

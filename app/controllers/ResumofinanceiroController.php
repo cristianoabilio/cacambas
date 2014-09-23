@@ -100,8 +100,8 @@ class resumofinanceirodata extends StandardResponse{
 			,'total_despesa_variavel'		=>	'required'
 			,'total_despesa_manutencao'		=>	'required'
 			,'total_fluxo_caixa'			=>	'required'
-			,'total_boletos_pagos'			=>	'required'
-			,'total_pagamentos_cartao'		=>	'required'
+			//,'total_boletos_pagos'			=>	'required'
+			//,'total_pagamentos_cartao'		=>	'required'
 
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required

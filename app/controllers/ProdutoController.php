@@ -74,17 +74,17 @@ class produtodata extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'nome'=>	'required'
-					,'descricao'=>	'required'
-					,'requisitos'=>	'required'
-					,'url_imagem'=>	'required'
-					,'url_video'=>	'required'
-					,'valor'=>	'required'
-					,'custo_extra'=>	'required'
-					,'servico'=>	'required'
-					,'limite'=>	'required'
-					,'observacao'=>	'required'
-					,'perfil_id'=>	'required'
+			'nome'			=>	'required'
+			// ,'descricao'	=>	'required'
+			// ,'requisitos'	=>	'required'
+			// ,'url_imagem'	=>	'required'
+			// ,'url_video'	=>	'required'
+			,'valor'		=>	'required'
+			//,'custo_extra'	=>	'required'
+			,'servico'		=>	'required'
+			// ,'limite'		=>	'required'
+			// ,'observacao'	=>	'required'
+			// ,'perfil_id'	=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)

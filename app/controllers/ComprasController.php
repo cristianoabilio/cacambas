@@ -63,13 +63,13 @@ class comprasdata extends StandardResponse{
 		return array(
 			'produto_id'		=>	'required'
 			,'convenio_id'		=>	'required'
-			,'limite'			=>	'required'
-			,'desconto_valor'	=>	'required'
-			,'desconto_percentual'=>'required'
+			//,'limite'			=>	'required'
+			//,'desconto_valor'	=>	'required'
+			//,'desconto_percentual'=>'required'
 			,'ativado'			=>	'required'
-			,'data_compra'		=>	'required'
-			,'data_ativacao'	=>	'required'
-			,'data_desativacao'	=>	'required'
+			//,'data_compra'		=>	'required'
+			//,'data_ativacao'	=>	'required'
+			//,'data_desativacao'	=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)

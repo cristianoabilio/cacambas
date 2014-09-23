@@ -92,28 +92,29 @@ class enderecodata extends StandardResponse{
 	public function validrules(){
 		return array(
 			'numero'=>	'required'
-			,'cep'=>	'required'
+			,'cep'=>	'required|integer'
+			/*
 			,'latitude'=>	'required'
 			,'longitude'=>	'required'
 			,'restricao_hr_inicio'=>	'required'
-			,'restricao_hr_fim'=>	'required'
-			,'bairro_id'=>	'required'
-			,'cidade_id'=>	'required'
-			,'estado_id'=>	'required'
+			,'restricao_hr_fim'=>	'required'*/
+			,'bairro_id'=>	'required|integer'
+			,'cidade_id'=>	'Required|integer'
+			,'estado_id'=>	'Required|integer'
 			//,'cep'=>	'required'
 			,'logradouro'=>	'required'
-			,'regiao'=>	'required'
+			//,'regiao'=>	'required'
 			//,'restricao_hr_inicio'=>	'required'
 			//,'restricao_hr_fim'=>	'required'
-			,'numero_inicio'=>	'required'
-			,'numero_fim'=>	'required'
+			/*,'numero_inicio'=>	'required'
+			,'numero_fim'=>	'required'*/
 			//,'empresa_id'=>	'required'
 			//,'enderecobase_id'=>	'required'
 			//,'endereco_id'=>	'required'
 			,'tipo'=>	'required'
-			,'complemento'=>	'required'
+			/*,'complemento'=>	'required'
 			,'observacao'=>	'required'
-			,'status'=>	'required'
+			,'status'=>	'required'*/
 
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
