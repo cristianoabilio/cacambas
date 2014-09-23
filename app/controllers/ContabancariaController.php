@@ -1,17 +1,17 @@
 <?php
 
 /**
- * contabancariadata class only contains data related to
+ * ContabancariaData class only contains data related to
  * the table ContaBancaria
  */
-class contabancariadata extends StandardResponse {
+class ContabancariaData extends StandardResponse {
 	/** 
 	* function name: header.
 	* @param header with headers of contabancaria table
 	*/
 	public function header(){
 		/*
-		$contabancariadata= headers on table contabancarias
+		$header headers on table contabancarias
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
@@ -98,7 +98,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		$data=array(
 			'conta'=>$d->edata(),
 			'header'=>$d->header()
@@ -141,7 +141,7 @@ class ContabancariaController extends \BaseController {
 		// -delete up to here
 
 		//instantiating data for the json response
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		$succesdata=$d->forminputdata();
 
 		try{
@@ -209,7 +209,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		$data=array(
 			'conta'=>$d->show($id),
 			'header'=>$d->header(),
@@ -230,7 +230,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		$data=array(
 			'conta'=>$d->show($id),
 			'header'=>$d->header(),
@@ -258,7 +258,7 @@ class ContabancariaController extends \BaseController {
 		// -delete up to here
 
 		//instantiating data for the json response
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		$succesdata=$d->forminputdata();
 		
 		try{
@@ -328,7 +328,7 @@ class ContabancariaController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new contabancariadata;
+		$d=new ContabancariaData;
 		try{
 
 			Contabancaria::whereId($id)

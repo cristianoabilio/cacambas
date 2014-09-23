@@ -3,7 +3,7 @@
  * comprasdata class only contains data related to
  * the table Compras
  */
-class resumofinanceirodata extends StandardResponse{
+class ResumofinanceiroData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -122,7 +122,7 @@ class ResumofinanceiroController extends \BaseController {
 	public function index()
 	{
 		$fake=new fakeuser;
-		$d=new resumofinanceirodata;
+		$d=new ResumofinanceiroData;
 		$data=array(
 			//all compras
 			'resumofinanceiro'=>$d->edata($fake->empresa()),
@@ -157,7 +157,7 @@ class ResumofinanceiroController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new resumofinanceirodata;
+		$d=new ResumofinanceiroData;
 		$success=$d->formatdata();
 
 		try{
@@ -190,7 +190,7 @@ class ResumofinanceiroController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Resumofinanceiro',
+				'resumofinanceiro',
 				true,
 				'store',
 				$success
@@ -201,7 +201,7 @@ class ResumofinanceiroController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Resumofinanceiro',
+				'resumofinanceiro',
 				false,
 				'store',
 				$validator->messages()
@@ -221,7 +221,7 @@ class ResumofinanceiroController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new resumofinanceirodata;
+		$d=new ResumofinanceiroData;
 		$data=array(
 			'resumofinanceiro'	=>$d->show($id),
 			'header'	=>$d->header(),
@@ -240,7 +240,7 @@ class ResumofinanceiroController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new resumofinanceirodata;
+		$d=new ResumofinanceiroData;
 		$data=array(
 			'resumofinanceiro'	=>$d->show($id),
 			'header'	=>$d->header(),
@@ -263,7 +263,7 @@ class ResumofinanceiroController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new resumofinanceirodata;
+		$d=new ResumofinanceiroData;
 		$success=$d->formatdata();
 
 		try{
@@ -297,7 +297,7 @@ class ResumofinanceiroController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Resumofinanceiro',
+				'resumofinanceiro',
 				true,
 				'update',
 				$success
@@ -308,7 +308,7 @@ class ResumofinanceiroController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Resumofinanceiro',
+				'resumofinanceiro',
 				false,
 				'update',
 				$validator->messages()

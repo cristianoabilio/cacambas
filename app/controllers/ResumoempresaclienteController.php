@@ -4,7 +4,7 @@
  * comprasdata class only contains data related to
  * the table Compras
  */
-class resumoempresaclientedata extends StandardResponse{
+class ResumoempresaclienteData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -81,7 +81,7 @@ class ResumoempresaclienteController extends \BaseController {
 	public function index()
 	{
 		$fake=new fakeuser;
-		$d=new resumoempresaclientedata;
+		$d=new ResumoempresaclienteData;
 		$data=array(
 			//all compras
 			'resumoempresacliente'=>$d->edata($fake->empresa()),
@@ -117,7 +117,7 @@ class ResumoempresaclienteController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new resumoempresaclientedata;
+		$d=new ResumoempresaclienteData;
 		$success=$d->formatdata();
 
 		try{
@@ -149,7 +149,7 @@ class ResumoempresaclienteController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Resumoempresacliente',
+				'resumoempresacliente',
 				true,
 				'store',
 				$success
@@ -160,7 +160,7 @@ class ResumoempresaclienteController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Resumoempresacliente',
+				'resumoempresacliente',
 				false,
 				'store',
 				$validator->messages()
@@ -180,7 +180,7 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new resumoempresaclientedata;
+		$d=new ResumoempresaclienteData;
 		$data=array(
 			'resumoempresacliente'	=>$d->show($id),
 			'header'				=>$d->header(),
@@ -200,7 +200,7 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new resumoempresaclientedata;
+		$d=new ResumoempresaclienteData;
 		$data=array(
 			'resumoempresacliente'	=>$d->show($id),
 			'header'				=>$d->header(),
@@ -223,7 +223,7 @@ class ResumoempresaclienteController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new resumoempresaclientedata;
+		$d=new ResumoempresaclienteData;
 		$success=$d->formatdata();
 
 		try{
@@ -255,7 +255,7 @@ class ResumoempresaclienteController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Resumoempresacliente',
+				'resumoempresacliente',
 				true,
 				'update',
 				$success
@@ -266,7 +266,7 @@ class ResumoempresaclienteController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Resumoempresacliente',
+				'resumoempresacliente',
 				false,
 				'update',
 				$validator->messages()

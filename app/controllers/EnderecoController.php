@@ -4,7 +4,7 @@
  * empresaheader class only contains data related to
  * the table Empresa
  */
-class enderecodata extends StandardResponse{
+class EnderecoData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of endereco table
@@ -132,7 +132,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		$fake=new fakeuser;
 		$data=array(
 			//retrieve all "endereco"
@@ -174,7 +174,7 @@ class EnderecoController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		$success=$d->formatdata();
 		$succesresponse=array();
 
@@ -257,7 +257,7 @@ class EnderecoController extends \BaseController {
 
 
 			$res=$d->responsedata(
-				'Compras',
+				'endereco',
 				true,
 				'store',
 				$succesresponse
@@ -269,7 +269,7 @@ class EnderecoController extends \BaseController {
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'endereco',
 				false,
 				'store',
 				$validator->messages()
@@ -289,7 +289,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		$data=array(
 			'endereco' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -308,7 +308,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		$data=array(
 			'endereco' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -332,7 +332,7 @@ class EnderecoController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		$success=$d->formatdata();
 		$succesresponse=array();
 
@@ -415,7 +415,7 @@ class EnderecoController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Endereco',
+				'endereco',
 				true,
 				'update',
 				$success
@@ -426,7 +426,7 @@ class EnderecoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Endereco',
+				'endereco',
 				false,
 				'update',
 				$validator->messages()
@@ -446,7 +446,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new enderecodata;
+		$d=new EnderecoData;
 		try{
 			//$enderecoempresaid=$id;
 			$enderecobaseid=Enderecoempresa::find($id)->enderecobase_id;
@@ -459,7 +459,7 @@ class EnderecoController extends \BaseController {
 
 			//Response
 			$res=$d->responsedata(
-				'Endereco',
+				'endereco',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -470,7 +470,7 @@ class EnderecoController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Endereco',
+				'endereco',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

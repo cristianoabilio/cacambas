@@ -132,7 +132,7 @@ class CidadeController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Cidade',
+				'cidade',
 				true,
 				'store',
 				$success
@@ -143,7 +143,7 @@ class CidadeController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Cidade',
+				'cidade',
 				false,
 				'store',
 				$validator->messages()
@@ -237,7 +237,7 @@ class CidadeController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Cidade',
+				'cidade',
 				true,
 				'update',
 				$success
@@ -248,7 +248,7 @@ class CidadeController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Cidade',
+				'cidade',
 				false,
 				'update',
 				$validator->messages()

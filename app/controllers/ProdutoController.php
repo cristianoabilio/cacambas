@@ -1,6 +1,6 @@
 <?php
 
-class produtodata extends StandardResponse{
+class ProdutoData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of produto table
@@ -102,7 +102,7 @@ class ProdutoController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new produtodata;
+		$d=new ProdutoData;
 		$data=array(
 			'header'=>$d->header(),
 			'produto'=>$d->activestatus(),
@@ -138,7 +138,7 @@ class ProdutoController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new produtodata;
+		$d=new ProdutoData;
 		$success=$d->formatdata();
 
 		try{
@@ -174,7 +174,7 @@ class ProdutoController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Produto',
+				'produto',
 				true,
 				'store',
 				$success
@@ -186,7 +186,7 @@ class ProdutoController extends \BaseController {
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Produto',
+				'produto',
 				false,
 				'store',
 				$validator->messages()
@@ -206,7 +206,7 @@ class ProdutoController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new produtodata;
+		$d=new ProdutoData;
 		$data=array(
 			'header'=>$d->header(),
 			'produto'=>$d->show($id),
@@ -225,7 +225,7 @@ class ProdutoController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new produtodata;
+		$d=new ProdutoData;
 		$data=array(
 			'header'=>$d->header(),
 			'produto'=>$d->show($id),
@@ -248,7 +248,7 @@ class ProdutoController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new produtodata;
+		$d=new ProdutoData;
 		$success=$d->formatdata();
 
 		try{
@@ -283,7 +283,7 @@ class ProdutoController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Produto',
+				'produto',
 				true,
 				'update',
 				$success
@@ -294,7 +294,7 @@ class ProdutoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'produto',
 				false,
 				'update',
 				$validator->messages()
@@ -323,7 +323,7 @@ class ProdutoController extends \BaseController {
 			$e->save();
 			//
 			$res=$d->responsedata(
-				'Produto',
+				'produto',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -335,7 +335,7 @@ class ProdutoController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'produto',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

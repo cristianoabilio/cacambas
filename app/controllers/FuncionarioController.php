@@ -153,7 +153,7 @@ class FuncionarioController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Compras',
+				'funcionario',
 				true,
 				'store',
 				$success
@@ -164,7 +164,7 @@ class FuncionarioController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'funcionario',
 				false,
 				'store',
 				$validator->messages()
@@ -265,7 +265,7 @@ class FuncionarioController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Funcionario ',
+				'funcionario ',
 				true,
 				'update',
 				$success
@@ -276,7 +276,7 @@ class FuncionarioController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Funcionario ',
+				'funcionario ',
 				false,
 				'update',
 				$validator->messages()
@@ -304,7 +304,7 @@ class FuncionarioController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Funcionario',
+				'funcionario',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -317,7 +317,7 @@ class FuncionarioController extends \BaseController {
 			SysAdminHelper::NotifyError($e->getMessage());
 
 			$res=$d->responsedata(
-				'Funcionario',
+				'funcionario',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

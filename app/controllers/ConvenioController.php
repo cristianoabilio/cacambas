@@ -1,5 +1,5 @@
 <?php
-class conveniodata extends StandardResponse{
+class ConvenioData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of convenio table
@@ -78,7 +78,7 @@ class ConvenioController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new conveniodata;
+		$d=new ConvenioData;
 
 		$data=array(
 			'header' 	=> $d->header(),
@@ -116,7 +116,7 @@ class ConvenioController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new conveniodata;
+		$d=new ConvenioData;
 
 		$success= $d->formatdata();
 		try{
@@ -155,7 +155,7 @@ class ConvenioController extends \BaseController {
 
 
 			$res=$d->responsedata(
-				'Convenio',
+				'convenio',
 				true,
 				'store',
 				$success
@@ -167,7 +167,7 @@ class ConvenioController extends \BaseController {
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'convenio',
 				false,
 				'store',
 				$validator->messages()
@@ -187,7 +187,7 @@ class ConvenioController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new conveniodata;
+		$d=new ConvenioData;
 		$data=array(
 			'convenio' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -206,7 +206,7 @@ class ConvenioController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new conveniodata;
+		$d=new ConvenioData;
 		$data=array(
 			'convenio' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -229,7 +229,7 @@ class ConvenioController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
-		$d=new conveniodata;
+		$d=new ConvenioData;
 		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(		
@@ -264,7 +264,7 @@ class ConvenioController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Convenio',
+				'convenio',
 				true,
 				'update',
 				$success
@@ -275,7 +275,7 @@ class ConvenioController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Convenio',
+				'convenio',
 				false,
 				'update',
 				$validator->messages()

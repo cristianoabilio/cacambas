@@ -1,10 +1,10 @@
 <?php
 
 /**
- * empresadata class only contains data related to
+ * EmpresaData class only contains data related to
  * the table Empresa
  */
-class empresadata extends StandardResponse{
+class EmpresaData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -89,7 +89,7 @@ class EmpresaController extends \BaseController {
 	 */
 	public function index()
 	{
-		$h=new empresadata;
+		$h=new EmpresaData;
 		
 		$data=array(
 			//retrieving all "Empresas" 
@@ -140,7 +140,7 @@ class EmpresaController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new empresadata;
+		$d=new EmpresaData;
 		$success=$d->formdata();
 
 		try{
@@ -180,7 +180,7 @@ class EmpresaController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				true,
 				'store',
 				$success
@@ -191,7 +191,7 @@ class EmpresaController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				false,
 				'store',
 				$validator->messages()
@@ -211,7 +211,7 @@ class EmpresaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$h=new empresadata;
+		$h=new EmpresaData;
 		$data=array(
 			'empresa'=>$h->show($id),
 			'header'=>$h->header(),
@@ -230,7 +230,7 @@ class EmpresaController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$h=new empresadata;
+		$h=new EmpresaData;
 		$data=array(
 			'empresa'=>$h->show($id),
 			'header'=>$h->header(),
@@ -253,7 +253,7 @@ class EmpresaController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new empresadata;
+		$d=new EmpresaData;
 		$success=$d->formdata();
 
 		try{
@@ -289,7 +289,7 @@ class EmpresaController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				true,
 				'update',
 				$success
@@ -300,7 +300,7 @@ class EmpresaController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				false,
 				'update',
 				$validator->messages()
@@ -320,7 +320,7 @@ class EmpresaController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new empresadata;
+		$d=new EmpresaData;
 		try{
 
 			$e=Empresa::find($id);
@@ -328,7 +328,7 @@ class EmpresaController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -341,7 +341,7 @@ class EmpresaController extends \BaseController {
 			SysAdminHelper::NotifyError($e->getMessage());
 
 			$res=$d->responsedata(
-				'Empresa',
+				'empresa',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

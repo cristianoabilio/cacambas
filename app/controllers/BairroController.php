@@ -136,7 +136,7 @@ class BairroController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Bairro',
+				'bairro',
 				true,
 				'store',
 				$success
@@ -147,7 +147,7 @@ class BairroController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Bairro',
+				'bairro',
 				false,
 				'store',
 				$validator->messages()
@@ -241,7 +241,7 @@ class BairroController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Bairro',
+				'bairro',
 				true,
 				'update',
 				$success
@@ -252,7 +252,7 @@ class BairroController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Bairro',
+				'bairro',
 				false,
 				'update',
 				$validator->messages()

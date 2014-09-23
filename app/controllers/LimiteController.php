@@ -1,6 +1,6 @@
 <?php
 
-class limitedata extends StandardResponse{
+class LimiteData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of limite table
@@ -11,7 +11,7 @@ class limitedata extends StandardResponse{
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$limiteheader=array(	
+		$header=array(	
 			array('motoristas',1)
 			,array('caminhoes',1)
 			,array('rastreamento',0)
@@ -27,7 +27,7 @@ class limitedata extends StandardResponse{
 
 			)
 		;	
-		return $limiteheader;
+		return $header;
 	}
 	
 	/**
@@ -89,7 +89,7 @@ class LimiteController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new limitedata;
+		$d=new LimiteData;
 		$data=array(
 			//retrieve all "limite" rows
 			'limite'=>$d->edata(),
@@ -129,7 +129,7 @@ class LimiteController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new limitedata;
+		$d=new LimiteData;
 		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(		
@@ -195,7 +195,7 @@ class LimiteController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new limitedata;
+		$d=new LimiteData;
 		$data=array(
 			'limite' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -214,7 +214,7 @@ class LimiteController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new limitedata;
+		$d=new LimiteData;
 		$data=array(
 			'limite' 	=>$d->show($id),
 			'header' 	=>$d->header(),
@@ -238,7 +238,7 @@ class LimiteController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new limitedata;
+		$d=new LimiteData;
 		$success=$d->formatdata();
 
 		try{
@@ -303,7 +303,7 @@ class LimiteController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new limitedata;
+		$d=new LimiteData;
 		try{
 			Limite::whereId($id)->delete();
 			$res=$d->responsedata(

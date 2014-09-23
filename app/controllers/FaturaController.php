@@ -1,6 +1,6 @@
 <?php
 
-class faturadata  extends StandardResponse{
+class FaturaData  extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of fatura table
@@ -115,7 +115,7 @@ class FaturaController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new faturadata;
+		$d=new FaturaData;
 		$data=array(
 			'fatura'=>$d->edata(),
 			'header'=>$d->header()
@@ -149,7 +149,7 @@ class FaturaController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new faturadata;
+		$d=new FaturaData;
 		$success=$d->formatdata();
 
 		try{
@@ -219,7 +219,7 @@ class FaturaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new faturadata;
+		$d=new FaturaData;
 		$data=array(
 			'header'=>$d->header(),
 			'fatura'=>$d->show($id),
@@ -239,7 +239,7 @@ class FaturaController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new faturadata;
+		$d=new FaturaData;
 		$data=array(
 			'header'=>$d->header(),
 			'fatura'=>$d->show($id),
@@ -262,7 +262,7 @@ class FaturaController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
-		$d=new faturadata;
+		$d=new FaturaData;
 		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(			
@@ -327,7 +327,9 @@ class FaturaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	/*
+	//Delete action dissabled for "Fatura"
+	public function destroy($id)
 	{
 		//
 	}*/

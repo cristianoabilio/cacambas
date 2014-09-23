@@ -1,10 +1,10 @@
 <?php
 
 /**
- * comprasdata class only contains data related to
+ * ComprasData class only contains data related to
  * the table Compras
  */
-class comprasdata extends StandardResponse{
+class ComprasData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -45,6 +45,7 @@ class comprasdata extends StandardResponse{
 	*/
 	public function formatdata(){
 
+		$formdata=array();
 		return array(
 				'produto_id'			=>Input::get('produto_id'),
 				'convenio_id'			=>Input::get('convenio_id'),
@@ -87,7 +88,7 @@ class ComprasController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new comprasdata;
+		$d=new ComprasData;
 		$data=array(
 			//all compras
 			'compras'=>$d->edata(),
@@ -122,7 +123,7 @@ class ComprasController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new comprasdata;
+		$d=new ComprasData;
 		$success=$d->formatdata();
 
 		try{
@@ -160,7 +161,7 @@ class ComprasController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				true,
 				'store',
 				$success
@@ -171,7 +172,7 @@ class ComprasController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				false,
 				'store',
 				$validator->messages()
@@ -191,7 +192,7 @@ class ComprasController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new comprasdata;
+		$d=new ComprasData;
 		$data=array(
 			'compras'	=>$d->show($id),
 			'header'	=>$d->header(),
@@ -210,7 +211,7 @@ class ComprasController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new comprasdata;
+		$d=new ComprasData;
 		$data=array(
 			'compras'	=>$d->show($id),
 			'header'	=>$d->header(),
@@ -233,7 +234,7 @@ class ComprasController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new comprasdata;
+		$d=new ComprasData;
 		$success=$d->formatdata();
 
 		try{
@@ -269,7 +270,7 @@ class ComprasController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				true,
 				'update',
 				$success
@@ -280,7 +281,7 @@ class ComprasController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				false,
 				'update',
 				$validator->messages()
@@ -300,13 +301,13 @@ class ComprasController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new comprasdata;
+		$d=new ComprasData;
 		try{
 
 			$e=Compras::whereId($id)->delete();
 
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -319,7 +320,7 @@ class ComprasController extends \BaseController {
 			SysAdminHelper::NotifyError($e->getMessage());
 
 			$res=$d->responsedata(
-				'Compras',
+				'compras',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

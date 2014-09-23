@@ -1,13 +1,13 @@
 <?php
 
-class planodata extends StandardResponse{
+class PlanoData extends StandardResponse{
 
 	/** 
 	* function name: header.
 	* @param header with headers of "plano" table
 	*/
 	public function header(){
-		$planodata=array(	
+		$header=array(	
 			array('nome',1)
 			,array('descricao',1)
 			,array('valor_total',1)
@@ -21,7 +21,7 @@ class planodata extends StandardResponse{
 			,array('dthr_cadastro',0)
 			)
 		;
-		return $planodata;
+		return $header;
 	}
 
 	/**
@@ -90,7 +90,7 @@ class PlanoController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new planodata;
+		$d=new PlanoData;
 		$data=array(
 
 			'header'=>$d->header(),
@@ -132,7 +132,7 @@ class PlanoController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new planodata;
+		$d=new PlanoData;
 		$success=$d->formatdata();
 		try{
 			$validator= Validator::make(		
@@ -165,7 +165,7 @@ class PlanoController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Plano',
+				'plano',
 				true,
 				'store',
 				$success
@@ -177,7 +177,7 @@ class PlanoController extends \BaseController {
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Plano',
+				'plano',
 				false,
 				'store',
 				$validator->messages()
@@ -197,7 +197,7 @@ class PlanoController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$d=new planodata;
+		$d=new PlanoData;
 		$data=array(
 
 			'header'=>$d->header(),
@@ -221,7 +221,7 @@ class PlanoController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new planodata;
+		$d=new PlanoData;
 		$data=array(
 
 			'header'=>$d->header(),
@@ -249,7 +249,7 @@ class PlanoController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new planodata;
+		$d=new PlanoData;
 		$success=$d->formatdata();
 		//
 		try{
@@ -283,7 +283,7 @@ class PlanoController extends \BaseController {
 			$e->save();	
 
 			$res=$d->responsedata(
-				'Plano',
+				'plano',
 				true,
 				'update',
 				$success
@@ -294,7 +294,7 @@ class PlanoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Plano',
+				'plano',
 				false,
 				'update',
 				$validator->messages()
@@ -314,7 +314,7 @@ class PlanoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new planodata;
+		$d=new PlanoData;
 		try{
 			$e=Plano::find($id);
 
@@ -323,7 +323,7 @@ class PlanoController extends \BaseController {
 			$e->save();
 			//
 			$res=$d->responsedata(
-				'Plano',
+				'plano',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -334,7 +334,7 @@ class PlanoController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Compras',
+				'plano',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))

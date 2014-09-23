@@ -130,7 +130,7 @@ class EstadoController extends \BaseController {
 			$e->save();
 
 			$res=$d->responsedata(
-				'Estado',
+				'estado',
 				true,
 				'store',
 				$success
@@ -141,7 +141,7 @@ class EstadoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Estado',
+				'estado',
 				false,
 				'store',
 				$validator->messages()
@@ -235,7 +235,7 @@ class EstadoController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Estado',
+				'estado',
 				true,
 				'update',
 				$success
@@ -246,7 +246,7 @@ class EstadoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Estado',
+				'estado',
 				false,
 				'update',
 				$validator->messages()

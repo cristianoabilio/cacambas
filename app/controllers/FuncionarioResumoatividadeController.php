@@ -262,7 +262,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'Resumoatividade',
+				'resumoatividade',
 				true,
 				'update',
 				$success
@@ -273,7 +273,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'Resumoatividade',
+				'resumoatividade',
 				false,
 				'update',
 				$validator->messages()
