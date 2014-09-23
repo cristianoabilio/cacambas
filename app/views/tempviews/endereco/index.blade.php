@@ -1,38 +1,49 @@
-view with no style at all
+<?php  
+$fake=new fakeuser;
+?>
+
+
+
+Endereco for {[ Empresa::find($fake->empresa() )->nome]}
 <br>
 <br>
 <a href="{[URL::to('endereco/create')]}">Add new "endereco"</a>
 <br>
-
- <table>
- 	<!-- $h var comes from controller Empresa2, containing
- 	the header names on table Empresa -->
- 	@foreach($header as $h)
-		@if($h[1]==1)
-			<th>
-				{[$h[0]  ]}
-			</th>
+<table>
+	<tr>
+	@foreach($header as $h)
+	
+		@if($h[0]=='endereco')
+		<td>endereco {[$h[1]]} </td>
+		@elseif($h[0]=='enderecobase')
+		<td> enderecobase{[$h[1]]} </td>
+		@elseif($h[0]=='enderecoempresa')
+		<td> enderecoempresa{[$h[1]]} </td>
 		@endif
+		
 	@endforeach
-
-	@foreach($endereco as $e)
-		<tr>
-			@foreach($header as $h)
-				@if($h[1]==1)
-					<td>
-						@if($h[0]=='numero')
-						<a href="{[URL::to('endereco/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-						@else
-						{[$e->$h[0]  ]}
-						@endif
-						
-					</td>
+	</tr>
+	@foreach($enderecoempresa as $e)
+	<tr>
+		@foreach($header as $h)
+			@if($h[0]=='endereco')
+			<td> 
+				@if($h[1]=='numero')
+					<a href="{[URL::to('endereco/'.$e->id)]}">{[$e->enderecobase->endereco->first()->$h[1] ]} </a>
+				@else
+					{[$e->enderecobase->endereco->first()->$h[1] ]} 
 				@endif
-			@endforeach
-		</tr>
+			</td>
+			@elseif($h[0]=='enderecobase')
+			<td> {[$e->enderecobase->$h[1]]} </td>
+			@elseif($h[0]=='enderecoempresa')
+			<td> {[$e->$h[1]]} </td>
+			@endif
+		@endforeach
+	</tr>	
 	@endforeach
 </table>
-
+ 
 <br>
 <br>
 

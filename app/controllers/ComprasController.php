@@ -157,7 +157,7 @@ class ComprasController extends \BaseController {
 			$e->sessao_id		=$fake->sessao_id();
 			//$e->sessao_id		=$this->id_sessao;
 			
-			$e->save();	
+			$e->save();
 
 			$res=$d->responsedata(
 				'Compras',
