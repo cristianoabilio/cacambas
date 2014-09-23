@@ -23,6 +23,9 @@
 <a href="{[URL::to('resumoatividade') ]}" >resumoatividade</a> <br>
 <a href="{[URL::to('resumoempresacliente') ]}" >resumoempresacliente</a> <br>
 <a href="{[URL::to('resumofinanceiro') ]}" >resumofinanceiro</a> <br>
+<a href="{[URL::to('bairro') ]}" >bairro</a> <br>
+<a href="{[URL::to('cidade') ]}" >cidade</a> <br>
+<a href="{[URL::to('estado') ]}" >estado</a> <br>
 
 	
 	</div>

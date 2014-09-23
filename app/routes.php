@@ -44,6 +44,10 @@ Route::resource('produto', 'ProdutoController');
 Route::resource('resumoatividade', 'ResumoatividadeController');
 Route::resource('resumoempresacliente', 'ResumoempresaclienteController');
 Route::resource('resumofinanceiro', 'ResumofinanceiroController');
+Route::resource('bairro', 'BairroController');
+Route::resource('cidade', 'CidadeController');
+Route::resource('estado', 'EstadoController');
+
 
 //nested controllers
 Route::resource('empresa.fatura', 'EmpresaFaturaController');

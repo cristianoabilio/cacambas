@@ -25,4 +25,4 @@
 	<input type="submit" value='DELETE'>
 	</form>
 	<br>
-<a href="{[URL::to('compras')]}       ">Back to empresas</a>
+<a href="{[URL::to('compras')]}       ">Back to compras</a>
