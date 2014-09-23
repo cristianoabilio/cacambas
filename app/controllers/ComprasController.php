@@ -45,19 +45,29 @@ class ComprasData extends StandardResponse{
 	*/
 	public function formatdata(){
 
-		$formdata=array();
-		return array(
-				'produto_id'			=>Input::get('produto_id'),
-				'convenio_id'			=>Input::get('convenio_id'),
-				'limite'				=>Input::get('limite'),
-				'desconto_valor'		=>Input::get('desconto_valor'),
-				'desconto_percentual'	=>Input::get('desconto_percentual'),
-				'ativado'				=>Input::get('ativado'),
-				'data_compra'			=>Input::get('data_compra'),
-				'data_ativacao'			=>Input::get('data_ativacao'),
-				'data_desativacao'		=>Input::get('data_desativacao')
-				)
+		$formdata=array(
+			'produto_id'			=>Input::get('produto_id'),
+			'convenio_id'			=>Input::get('convenio_id'),
+			'limite'				=>Input::get('limite'),
+			'desconto_valor'		=>Input::get('desconto_valor'),
+			'desconto_percentual'	=>Input::get('desconto_percentual'),
+			'ativado'				=>Input::get('ativado')
+			)
 		;
+
+		//data_ativacao | data_desativacao | data_compra can be null
+		$nullable=array(
+			'data_compra'			=>Input::get('data_compra'),
+			'data_ativacao'			=>Input::get('data_ativacao'),
+			'data_desativacao'		=>Input::get('data_desativacao')
+			)
+		;
+		foreach ($nullable as $key => $value) {
+			if ( trim($value)!="" ) {
+				$formdata[$key]=$value;
+			}
+		}
+		return $formdata;
 	}
 
 	public function validrules(){

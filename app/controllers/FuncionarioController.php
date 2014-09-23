@@ -42,13 +42,25 @@ class FuncionarioData extends StandardResponse{
 	*/
 	public function formatdata(){
 
-		return array(
-				'login_id'	=>Input::get('login_id'),
-				'nome'		=>Input::get('nome'),
-				'funcao'	=>Input::get('funcao'),
-				'telefone'	=>Input::get('telefone')
-				)
+		$formatdata= array(
+			'nome'		=>Input::get('nome'),
+			'funcao'	=>Input::get('funcao'),
+			'telefone'	=>Input::get('telefone')
+			)
 		;
+
+		$nullable=array(
+			'login_id'	=>Input::get('login_id')
+			)
+		;
+		foreach ($nullable as $key => $value) {
+			if ( trim($value)!="" ) {
+				$formdata[$key]=$value;
+			}
+		}
+
+
+		return $formatdata;
 	}
 
 	public function validrules(){

@@ -61,32 +61,44 @@ class EnderecoData extends StandardResponse{
 	* @param formdata returns array with form values
 	*/
 	public function formatdata(){
-
-		return array(
+		$formatdata=array(
 			//'enderecobase_id'	=>array( Input::get( 'enderecobase_id'),'endereco'),
 			'numero'				=>array( Input::get( 'numero'),'endereco'),
 			'cep'					=>array( Input::get( 'cep'),'endereco'),
 			'latitude'				=>array( Input::get( 'latitude'),'endereco'),
 			'longitude'				=>array( Input::get( 'longitude'),'endereco'),
-			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
-			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
+			//'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
+			//'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
 			'bairro_id'				=>array( Input::get( 'bairro_id'),'enderecobase'),
 			'cidade_id'				=>array( Input::get( 'cidade_id'),'enderecobase'),
 			'estado_id'				=>array( Input::get( 'estado_id'),'enderecobase'),
 			'cep'					=>array( Input::get( 'cep'),'enderecobase'),
 			'logradouro'			=>array( Input::get( 'logradouro'),'enderecobase'),
 			'regiao'				=>array( Input::get( 'regiao'),'enderecobase'),
-			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
-			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
 			'numero_inicio'			=>array( Input::get( 'numero_inicio'),'enderecobase'),
 			'numero_fim'			=>array( Input::get( 'numero_fim'),'enderecobase'),
 			//'endereco_id'	=>array( Input::get( 'endereco_id'),'enderecoempresa'),
 			'tipo'					=>array( Input::get( 'tipo'),'enderecoempresa'),
-			'complemento'			=>array( Input::get( 'complemento'),'enderecoempresa'),
-			'observacao'			=>array( Input::get( 'observacao'),'enderecoempresa'),
 			'status'				=>array( Input::get( 'status'),'enderecoempresa')
 			)
 		;
+
+		$nullable=array(
+			//restricao_hr_inicio,restricao_hr_fim,complemento,observacao
+			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
+			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
+			'complemento'			=>array( Input::get( 'complemento'),'enderecoempresa'),
+			'observacao'			=>array( Input::get( 'observacao'),'enderecoempresa')
+			)
+		;
+
+		foreach ($nullable as $key => $value) {
+			if ( trim($value[0])!="" ) {
+				$formdata[$key]=$value;
+			}
+		}
+
+		return $formatdata;
 	}
 
 	public function validrules(){
@@ -239,6 +251,7 @@ class EnderecoController extends \BaseController {
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}
+			$e->cep 			=Input::get( 'cep');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
@@ -409,6 +422,7 @@ class EnderecoController extends \BaseController {
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}
+			$e->cep 			=Input::get( 'cep');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
