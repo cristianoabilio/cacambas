@@ -39,7 +39,7 @@ class EmpresaData extends StandardResponse{
 	}
 
 	public function show($id){
-		return Empresa::find($id)->first();
+		return Empresa::find($id);
 	}
 
 	/**
