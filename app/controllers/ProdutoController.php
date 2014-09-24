@@ -173,6 +173,8 @@ class ProdutoController extends \BaseController {
 
 			$e->save();
 
+			$success['id']=$e->id;
+
 			$res=$d->responsedata(
 				'produto',
 				true,

@@ -131,6 +131,8 @@ class CidadeController extends \BaseController {
 			}
 			$e->save();
 
+			$success['id']=$e->id;
+
 			$res=$d->responsedata(
 				'cidade',
 				true,

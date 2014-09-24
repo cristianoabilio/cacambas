@@ -170,6 +170,8 @@ class ComprasController extends \BaseController {
 			
 			$e->save();
 
+			$success['id']=$e->id;
+
 			$res=$d->responsedata(
 				'compras',
 				true,

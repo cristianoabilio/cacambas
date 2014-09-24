@@ -129,6 +129,8 @@ class EstadoController extends \BaseController {
 			}
 			$e->save();
 
+			$success['id']=$e->id;
+
 			$res=$d->responsedata(
 				'estado',
 				true,

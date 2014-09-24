@@ -146,7 +146,9 @@ class ResumoempresaclienteController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'resumoempresacliente',

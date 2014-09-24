@@ -162,7 +162,9 @@ class FuncionarioController extends \BaseController {
 			//timestamp
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'funcionario',

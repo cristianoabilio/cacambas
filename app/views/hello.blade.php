@@ -8,8 +8,9 @@
 <body>
 	<div class="welcome">
 		
-		<h1>You have arrived.</h1>
-{[URL::to('/')]}
+		<h1>Temporary RESTfull controllers tester.</h1>
+
+<br>
 <a href="{[URL::to('compras') ]}" >compras</a> <br>
 <a href="{[URL::to('contabancaria') ]}" >contabancaria</a> <br>
 <a href="{[URL::to('convenio') ]}" >convenio</a> <br>

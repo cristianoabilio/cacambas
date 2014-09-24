@@ -161,6 +161,8 @@ class LimiteController extends \BaseController {
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();
 
+			$success['id']=$e->id;
+
 
 			$res=$d->responsedata(
 				'limite',

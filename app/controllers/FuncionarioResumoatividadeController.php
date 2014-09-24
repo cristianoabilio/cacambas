@@ -151,7 +151,9 @@ class FuncionarioResumoatividadeController extends \BaseController {
 			}
 			$e->empresa_id= $fake->empresa();
 			
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'resumoatividade',

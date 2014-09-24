@@ -175,7 +175,9 @@ class ContabancariaController extends \BaseController {
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id		=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res = $d->responsedata(
 				'contabancaria',

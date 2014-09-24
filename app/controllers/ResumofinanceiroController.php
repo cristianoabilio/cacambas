@@ -187,7 +187,9 @@ class ResumofinanceiroController extends \BaseController {
 				$e->$key 	=$value;
 			}
 			
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'resumofinanceiro',

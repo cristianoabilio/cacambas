@@ -246,6 +246,9 @@ class EnderecoController extends \BaseController {
 
 			$enderecobaseid=$ebase->id;
 
+			//adding id to success array
+			$succesresponse['enderecobase_id']=$enderecobaseid;
+
 			$e=new Endereco;
 			$e->enderecobase_id=	$enderecobaseid;
 			foreach ($data_from_endereco as $key => $value) {
@@ -257,6 +260,9 @@ class EnderecoController extends \BaseController {
 			//$e->sessao_id	=$this->id_sessao;
 			$e->save();
 
+			//adding id to success array
+			$succesresponse['endereco_id']=$e->id;
+
 			$e_empresa=new Enderecoempresa;
 			$e_empresa->empresa_id=$fake->empresa();
 			$e_empresa->enderecobase_id=	$enderecobaseid;
@@ -267,6 +273,9 @@ class EnderecoController extends \BaseController {
 			$e_empresa->sessao_id	=$fake->sessao_id();
 			//$e_empresa->sessao_id	=$this->id_sessao;
 			$e_empresa->save();
+
+			//adding id to success array
+			$succesresponse['enderecoempresa_id']=$e_empresa->id;
 
 
 			$res=$d->responsedata(

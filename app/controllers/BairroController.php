@@ -134,6 +134,8 @@ class BairroController extends \BaseController {
 				$e->$key 	=$value;
 			}
 			$e->save();
+			
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'bairro',

@@ -177,7 +177,9 @@ class EmpresaController extends \BaseController {
 			$e->sessao_id		=$fake->sessao_id();
 			//$e->sessao_id		=$this->id_sessao;
 			
-			$e->save();	
+			$e->save();
+
+			$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'empresa',
