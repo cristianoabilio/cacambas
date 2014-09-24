@@ -188,13 +188,31 @@ class ConvenioController extends \BaseController {
 	public function show($id)
 	{
 		$d=new ConvenioData;
-		$data=array(
-			'convenio' 	=>$d->show($id),
-			'header' 	=>$d->header(),
-			'id' 		=>$id
-			)
-		;
-		return View::make('tempviews.convenio.show',$data);
+		try {
+			if (Convenio::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'convenio',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'convenio' 	=>$d->show($id),
+				'header' 	=>$d->header(),
+				'id' 		=>$id
+				)
+			;
+			return View::make('tempviews.convenio.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
+		
 	}
 
 
@@ -207,13 +225,33 @@ class ConvenioController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new ConvenioData;
-		$data=array(
-			'convenio' 	=>$d->show($id),
-			'header' 	=>$d->header(),
-			'id' 		=>$id
-			)
-		;
-		return View::make('tempviews.convenio.edit',$data);
+		try {
+			if (
+				Convenio::whereId($id)
+				->count()==0
+				) {
+				$msg=array();
+				$res=$d->responsedata(
+					'convenio',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'convenio'=>$d->show($id),
+				'header'=>$d->header(),
+				'id'=>$id
+				)
+			;
+			return View::make('tempviews.convenio.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 

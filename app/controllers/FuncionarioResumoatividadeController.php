@@ -188,14 +188,32 @@ class FuncionarioResumoatividadeController extends \BaseController {
 	public function show($funcionario,$id)
 	{
 		//$func=Funcionario::find($funcionario);
-		$d=new ResumoatividadeData;$data=array(
-			'funcionario'=>Funcionario::find($funcionario),
-			'resumoatividade'	=>$d->show($id),
-			'header'			=>$d->header(),
-			'id'				=>$id
-			)
-		;
-		return View::make('tempviews.resumoatividade.show',$data);
+		$d=new ResumoatividadeData;
+
+		try {
+			if (Resumoatividade::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumoatividade',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'funcionario'=>Funcionario::find($funcionario),
+				'resumoatividade'	=>$d->show($id),
+				'header'			=>$d->header(),
+				'id'				=>$id
+				)
+			;
+			return View::make('tempviews.resumoatividade.show',$data);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -207,14 +225,33 @@ class FuncionarioResumoatividadeController extends \BaseController {
 	 */
 	public function edit($funcionario,$id)
 	{
-		$d=new ResumoatividadeData;$data=array(
-			'funcionario'=>Funcionario::find($funcionario),
-			'resumoatividade'	=>$d->show($id),
-			'header'			=>$d->header(),
-			'id'				=>$id
-			)
-		;
-		return View::make('tempviews.resumoatividade.edit',$data);
+		$d=new ResumoatividadeData;
+
+		try {
+			if (Resumoatividade::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumoatividade',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'funcionario'=>Funcionario::find($funcionario),
+				'resumoatividade'	=>$d->show($id),
+				'header'			=>$d->header(),
+				'id'				=>$id
+				)
+			;
+			return View::make('tempviews.resumoatividade.edit',$data);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+
+			
 	}
 
 

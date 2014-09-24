@@ -205,13 +205,30 @@ class ComprasController extends \BaseController {
 	public function show($id)
 	{
 		$d=new ComprasData;
-		$data=array(
-			'compras'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.compras.show',$data);
+		try {
+			if (Compras::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'compra',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'compras'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.compras.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -224,13 +241,30 @@ class ComprasController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new ComprasData;
-		$data=array(
-			'compras'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.compras.edit',$data);
+		try {
+			if (Compras::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'compra',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'compras'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.compras.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -315,7 +349,9 @@ class ComprasController extends \BaseController {
 	{
 		$d=new ComprasData;
 		try{
-
+			if (Compras::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
 			$e=Compras::whereId($id)->delete();
 
 			$res=$d->responsedata(

@@ -134,7 +134,7 @@ class BairroController extends \BaseController {
 				$e->$key 	=$value;
 			}
 			$e->save();
-			
+
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
@@ -170,13 +170,29 @@ class BairroController extends \BaseController {
 	public function show($id)
 	{
 		$d=new BairroData;
-		$data=array(
-			'bairro'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.bairro.show',$data);
+		try {
+			if (Bairro::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'bairro',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'bairro'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.bairro.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -189,13 +205,29 @@ class BairroController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new BairroData;
-		$data=array(
-			'bairro'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.bairro.edit',$data);
+		try {
+			if (Bairro::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'bairro',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'bairro'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.bairro.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 

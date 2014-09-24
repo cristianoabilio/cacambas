@@ -306,7 +306,13 @@ class LimiteController extends \BaseController {
 	public function destroy($id)
 	{
 		$d=new LimiteData;
+
 		try{
+			if (Limite::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+				$code=400;
+			}
+
 			Limite::whereId($id)->delete();
 			$res=$d->responsedata(
 				'limite',

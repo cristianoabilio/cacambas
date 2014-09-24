@@ -199,13 +199,30 @@ class FuncionarioController extends \BaseController {
 	public function show($id)
 	{
 		$d=new FuncionarioData;
-		$data=array(
-			'funcionario'	=>$d->show($id),
-			'header'		=>$d->header(),
-			'id'			=>$id
-			)
-		;
-		return View::make('tempviews.funcionario.show',$data);
+		try {
+			if (Funcionario::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'funcionario',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'funcionario'	=>$d->show($id),
+				'header'		=>$d->header(),
+				'id'			=>$id
+				)
+			;
+			return View::make('tempviews.funcionario.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 
 	}
 
@@ -219,13 +236,30 @@ class FuncionarioController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new FuncionarioData;
-		$data=array(
-			'funcionario'	=>$d->show($id),
-			'header'		=>$d->header(),
-			'id'			=>$id
-			)
-		;
-		return View::make('tempviews.funcionario.edit',$data);
+		try {
+			if (Funcionario::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'funcionario',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'funcionario'	=>$d->show($id),
+				'header'		=>$d->header(),
+				'id'			=>$id
+				)
+			;
+			return View::make('tempviews.funcionario.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 
 	}
 
@@ -312,7 +346,9 @@ class FuncionarioController extends \BaseController {
 	{
 		$d=new FuncionarioData;
 		try{
-
+			if (Funcionario::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
 			$e=Funcionario::find($id);
 			$e->status=0;
 			$e->save();

@@ -25,4 +25,6 @@ class StandardResponse {
 			)
 		;
 	}
+
+	public $noexist='resource does not exist';
 }

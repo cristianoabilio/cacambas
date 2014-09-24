@@ -166,13 +166,30 @@ class CidadeController extends \BaseController {
 	public function show($id)
 	{
 		$d=new CidadeData;
-		$data=array(
-			'cidade'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.cidade.show',$data);
+		try {
+			if (Cidade::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'cidade',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'cidade'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.cidade.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -185,13 +202,30 @@ class CidadeController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new CidadeData;
-		$data=array(
-			'cidade'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.cidade.edit',$data);
+		try {
+			if (Cidade::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'cidade',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'cidade'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.cidade.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 

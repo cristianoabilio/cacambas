@@ -213,14 +213,37 @@ class EmpresaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$h=new EmpresaData;
-		$data=array(
-			'empresa'=>$h->show($id),
-			'header'=>$h->header(),
-			'id'=>$id
-			)
-		;
-		return View::make('tempviews.empresa.show',$data);
+		$d=new EmpresaData;
+		try {
+			if (
+				Empresa::whereId($id)
+				->count()==0
+				) 
+			{
+				$res=$d->responsedata(
+					'empresa',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			
+			$data=array(
+				'empresa'=>$d->show($id),
+				'header'=>$d->header(),
+				'id'=>$id
+				)
+			;
+			return View::make('tempviews.empresa.show',$data);
+			/*
+			*/
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+		
 	}
 
 
@@ -232,14 +255,33 @@ class EmpresaController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$h=new EmpresaData;
-		$data=array(
-			'empresa'=>$h->show($id),
-			'header'=>$h->header(),
-			'id'=>$id
-			)
-		;
-		return View::make('tempviews.empresa.edit',$data);
+		$d=new EmpresaData;
+		try {
+			if (
+				Empresa::whereId($id)
+				->count()==0
+				) {
+				$res=$d->responsedata(
+					'empresa',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'empresa'=>$d->show($id),
+				'header'=>$d->header(),
+				'id'=>$id
+				)
+			;
+			return View::make('tempviews.empresa.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -324,6 +366,14 @@ class EmpresaController extends \BaseController {
 	{
 		$d=new EmpresaData;
 		try{
+			if (
+				Empresa::whereStatus(0)
+				->whereId($id)
+				->count()==1
+				) 
+			{
+				throw new Exception(json_encode($d->noexist));
+			}
 
 			$e=Empresa::find($id);
 			$e->status=0;

@@ -209,13 +209,29 @@ class ProdutoController extends \BaseController {
 	public function show($id)
 	{
 		$d=new ProdutoData;
-		$data=array(
-			'header'=>$d->header(),
-			'produto'=>$d->show($id),
-			'id'=>$id
-			)
-		;
-		return View::make('tempviews.produto.show',$data);
+		try {
+			if (Produto::whereId($id)->whereStatus(1)->count()==0) {
+				$res=$d->responsedata(
+					'produto',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'header'=>$d->header(),
+				'produto'=>$d->show($id),
+				'id'=>$id
+				)
+			;
+			return View::make('tempviews.produto.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -228,13 +244,29 @@ class ProdutoController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new ProdutoData;
-		$data=array(
-			'header'=>$d->header(),
-			'produto'=>$d->show($id),
-			'id'=>$id
-			)
-		;
-		return View::make('tempviews.produto.edit',$data);
+		try {
+			if (Produto::whereId($id)->whereStatus(1)->count()==0) {
+				$res=$d->responsedata(
+					'produto',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'header'=>$d->header(),
+				'produto'=>$d->show($id),
+				'id'=>$id
+				)
+			;
+			return View::make('tempviews.produto.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -318,6 +350,9 @@ class ProdutoController extends \BaseController {
 	{
 		$d=new comprasdata;
 		try{
+			if (Produto::whereId($id)->whereStatus(1)->count()==0 ) {
+				throw new Exception(json_encode($d->noexist));
+			}
 			$e=Produto::find($id);
 
 			//Register is considered as "deleted" when status=0;

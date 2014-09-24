@@ -224,13 +224,30 @@ class ResumofinanceiroController extends \BaseController {
 	public function show($id)
 	{
 		$d=new ResumofinanceiroData;
-		$data=array(
-			'resumofinanceiro'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.resumofinanceiro.show',$data);
+		try {
+			if (Resumofinanceiro::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumofinaceiro',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'resumofinanceiro'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.resumofinanceiro.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -243,13 +260,30 @@ class ResumofinanceiroController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new ResumofinanceiroData;
-		$data=array(
-			'resumofinanceiro'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.resumofinanceiro.edit',$data);
+		try {
+			if (Resumofinanceiro::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumofinaceiro',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'resumofinanceiro'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.resumofinanceiro.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 

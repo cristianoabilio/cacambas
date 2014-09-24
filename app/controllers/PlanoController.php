@@ -200,18 +200,30 @@ class PlanoController extends \BaseController {
 	public function show($id)
 	{
 		$d=new PlanoData;
-		$data=array(
-
-			'header'=>$d->header(),
-
-			'plano'=>$d->show($id),
-
-			'id' 		=>$id
+		try {
+			if (Plano::whereId($id)->whereStatus(1)->count()==0) {
+				$res=$d->responsedata(
+					'plano',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'header'=>$d->header(),
+				'plano'=>$d->show($id),
+				'id' 		=>$id
+				)
+			;
+			return View::make('tempviews.plano.show',$data);
 			
-			)
-		;
-
-		return View::make('tempviews.plano.show',$data);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -224,18 +236,30 @@ class PlanoController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new PlanoData;
-		$data=array(
-
-			'header'=>$d->header(),
-
-			'plano'=>$d->show($id),
-
-			'id' 		=>$id
+		try {
+			if (Plano::whereId($id)->whereStatus(1)->count()==0) {
+				$res=$d->responsedata(
+					'plano',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'header'=>$d->header(),
+				'plano'=>$d->show($id),
+				'id' 		=>$id
+				)
+			;
+			return View::make('tempviews.plano.edit',$data);
 			
-			)
-		;
-
-		return View::make('tempviews.plano.edit',$data);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -318,6 +342,9 @@ class PlanoController extends \BaseController {
 	{
 		$d=new PlanoData;
 		try{
+			if (Plano::whereId($id)->whereStatus(1)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
 			$e=Plano::find($id);
 
 			//Register is considered as "deleted" when status=0;

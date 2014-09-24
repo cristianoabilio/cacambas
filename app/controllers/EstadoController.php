@@ -164,13 +164,30 @@ class EstadoController extends \BaseController {
 	public function show($id)
 	{
 		$d=new EstadoData;
-		$data=array(
-			'estado'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.estado.show',$data);
+		try {
+			if (Estado::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'estado',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'estado'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.estado.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 
@@ -183,13 +200,30 @@ class EstadoController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new EstadoData;
-		$data=array(
-			'estado'	=>$d->show($id),
-			'header'	=>$d->header(),
-			'id'		=>$id
-			)
-		;
-		return View::make('tempviews.estado.edit',$data);
+		try {
+			if (Estado::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'estado',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'estado'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
+				)
+			;
+			return View::make('tempviews.estado.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+			
 	}
 
 

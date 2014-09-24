@@ -212,15 +212,31 @@ class ContabancariaController extends \BaseController {
 	public function show($id)
 	{
 		$d=new ContabancariaData;
-		$data=array(
-			'conta'=>$d->show($id),
-			'header'=>$d->header(),
-			'id'=> $id
-			)
-		;
-		return 
-		View::make('tempviews.contabancaria.show',
-			$data);
+		try {
+			if (Contabancaria::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'contabancaria',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'conta'=>$d->show($id),
+				'header'=>$d->header(),
+				'id'=> $id
+				)
+			;
+			return 
+			View::make('tempviews.contabancaria.show',
+				$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -233,13 +249,29 @@ class ContabancariaController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new ContabancariaData;
-		$data=array(
-			'conta'=>$d->show($id),
-			'header'=>$d->header(),
-			'id'=> $id
-			)
-		;
-		return View::make('tempviews.contabancaria.edit',$data);
+		try {
+			if (Contabancaria::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'contabancaria',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'conta'=>$d->show($id),
+				'header'=>$d->header(),
+				'id'=> $id
+				)
+			;
+			return View::make('tempviews.contabancaria.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -332,6 +364,9 @@ class ContabancariaController extends \BaseController {
 	{
 		$d=new ContabancariaData;
 		try{
+			if (Contabancaria::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
 
 			Contabancaria::whereId($id)
 			->delete();	

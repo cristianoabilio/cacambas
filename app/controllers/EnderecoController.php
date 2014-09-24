@@ -312,13 +312,31 @@ class EnderecoController extends \BaseController {
 	public function show($id)
 	{
 		$d=new EnderecoData;
-		$data=array(
-			'endereco' 	=>$d->show($id),
-			'header' 	=>$d->header(),
-			'id' 		=>$id
-			)
-		;
-		return View::make('tempviews.endereco.show',$data);
+		try {
+			if (Enderecoempresa::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'enderecoempresa',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'endereco' 	=>$d->show($id),
+				'header' 	=>$d->header(),
+				'id' 		=>$id
+				)
+			;
+			return View::make('tempviews.endereco.show',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+
+			
 	}
 
 
@@ -331,13 +349,31 @@ class EnderecoController extends \BaseController {
 	public function edit($id)
 	{
 		$d=new EnderecoData;
-		$data=array(
-			'endereco' 	=>$d->show($id),
-			'header' 	=>$d->header(),
-			'id' 		=>$id
-			)
-		;
-		return View::make('tempviews.endereco.edit',$data);
+		try {
+			if (Enderecoempresa::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'enderecoempresa',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'endereco' 	=>$d->show($id),
+				'header' 	=>$d->header(),
+				'id' 		=>$id
+				)
+			;
+			return View::make('tempviews.endereco.edit',$data);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+
+			
 	}
 
 
@@ -471,6 +507,12 @@ class EnderecoController extends \BaseController {
 	{
 		$d=new EnderecoData;
 		try{
+
+			if (Enderecoempresa::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
+
+
 			//$enderecoempresaid=$id;
 			$enderecobaseid=Enderecoempresa::find($id)->enderecobase_id;
 			$enderecoid=Enderecobase::find($enderecobaseid)->endereco->first()->id;
