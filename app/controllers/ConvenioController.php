@@ -10,7 +10,7 @@ class ConvenioData extends StandardResponse{
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$convenioheader=array(	
+		$header=array(	
 			array('plano_id',1)
 			,array('limite_id',0)
 			,array('total_nfse',0)
@@ -24,7 +24,7 @@ class ConvenioData extends StandardResponse{
 
 			)
 		;	
-		return $convenioheader;
+		return $header;
 	}
 	
 	/**
@@ -79,10 +79,12 @@ class ConvenioController extends \BaseController {
 	public function index()
 	{
 		$d=new ConvenioData;
+		$fake=new fakeuser;
 
 		$data=array(
 			'header' 	=> $d->header(),
-			'convenio'	=> $d->edata()
+			'convenio'	=> $d->edata(),
+			'empresa'	=> $fake->empresa()
 			)
 		;
 		return View::make('tempviews.convenio.index',$data);

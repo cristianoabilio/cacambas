@@ -14,8 +14,12 @@ class Limite extends Eloquent {
 			return $this->belongsTo('Plano');
 	}
 
-	public function Convenio() { 
+	/*public function Convenio() { 
 		return $this->belongsTo('Convenio');
+	}*/
+
+	public function Convenio() { 
+		return $this->hasOne('Convenio');
 	}
 
 }

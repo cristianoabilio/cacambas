@@ -133,7 +133,12 @@ class FaturaController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('tempviews.fatura.create');
+		$fake=new fakeuser;
+		$data=array(
+			'empresa'=>$fake->empresa()
+			)
+		;
+		return View::make('tempviews.fatura.create',$data);
 	}
 
 
@@ -141,8 +146,10 @@ class FaturaController extends \BaseController {
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
+	 *
+	 * DISSABLED AS IT WORKS IN NESTED convenio.fatura
 	 */
-	public function store()
+	/*public function store()
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
@@ -208,7 +215,7 @@ class FaturaController extends \BaseController {
 			$code=400;
 		}
 		return Response::json($res,$code);
-	}
+	}*/
 
 
 	/**

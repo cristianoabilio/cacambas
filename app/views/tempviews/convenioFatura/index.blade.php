@@ -1,0 +1,32 @@
+<h1>
+	fatura for empresa 
+	{[Empresa::find($empresa)->nome]}
+</h1>
+
+<table>
+	<tr>
+		@foreach($header as $h)
+			@if($h[1]==1)
+				<th>
+					{[$h[0]  ]}
+				</th>
+			@endif
+		@endforeach
+	</tr>
+	@foreach($fatura as $e)
+		<tr>
+			@foreach($header as $h)
+				@if($h[1]==1)
+					<td>
+						@if($h[0]=='convenio_id')
+							<a href="{[URL::to('convenio/'.$convenio_id.'/fatura/'.$e->id) ]} ">{[$e->$h[0]  ]}</a>
+						@else
+							{[$e->$h[0]  ]}
+						@endif
+					</td>
+				@endif
+			@endforeach
+		</tr>
+	@endforeach
+</table>
+

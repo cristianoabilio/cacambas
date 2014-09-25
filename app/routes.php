@@ -52,3 +52,4 @@ Route::resource('estado', 'EstadoController');
 //nested controllers
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
+Route::resource('convenio.fatura', 'ConvenioFaturaController');

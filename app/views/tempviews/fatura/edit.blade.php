@@ -1,6 +1,10 @@
 Edit 
 {[$fatura->id]}
 <br>
+<h1>
+	Danger: you are about to edit a fatura.
+	Be careful about changes you are up to apply.
+</h1>
 <br>	
 <div style='margin-left:200px'>
 	

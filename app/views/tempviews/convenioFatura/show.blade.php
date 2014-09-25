@@ -14,8 +14,8 @@
 <br>
 <br>
 
-<a href="{[URL::to('fatura/'.$id.'/edit')]} "> ....  Edit .... </a>
+<a href="{[URL::to('convenio/'.$convenio_id.'/fatura/'.$fatura_id.'/edit')]} "> ....  Edit .... </a>
 <br>
 
 	<br>
-<a href="{[URL::to('fatura')]}">Back to fatura</a>
+<a href="{[URL::to('convenio/'.$convenio_id.'/fatura')]}">Back to fatura</a>
