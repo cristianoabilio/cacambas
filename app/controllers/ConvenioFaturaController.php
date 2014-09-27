@@ -71,7 +71,82 @@ class ConvenioFaturaController extends BaseController{
 		$convenio=Convenio::find($c_id);
 		$count_fatura=Fatura::whereConvenio_id($c_id)
 		->count();
-		//data_vencimiento 
+
+		/**
+		* 1. Setting enviroment for FIRST TIME INVOICE
+		* (first time "fatura")
+		* @param dt_inicio_date_format 
+		* @param first_dia_fatura_date_format
+		* @param invoice_due_date
+		*/
+		$dia_fatura=$convenio->dia_fatura;
+		//data_vencimiento for first time invoice
+		$dt_inicio_year=substr($convenio->dt_inicio, 0,4);
+		$dt_inicio_month=substr($convenio->dt_inicio, 5,2);
+		$dt_inicio_day=substr($convenio->dt_inicio, 8,2);
+
+		//dates must be converted in php date format for
+		//proper dates calculations
+		$dt_inicio_date_format=
+		date(
+			'Y-m-d',
+			//mktime(hour,minute,second,month,day,year,is_dst);
+			mktime(
+				0,
+				0,
+				0,
+				$dt_inicio_month,
+				$dt_inicio_day,
+				$dt_inicio_year
+				)
+			)
+		;
+		$first_dia_fatura_date_format=
+		date(
+			'Y-m-d',
+			//mktime(hour,minute,second,month,day,year,is_dst);
+			mktime(
+				0,
+				0,
+				0,
+				$dt_inicio_month,
+				$dia_fatura, //dia fatura!!
+				$dt_inicio_year
+				)
+			)
+		;
+		$invoice_due_date;
+		if (
+			$first_dia_fatura_date_format
+			<
+			$dt_inicio_date_format
+			) 
+		{
+			$first_dia_fatura_date_format=
+			strtotime($first_dia_fatura_date_format);
+
+			//
+			$invoice_due_date=
+			date(
+				'Y-m-d',
+				strtotime(
+					"+1 month",
+					$first_dia_fatura_date_format
+					)
+				)
+			;
+		} else {
+			$invoice_due_date=$first_dia_fatura_date_format;
+		}
+		$plano_total=$convenio->plano->valor_total;
+		$plano_percent_disconto=$convenio->plano->valor_desconto;
+		$plano_desconto=$convenio->plano->percentual_desconto;
+		$final_valor_plano=
+		$plano_total-(
+			$plano_desconto+
+			($plano_total*$plano_percent_disconto)
+			)
+		;
 		return 
 		View::make(
 			'tempviews.convenioFatura.create',
@@ -79,14 +154,21 @@ class ConvenioFaturaController extends BaseController{
 				'empresa_id',
 				'c_id',
 				'convenio',
-				'count_fatura'
+				'count_fatura',
+				'dt_inicio_date_format',
+				'first_dia_fatura_date_format',
+				'invoice_due_date',
+				'plano_total',
+				'plano_percent_disconto',
+				'plano_desconto',
+				'final_valor_plano'
 				)
 			)
 		;
 	}
 
 	public function store ($c_id) {
-		$convenio=Convenio::find($_c);
+		$convenio=Convenio::find($c_id);
 		return Input::all();
 	}
 
