@@ -13,7 +13,7 @@
 <br>
 <a href="{[URL::to('compras') ]}" >compras</a> <br>
 <a href="{[URL::to('contabancaria') ]}" >contabancaria</a> <br>
-<a href="{[URL::to('convenio') ]}" >convenio</a> <br>
+<a href="{[URL::to('convenio') ]}" >convenio (contains nested "Fatura" invoices)</a> <br>
 <a href="{[URL::to('empresa') ]}" >empresa</a> <br>
 <a href="{[URL::to('funcionario') ]}" >funcionario (contains resumoatividade as nested)</a> <br>
 <a href="{[URL::to('endereco') ]}" >endereco</a> <br>

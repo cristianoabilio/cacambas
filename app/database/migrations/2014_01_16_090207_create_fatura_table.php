@@ -27,6 +27,7 @@ class CreateFaturaTable extends Migration {
 			$table->decimal('valor_prod_compra', 10, 5);
 			$table->decimal('valor_prod_uso', 10, 5);
 			$table->decimal('valor_boleto', 10, 5);
+			$table->decimal('valor_subtotal', 10, 5);
 			$table->decimal('valor_total', 10, 5);
 			$table->char('ajuste_tipo')->nullable();
 			$table->decimal('ajuste_valor', 10, 5)->nullable();

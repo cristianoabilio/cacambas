@@ -66,14 +66,28 @@ class ConvenioFaturaController extends BaseController{
 	}
 
 	public function create ($c_id) {
-		$data=array(
+		$fake=new fakeuser;
+		$empresa_id=$fake->empresa();
+		$convenio=Convenio::find($c_id);
+		$count_fatura=Fatura::whereConvenio_id($c_id)
+		->count();
+		//data_vencimiento 
+		return 
+		View::make(
+			'tempviews.convenioFatura.create',
+			compact(
+				'empresa_id',
+				'c_id',
+				'convenio',
+				'count_fatura'
+				)
 			)
 		;
-		return View::make('tempviews.convenioFatura.create',$data);
 	}
 
-	public function store ($c_id,$f_id) {
-		
+	public function store ($c_id) {
+		$convenio=Convenio::find($_c);
+		return Input::all();
 	}
 
 	public function show ($c_id,$f_id) {

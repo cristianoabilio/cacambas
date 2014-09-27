@@ -2,6 +2,9 @@
 	fatura for empresa 
 	{[Empresa::find($empresa)->nome]}
 </h1>
+<p>
+	<a href="{[URL::to('convenio/'.$convenio_id.'/fatura/create') ]} ">Add new fatura</a>
+</p>
 
 <table>
 	<tr>
