@@ -101,6 +101,7 @@ class ConvenioFaturaController extends BaseController{
 				)
 			)
 		;
+		$dt_inicio_strtotime_format=strtotime($dt_inicio_date_format);
 		$first_dia_fatura_date_format=
 		date(
 			'Y-m-d',
@@ -115,6 +116,12 @@ class ConvenioFaturaController extends BaseController{
 				)
 			)
 		;
+		$period_due_date_month=
+		date('Y-m-d',strtotime('+1 month',$dt_inicio_strtotime_format));
+		$period_due_date_semester=
+		date('Y-m-d',strtotime('+6 month',$dt_inicio_strtotime_format));
+		$period_due_date_year=
+		date('Y-m-d',strtotime('+1 year',$dt_inicio_strtotime_format));
 		$invoice_due_date;
 		if (
 			$first_dia_fatura_date_format
@@ -156,6 +163,9 @@ class ConvenioFaturaController extends BaseController{
 				'convenio',
 				'count_fatura',
 				'dt_inicio_date_format',
+				'period_due_date_month',
+				'period_due_date_semester',
+				'period_due_date_year',
 				'first_dia_fatura_date_format',
 				'invoice_due_date',
 				'plano_total',
