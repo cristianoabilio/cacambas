@@ -179,7 +179,32 @@ class ConvenioFaturaController extends BaseController{
 
 	public function store ($c_id) {
 		$convenio=Convenio::find($c_id);
-		return Input::all();
+		$e=new Fatura;
+		$e->convenio_id	=Input::get('convenio_id');
+		//$e->empresa_id	=Input::get('empresa_id');
+		$e->mes_referencia	=Input::get('mes_referencia');
+		$e->semestre_referencia	=Input::get('semestre_referencia');
+		$e->ano_referencia	=Input::get('ano_referencia');
+		$e->data_vencimento	=Input::get('data_vencimento');
+		$e->data_pagamento	=Input::get('data_pagamento');
+		$e->forma_pagamento	=Input::get('forma_pagamento');
+		$e->status_pagamento	=Input::get('status_pagamento');
+		$e->valor_plano	=Input::get('valor_plano');
+		$e->valor_prod_compra	=Input::get('valor_prod_compra');
+		$e->valor_prod_uso	=Input::get('valor_prod_uso');
+		$e->valor_boleto	=Input::get('valor_boleto');
+		$e->valor_total	=Input::get('valor_total');
+		$e->ajuste_tipo	=Input::get('ajuste_tipo');
+		$e->ajuste_valor	=Input::get('ajuste_valor');
+		$e->ajuste_percentual	=Input::get('ajuste_percentual');
+		$e->pagarme	=Input::get('pagarme');
+		$e->NFSe	=1;
+		$e->dthr_cadastro	=date('Y-m-d');
+		$e->sessao_id	=9;
+		$e->save();	
+
+		//return Input::all();
+		return 'record succesfully created';
 	}
 
 	public function show ($c_id,$f_id) {
