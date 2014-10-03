@@ -1,3 +1,7 @@
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @foreach($header as $h)
 <div style='width:150px;float:left'>
 	{[$h[0] ]}

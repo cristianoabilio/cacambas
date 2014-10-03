@@ -137,13 +137,13 @@ class ComprasController extends \BaseController {
 		$success=$d->formatdata();
 
 		try{
-			$validator= Validator::make(			
+			$validator= Validator::make(
 				Input::All(),
-				$d->validrules(),	
-				array(		
-					'required'=>'Required field'	
-					)	
-				)		
+				$d->validrules(),
+				array(
+					'required'=>'Required field'
+					)
+				)
 			;
 
 			if ($validator->fails()){

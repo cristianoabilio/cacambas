@@ -17,11 +17,11 @@ class CreateEnderecobaseTable extends Migration {
 			$table->integer('bairro_id');//Bairro foreing key
 			$table->integer('cidade_id');
 			$table->integer('estado_id');
-			$table->string('cep', 9);
+			$table->string('cep_base', 9)->nullable();
 			$table->string('logradouro', 255);
 			$table->string('regiao', 20);
-			$table->time('restricao_hr_inicio')->nullable();
-			$table->time('restricao_hr_fim')->nullable();
+			$table->time('restricao_hr_inicio_base')->nullable();
+			$table->time('restricao_hr_fim_base')->nullable();
 			$table->integer('numero_inicio');
 			$table->integer('numero_fim');
 			$table->datetime('dthr_cadastro');

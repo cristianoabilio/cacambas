@@ -17,7 +17,6 @@ class CreateConvenioTable extends Migration {
 			$table->integer('empresa_id');//Empresa FK
 			$table->integer('limite_id')->nullable();//Limite FK
 			$table->integer('plano_id');//Plano FK
-			$table->integer('total_nfse')->nullable();
 			$table->integer('dia_fatura');
 			$table->integer('tipo_pagamento');
 			$table->date('dt_inicio');

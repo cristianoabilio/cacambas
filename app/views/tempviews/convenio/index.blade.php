@@ -1,3 +1,7 @@
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 <h1>
 	Convenios for {[Empresa::find($empresa)->nome]}
 </h1>
@@ -7,7 +11,7 @@
 <a href="{[URL::to('convenio/create')]}">Add new "convenio"</a>
 <br>
 
-<table>
+<table class='table'>
 	<!-- $h var comes from controller convenio, containing
 	the header names on table convenio -->
 	<tr>

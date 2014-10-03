@@ -1,6 +1,33 @@
 <?php
 
-class ConvenioFaturaData{
+class DateFixer {
+	//
+	/** 
+	* function name: plusOneMonth.
+	* @return given date in 'Y-m-d' format plus one month
+	*/
+	public function replaceDay($date,$day) {
+		$dt_inicio_year=substr($date, 0,4);
+		$dt_inicio_month=substr($date, 5,2);
+		$dt_inicio_day=substr($date, 8,2);
+
+		$replaced_day=date('Y-m-d',
+			mktime(
+				0,
+				0,
+				0,
+				$dt_inicio_month,
+				$day, //dia fatura!!
+				$dt_inicio_year
+				)
+			)
+		;
+
+		return $replaced_day;
+	}
+}
+
+class ConvenioFaturaData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of convenio table
@@ -14,9 +41,11 @@ class ConvenioFaturaData{
 		$header=array(	
 			array('convenio_id',1)
 			,array('empresa_id',0)
-			,array('mes_referencia',0)
-			,array('semestre_referencia',0)
-			,array('ano_referencia',0)
+			//,array('mes_referencia',0)
+			//,array('semestre_referencia',0)
+			//,array('ano_referencia',0)
+			,array('plan_period_start_date',1)
+			,array('plan_period_end_date',1)
 			,array('data_vencimento',1)
 			,array('data_pagamento',1)
 			,array('forma_pagamento',0)
@@ -48,6 +77,35 @@ class ConvenioFaturaData{
 	public function show ($id) {
 		return Fatura::find($id);
 	}
+
+	public function formatdata(){
+		$formdata=array(
+			'plan_period_start_date'=>Input::get('plan_period_start_date'),
+			'plan_period_end_date'	=>Input::get('plan_period_end_date'),
+			'data_vencimento'		=>Input::get('data_vencimento'),
+			'data_pagamento'		=>Input::get('data_pagamento'),
+			'forma_pagamento'		=>Input::get('forma_pagamento'),
+			'status_pagamento'		=>Input::get('status_pagamento'),
+			'valor_plano'			=>Input::get('valor_plano'),
+			'valor_prod_compra'		=>Input::get('valor_prod_compra'),
+			'valor_prod_uso'		=>Input::get('valor_prod_uso'),
+			'valor_boleto'			=>Input::get('valor_boleto'),
+			'valor_total'			=>Input::get('valor_total'),
+			'ajuste_tipo'			=>Input::get('ajuste_tipo'),
+			'ajuste_valor'			=>Input::get('ajuste_valor'),
+			'ajuste_percentual'		=>Input::get('ajuste_percentual'),
+			'pagarme'				=>Input::get('pagarme')
+			)
+		;
+		return $formdata;
+	}
+
+	public function validrules() {
+		return array(
+			'plan_period_end_date'=>'required'
+			)
+		;
+	}
 }
 
 class ConvenioFaturaController extends BaseController{
@@ -65,8 +123,15 @@ class ConvenioFaturaController extends BaseController{
 		return View::make('tempviews.convenioFatura.index',$data);
 	}
 
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
 	public function create ($c_id) {
 		$fake=new fakeuser;
+		$df=new DateFixer;
 		$empresa_id=$fake->empresa();
 		$convenio=Convenio::find($c_id);
 		$count_fatura=Fatura::whereConvenio_id($c_id)
@@ -75,79 +140,70 @@ class ConvenioFaturaController extends BaseController{
 		/**
 		* 1. Setting enviroment for FIRST TIME INVOICE
 		* (first time "fatura")
-		* @param dt_inicio_date_format 
 		* @param first_dia_fatura_date_format
 		* @param invoice_due_date
 		*/
-		$dia_fatura=$convenio->dia_fatura;
-		//data_vencimiento for first time invoice
-		$dt_inicio_year=substr($convenio->dt_inicio, 0,4);
-		$dt_inicio_month=substr($convenio->dt_inicio, 5,2);
-		$dt_inicio_day=substr($convenio->dt_inicio, 8,2);
+		if ($count_fatura==0) {
+			$starting_period_date=$convenio->dt_inicio;
+			$dia_fatura=$convenio->dia_fatura;
+			//php date format conversion for
+			//calculations between dates
+			$dt_inicio_strtotime_format=strtotime($convenio->dt_inicio);
 
-		//dates must be converted in php date format for
-		//proper dates calculations
-		$dt_inicio_date_format=
-		date(
-			'Y-m-d',
-			//mktime(hour,minute,second,month,day,year,is_dst);
-			mktime(
-				0,
-				0,
-				0,
-				$dt_inicio_month,
-				$dt_inicio_day,
-				$dt_inicio_year
-				)
-			)
-		;
-		$dt_inicio_strtotime_format=strtotime($dt_inicio_date_format);
-		$first_dia_fatura_date_format=
-		date(
-			'Y-m-d',
-			//mktime(hour,minute,second,month,day,year,is_dst);
-			mktime(
-				0,
-				0,
-				0,
-				$dt_inicio_month,
-				$dia_fatura, //dia fatura!!
-				$dt_inicio_year
-				)
-			)
-		;
-		$period_due_date_month=
-		date('Y-m-d',strtotime('+1 month',$dt_inicio_strtotime_format));
-		$period_due_date_semester=
-		date('Y-m-d',strtotime('+6 month',$dt_inicio_strtotime_format));
-		$period_due_date_year=
-		date('Y-m-d',strtotime('+1 year',$dt_inicio_strtotime_format));
-		$invoice_due_date;
-		if (
-			$first_dia_fatura_date_format
-			<
-			$dt_inicio_date_format
-			) 
-		{
-			$first_dia_fatura_date_format=
-			strtotime($first_dia_fatura_date_format);
+			$first_dia_fatura_date_format=$df->replaceDay($convenio->dt_inicio,$dia_fatura);
+			
+			$period_due_date_month=
+			date('Y-m-d',strtotime('+1 month',$dt_inicio_strtotime_format));
+			$period_due_date_semester=
+			date('Y-m-d',strtotime('+6 month',$dt_inicio_strtotime_format));
+			$period_due_date_year=
+			date('Y-m-d',strtotime('+1 year',$dt_inicio_strtotime_format));
+			$invoice_due_date;
 
-			//
-			$invoice_due_date=
-			date(
-				'Y-m-d',
-				strtotime(
-					"+1 month",
-					$first_dia_fatura_date_format
+			if (
+				$first_dia_fatura_date_format
+				<
+				$convenio->dt_inicio
+				) 
+			{
+				$first_dia_fatura_date_format=
+				strtotime($first_dia_fatura_date_format);
+
+				//
+				$invoice_due_date=
+				date(
+					'Y-m-d',
+					strtotime(
+						"+1 month",
+						$first_dia_fatura_date_format
+						)
 					)
-				)
-			;
+				;
+			} else {
+				$invoice_due_date=$first_dia_fatura_date_format;
+			}
+			//
 		} else {
-			$invoice_due_date=$first_dia_fatura_date_format;
+			$starting_period_date=
+					Fatura::whereConvenio_id($convenio->id)
+					->where(function($query){
+						$query->max('data_vencimento');
+					})
+					->first()->data_vencimento;
+				$invoice_due_date=$first_dia_fatura_date_format;
 		}
-		$plano_total=$convenio->plano->valor_total;
-		$plano_percent_disconto=$convenio->plano->valor_desconto;
-		$plano_desconto=$convenio->plano->percentual_desconto;
+
+			
+			
+		$plano_total=//1000000
+		$convenio->plano->valor_total
+		;
+		$plano_percent_disconto=//10
+		$convenio->plano->valor_desconto
+		;
+		$plano_desconto=//20
+		$convenio->plano->percentual_desconto
+		;
 		$final_valor_plano=
 		$plano_total-(
 			$plano_desconto+
@@ -162,7 +218,7 @@ class ConvenioFaturaController extends BaseController{
 				'c_id',
 				'convenio',
 				'count_fatura',
-				'dt_inicio_date_format',
+				'starting_period_date',
 				'period_due_date_month',
 				'period_due_date_semester',
 				'period_due_date_year',
@@ -178,33 +234,59 @@ class ConvenioFaturaController extends BaseController{
 	}
 
 	public function store ($c_id) {
-		$convenio=Convenio::find($c_id);
-		$e=new Fatura;
-		$e->convenio_id	=Input::get('convenio_id');
-		//$e->empresa_id	=Input::get('empresa_id');
-		$e->mes_referencia	=Input::get('mes_referencia');
-		$e->semestre_referencia	=Input::get('semestre_referencia');
-		$e->ano_referencia	=Input::get('ano_referencia');
-		$e->data_vencimento	=Input::get('data_vencimento');
-		$e->data_pagamento	=Input::get('data_pagamento');
-		$e->forma_pagamento	=Input::get('forma_pagamento');
-		$e->status_pagamento	=Input::get('status_pagamento');
-		$e->valor_plano	=Input::get('valor_plano');
-		$e->valor_prod_compra	=Input::get('valor_prod_compra');
-		$e->valor_prod_uso	=Input::get('valor_prod_uso');
-		$e->valor_boleto	=Input::get('valor_boleto');
-		$e->valor_total	=Input::get('valor_total');
-		$e->ajuste_tipo	=Input::get('ajuste_tipo');
-		$e->ajuste_valor	=Input::get('ajuste_valor');
-		$e->ajuste_percentual	=Input::get('ajuste_percentual');
-		$e->pagarme	=Input::get('pagarme');
-		$e->NFSe	=1;
-		$e->dthr_cadastro	=date('Y-m-d');
-		$e->sessao_id	=9;
-		$e->save();	
+		//
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fakeuser;
 
-		//return Input::all();
-		return 'record succesfully created';
+		$d=new ConvenioFaturaData;
+
+		$success=$d->formatdata();
+		try {
+			$validator= Validator::make(
+				Input::All(),
+				$d->validrules(),
+				array(
+					'required'=>'Required field'
+					)
+				)
+			;
+			
+			$e=new Fatura;
+			$e->convenio_id			=$c_id;
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			//
+			$e->NFSe				=1;
+			$e->dthr_cadastro		=date('Y-m-d');
+
+			$e->sessao_id			=$fake->sessao_id();
+			$e->save();
+
+			$success['id']=$e->id;
+
+			$res=$d->responsedata(
+				'fatura',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+
+		} catch (Exception $e) {
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'fatura',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 	public function show ($c_id,$f_id) {

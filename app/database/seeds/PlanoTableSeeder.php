@@ -12,7 +12,7 @@ class PlanoTableSeeder extends Seeder {
 			,'descricao'			=>	'Pequeño'
 			,'valor_total'			=>	259
 			,'percentual_desconto'	=>	null
-			,'valor_desconto'		=>	null
+			//,'valor_desconto'		=>	null
 			,'status'				=>	1
 			,'validade_meses'		=>	null
 			,'valiade_dias'			=>	null
@@ -30,7 +30,7 @@ class PlanoTableSeeder extends Seeder {
 			,'descricao'			=>	'medio'
 			,'valor_total'			=>	279
 			,'percentual_desconto'	=>	null
-			,'valor_desconto'		=>	null
+			//,'valor_desconto'		=>	null
 			,'status'				=>	1
 			,'validade_meses'		=>	null
 			,'valiade_dias'			=>	null
@@ -48,7 +48,7 @@ class PlanoTableSeeder extends Seeder {
 			,'descricao'			=>	'grande'
 			,'valor_total'			=>	599
 			,'percentual_desconto'	=>	null
-			,'valor_desconto'		=>	null
+			//,'valor_desconto'		=>	null
 			,'status'				=>	1
 			,'validade_meses'		=>	null
 			,'valiade_dias'			=>	null

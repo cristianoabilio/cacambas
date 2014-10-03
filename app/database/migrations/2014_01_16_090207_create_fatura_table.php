@@ -19,6 +19,8 @@ class CreateFaturaTable extends Migration {
 			$table->integer('mes_referencia')->nullable();
 			$table->integer('semestre_referencia')->nullable();
 			$table->integer('ano_referencia')->nullable();
+			$table->date('plan_period_start_date');
+			$table->date('plan_period_end_date');
 			$table->date('data_vencimento');
 			$table->date('data_pagamento')->nullable();
 			$table->integer('forma_pagamento');
@@ -27,8 +29,8 @@ class CreateFaturaTable extends Migration {
 			$table->decimal('valor_prod_compra', 10, 5);
 			$table->decimal('valor_prod_uso', 10, 5);
 			$table->decimal('valor_boleto', 10, 5);
-			$table->decimal('valor_subtotal', 10, 5);
 			$table->decimal('valor_total', 10, 5);
+			$table->decimal('valor_subtotal', 10, 5);
 			$table->char('ajuste_tipo')->nullable();
 			$table->decimal('ajuste_valor', 10, 5)->nullable();
 			$table->decimal('ajuste_percentual', 10, 5)->nullable();

@@ -17,236 +17,196 @@
 		<hr>
 		<div class="row">
 			<div class="col-sm-1"></div>
-			<div class="col-sm-2">
-				<!-- 
-				invoice type: depending whether is plano or product
-				the invoice will contain different values
-				 -->
-				Invoice type ("fatura" type)
-				<br>
-				<select name="invoice_type" id="invoice_type" class='form-control'>
-					<option value=""></option>
-					<option value="plano">plano or service</option>
-					<option value="produto_compra">produto</option>
-				</select>
-				<!-- End of invoice type -->
+			<div class="col-sm-4">
+				Invoice type ("fatura" type):
+				Plano &amp; service products
 			</div>
 		</div>
 		<br>
-		<!-- First invoice option:
-		if plano or product as a service
-		is purchased
-		 -->
-		<div id="plano_service_subform">
-			<h2>Plano purchase</h2>
-			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">
-					convenio start date:
-					<br>
+		<h2>Plano purchase</h2>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-4">
+				<small class="text-muted">
+					convenio start date: 
 					{[ $convenio->dt_inicio]}
-					<br>
-					<br>
-					starting_period_date
-					<?php  
-					if (Fatura::whereConvenio_id($convenio->id)->count()==0) {
-						$starting_period_date=$convenio->dt_inicio;
-					}
-					else {
-						$starting_period_date=
-						Fatura::whereConvenio_id($convenio->id)
-						->where(function($query){
-							$query->max('data_vencimento');
-						})
-						->first();
-					}
-					?>
-					{[$starting_period_date]}
-				</div>
+				</small>
+				<br>
+				period start date
+				
+				{[$starting_period_date]}
+				<input name='plan_period_start_date' 
+				id='plan_period_start_date' type="hidden"
+				class='form-control'
+				value='{[$starting_period_date]}'
+				>
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-1">
-					
-				</div>
-				<div class="col-sm-4">
-					Period plan<br>
-					<select name="" id="select_period_plan" class='form-control'>
-						<option value=""></option>
-						<option value="Mes">Mes (end date {[$period_due_date_month]}  )</option>
-						<option value="Semestre">Semestre (end date {[$period_due_date_semester]}  )</option>
-						<option value="Ano">Ano (end date {[$period_due_date_year]}  )</option>
-					</select>
-				</div>
-				<div class="hide">
-					<div id="due_data_for_Mes"> {[$period_due_date_month]} </div>
-					<div id="due_data_for_Semestre"> {[$period_due_date_semester]} </div>
-					<div id="due_data_for_Ano"> {[$period_due_date_year]} </div>
-				</div>
-				<div class="col-sm-2 hide">
-					<div id="mes_option" class='plano_options_on_fatura'>
-						Mes referencia
-						<br>
-						<select id='mes_referencia' name='mes_referencia' class='form-control'>
-							<option></option>
-							<?php 
-							for ($i=0; $i <12 ; $i++) { 
-								echo 
-								'<option value="'.($i+1).'">mes '.($i+1).'</option>'
-								;
-							}
-							?>
-						</select>
-					</div>
-					<div id="semestre_option" class='plano_options_on_fatura'>
-						Semestre referencia 
-						<br>
-						<select id='semestre_referencia'  name='semestre_referencia'  class='form-control'>
-							<option></option>
-							<option value='1'>semestre 1</option>
-							<option value='2'>semestre 2</option>
-						</select>
-					</div>
-					<div id="ano_option" class='plano_options_on_fatura'>
-						Ano 
-						<br>
-						<input type="text" id='ano_referencia' name='ano_referencia' class='form-control'>
-					</div>
-				</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-1">
+				
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">
-					data vencimiento
-					<br>
-					<spam id="data_vencimiento_label"></spam> 
-					<input type="hidden" name='data_vencimento' id='data_vencimento' value=''>
-				</div>
+			<div class="col-sm-2">
+				<!-- 
+					PERIOD PLAN: Depending on choosing mes | semester | ano
+					the due date (data vencimento) and the end period
+					date will be automaticly set via jquery function
+				 -->
+				Period plan<br>
+				<select name="" id="select_period_plan" class='form-control'>
+					<option value=""></option>
+					<option value="Mes">Mes </option>
+					<option value="Semestre">Semestre</option>
+					<option value="Ano">Ano </option>
+				</select>
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">
-					data_pagamento
-					<input type="text" id='data_pagamento' name='data_pagamento' class='form-control'>
-				</div>
+			<div class="hide">
+				<div id="due_data_for_Mes"> {[$period_due_date_month]} </div>
+				<div id="due_data_for_Semestre"> {[$period_due_date_semester]} </div>
+				<div id="due_data_for_Ano"> {[$period_due_date_year]} </div>
 			</div>
-			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">
-					forma_pagamento
-					<input type="text" name="forma_pagamento" id="forma_pagamento" class='form-control'>
-				</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-4">
+				period end date 
+				<spam id="shown_end_date"></spam><br>
+				<input name='plan_period_end_date' 
+				id='plan_period_end_date' type="hidden"
+				class='form-control'>
 			</div>
-			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-2">
-					status_pagamento
-					<input type="text" name="status_pagamento" id="status_pagamento"  class='form-control'>
-				</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-4">
+				invoice due date 
+				<spam id="data_vencimiento_label"> 
+					{[$invoice_due_date]}
+				</spam> 
+				<input type="hidden" name='data_vencimento' id='data_vencimento' value='{[$invoice_due_date]}'>
 			</div>
-			<hr>
-			<div class="row">
-				<div class="col-sm-1">
-					Plano:
-				</div>
-				<div class="col-sm-2">
-					{[$convenio->plano->nome]} ({[$convenio->plano->descricao]} )
-				</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-2">
+				data_pagamento
+				<input type="text" id='data_pagamento' name='data_pagamento' class='form-control'>
 			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">VALOR PLANO</div>
-				<div class="col-sm-2">DISCONTO %</div>
-				<div class="col-sm-2">DISCONTO VALOR</div>
-				<div class="col-sm-2">VALOR FINAL</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-2">
+				forma_pagamento
+				<input type="text" name="forma_pagamento" id="forma_pagamento" class='form-control'>
 			</div>
-			<div class="row">
-				<div class="col-sm-2">{[$convenio->plano->valor_total]}</div>
-				<div class="col-sm-2">{[$plano_percent_disconto]}</div>
-				<div class="col-sm-2">
-					{[$convenio->plano->valor_total*$plano_percent_disconto]}
-				</div>
-				<div class="col-sm-2">
-					{[$convenio->plano->valor_total-$convenio->plano->valor_total*$plano_percent_disconto]}
-				</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-2">
+				status_pagamento
+				<input type="text" name="status_pagamento" id="status_pagamento"  class='form-control'>
 			</div>
-			<input type="hidden" name="valor_plano" id="valor_plano" 
-			value='{[$convenio->plano->valor_total-$convenio->plano->valor_total*$plano_percent_disconto]}'>
-			
-			<br>
-			<hr>
-			<div class="row">
-				<div class="col-sm-1">Produto uso </div>
-				<div class="col-sm-1">valor </div>
-				<div class="col-sm-1">Desconto </div>
-				<div class="col-sm-2">date</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-sm-1">
+				Plano:
 			</div>
-			<?php  
-			$sumofproductusage =0;
-			?>
+			<div class="col-sm-2">
+				{[$convenio->plano->nome]}
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">VALOR PLANO</div>
+			<div class="col-sm-2">DISCONTO %</div>
+			<div class="col-sm-2">DISCONTO VALOR</div>
+			<div class="col-sm-2">VALOR FINAL</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">{[$convenio->plano->valor_total]}</div>
+			<div class="col-sm-2">{[$plano_percent_disconto]}</div>
+			<div class="col-sm-2">
+				{[$convenio->plano->valor_total*$plano_percent_disconto]}
+			</div>
+			<div class="col-sm-2">
+				{[$convenio->plano->valor_total-$convenio->plano->valor_total*$plano_percent_disconto]}
+			</div>
+		</div>
+		<input type="hidden" name="valor_plano" id="valor_plano" 
+		value='{[$convenio->plano->valor_total-$convenio->plano->valor_total*$plano_percent_disconto]}'>
+		
+		<br>
+		<hr>
+		
+		<?php  
+		$sumofproductusage =0;
+		$sumofdiscount=0;
+		?>
+		<table class="table">
+			<tr>
+				<th>Product</th>
+				<th>value</th>
+				<th>discount</th>
+				<th>purchase date</th>
+			</tr>
 			@foreach($convenio->compras as $c)
 				@if($c->ativado==1)
 				<?php  
+				$active_service=false;
 				// startdate of service
 				if ($c->data_ativacao<=$starting_period_date) {
-					# code...
+					$active_service=true;
 				}
 				$startdate_of_service;
 				;
 				;
 				?>
-				if date compra ativado
-				{[$c->data_ativacao ]}
-				 >= convenio ativado {[$convenio->dt_inicio]}
-					<div class="row">
-						<div class="col-sm-1 text-info"> {[$c->produto->nome]} </div>
-						<div class="col-sm-1"> {[$c->produto->valor]}</div>
-						<div class="col-sm-1"> {[$c->desconto_valor]}</div>
-						<div class="col-sm-2">{[$c->data_compra]}</div>
-					</div> 
-					<?php $sumofproductusage+=$c->produto->valor; ?>
+				<tr>
+					<td class="text-info">
+						{[$c->produto->nome]} - 
+						{[$active_service]}
+					</td>
+					<td>{[$c->produto->valor]}</td>
+					<td>
+						{[$c->desconto_percentual*$c->produto->valor/100]}
+						<spam class="text-muted">
+							( {[$c->desconto_percentual*1]} % )
+						</spam>
+					</td>
+					<td>{[$c->data_compra]}</td>
+				</tr>
+					<?php 
+					$sumofproductusage+=$c->produto->valor; 
+					$sumofdiscount+=$c->produto->valor*($c->desconto_percentual/100);
+					?>
 				@endif	
 			@endforeach
-			total product usage <b>{[$sumofproductusage]}</b>
-			<input type="hidden" name="valor_prod_uso" id="valor_prod_uso" value='{[$sumofproductusage]}'><br>
-			valor total for plano and product usage 
-			<spam id="total_plano_and_product_usage">{[$sumofproductusage+$convenio->plano->valor_total-$convenio->plano->valor_total*$plano_percent_disconto]}</spam>
-		</div>
-		<!-- End of plano or product as a service invoice -->
-
-
-		<!-- 
-		Second invoice option:
-		if  product 
-		is purchased
-		 -->
-		<div id="produto_compra_subform">
-			<h2>Compras</h2>
-			<div class="row">
-				<div class="col-sm-2">Produto compra </div>
-				<div class="col-sm-2">valor </div>
-				<div class="col-sm-2">Desconto </div>
-				<div class="col-sm-3">date</div>
-			</div>
-			<?php  
-			$sumofproductpurchase =0;
-			?>
-			@foreach($convenio->compras as $c)
-				@if($c->ativado==null)
-					<div class="row">
-						<div class="col-sm-2 text-info"> {[$c->produto->nome]} </div>
-						<div class="col-sm-2"> {[$c->produto->valor]}</div>
-						<div class="col-sm-2"> {[$c->desconto_valor]}</div>
-						<div class="col-sm-3">{[$c->data_compra]}</div>
-					</div> 
-					<?php $sumofproductpurchase+=$c->produto->valor; ?>
-				@endif	
-			@endforeach
-			total product purchase <b>{[$sumofproductpurchase]}</b>
-			<input type="hidden" name="valor_prod_compra" id="valor_prod_compra" value='{[$sumofproductpurchase]} '>
-		</div>
+		</table>
+		<?php 
+		$final_productusage_value=
+		$sumofproductusage
+		-
+		$sumofdiscount
+		;
+		?>
+		total product usage <b>
+			{[$sumofproductusage]} - 
+			{[$sumofdiscount]} = 
+			{[$final_productusage_value]}
+		</b>
+		<input type="hidden" name="valor_prod_uso" 
+		id="valor_prod_uso" value='{[$final_productusage_value]}'><br>
+		valor total for plano and product usage 
+		<spam id="total_plano_and_product_usage">{[
+			$final_productusage_value
+			+$convenio->plano->valor_total
+			-$convenio->plano->valor_total*$plano_percent_disconto
+			]}</spam>
 		<div class="row">
 			<div class="col-sm-1"></div>
 			<div class="col-sm-2">
@@ -318,13 +278,13 @@ DIA / SEMESTER / ANO
 <script type="text/javascript">
 $(function(){
 	$('.plano_options_on_fatura').hide();
-	$('#plano_service_subform').hide();
+	//$('#plano_service_subform').hide();
 	$('#produto_compra_subform').hide();
 
 	$('#invoice_type').change(function(e){
 		e.preventDefault();
 		var i_t=$('#invoice_type').val();
-		if (i_t=='plano') {
+		/*if (i_t=='plano') {
 			$('#plano_service_subform').show('fast');
 			$('#produto_compra_subform').hide('fast');
 			$('#valor_total_header').html(
@@ -351,7 +311,7 @@ $(function(){
 		else {
 			$('#plano_service_subform').hide();
 			$('#produto_compra_subform').hide();
-		}
+		}*/
 	});
 });
 
@@ -368,22 +328,26 @@ $('#select_period_plan').change(function(e){
 	var ano=$('#due_data_for_Ano').html();
 	if (period=='Mes') {
 		$('#mes_option').show('fast');
-		$('#data_vencimiento_label').html(mes);
+		$('#shown_end_date').html(mes);
 		$('#data_vencimento').val(mes);
+		$('#plan_period_end_date').val(mes);
 	}
 	else if (period=='Semestre') {
 		$('#semestre_option').show('fast');
-		$('#data_vencimiento_label').html(sem);
+		$('#shown_end_date').html(sem);
 		$('#data_vencimento').val(sem);
+		$('#plan_period_end_date').val(sem);
 	}
 	else if (period=='Ano') {
 		$('#ano_option').show('fast');
-		$('#data_vencimiento_label').html(ano);
+		$('#shown_end_date').html(ano);
 		$('#data_vencimento').val(ano);
+		$('#plan_period_end_date').val(ano);
 	}
 	else {
-		$('#data_vencimiento_label').html('');
+		$('#shown_end_date').html('');
 		$('#data_vencimento').val('');
+		$('#plan_period_end_date').val('');
 	}
 	
 });

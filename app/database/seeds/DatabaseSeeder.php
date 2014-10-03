@@ -19,18 +19,19 @@ class DatabaseSeeder extends Seeder {
 
 
 		$this->call('EmpresaTableSeeder');
-
 		$this->call('EnderecoEmpresaTableSeeder');
 
 		$this->call('LoginTableSeeder');
-
 		$this->call('PerfilTableSeeder');
-
 		$this->call('LoginPerfilTableSeeder');
 
 		$this->call('EquipamentobaseTableSeeder');
 		$this->call('EquipamentobaseprecoTableSeeder');
 		$this->call('EquipamentoTableSeeder');
+
+		$this->call('PlanoTableSeeder');
+		$this->call('LimiteTableSeeder');
+		$this->call('ConvenioTableSeeder');
 
 	}
 

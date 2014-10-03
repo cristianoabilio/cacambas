@@ -1,3 +1,6 @@
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <h1>
 	fatura for empresa 
 	{[Empresa::find($empresa)->nome]}
@@ -6,7 +9,7 @@
 	<a href="{[URL::to('convenio/'.$convenio_id.'/fatura/create') ]} ">Add new fatura</a>
 </p>
 
-<table>
+<table class='table'>
 	<tr>
 		@foreach($header as $h)
 			@if($h[1]==1)

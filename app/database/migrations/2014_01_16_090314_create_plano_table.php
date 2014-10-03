@@ -18,7 +18,6 @@ class CreatePlanoTable extends Migration {
 			$table->text('descricao');
 			$table->decimal('valor_total', 10, 5);
 			$table->decimal('percentual_desconto', 10, 5)->nullable();
-			$table->decimal('valor_desconto', 10, 5)->nullable();
 			$table->integer('status');
 			$table->integer('validade_meses')->nullable();
 			$table->integer('valiade_dias')->nullable();

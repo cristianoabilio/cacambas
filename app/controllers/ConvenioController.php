@@ -13,7 +13,7 @@ class ConvenioData extends StandardResponse{
 		$header=array(	
 			array('plano_id',1)
 			,array('limite_id',0)
-			,array('total_nfse',0)
+			//,array('total_nfse',0)
 			,array('dia_fatura',0)
 			,array('tipo_pagamento',0)
 			,array('dt_inicio',0)
@@ -46,7 +46,7 @@ class ConvenioData extends StandardResponse{
 		return array(
 			'plano_id'			=>Input::get('plano_id'),
 			'limite_id'			=>Input::get('limite_id'),
-			'total_nfse'		=>Input::get('total_nfse'),
+			//'total_nfse'		=>Input::get('total_nfse'),
 			'dia_fatura'		=>Input::get('dia_fatura'),
 			'tipo_pagamento'	=>Input::get('tipo_pagamento'),
 			'dt_inicio'			=>Input::get('dt_inicio'),
