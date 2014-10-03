@@ -262,9 +262,9 @@ class ConvenioFaturaController extends BaseController{
 			$e->dthr_cadastro		=date('Y-m-d');
 
 			$e->sessao_id			=$fake->sessao_id();
-			$e->save();
+			//$e->save();
 
-			$success['id']=$e->id;
+			//$success['id']=$e->id;
 
 			$res=$d->responsedata(
 				'fatura',
