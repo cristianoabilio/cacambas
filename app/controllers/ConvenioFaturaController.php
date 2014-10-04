@@ -130,70 +130,92 @@ class ConvenioFaturaController extends BaseController{
 	 * @return Response
 	 */
 	public function create ($c_id) {
+		//Fakeuser can be removed later, as
+		//it simulates a logged user
 		$fake=new fakeuser;
+
+		//Datefixer class contains some date calculations and functions
 		$df=new DateFixer;
+
+		//$empresa_id can be replaced with real empresa id
+		//for logged users
 		$empresa_id=$fake->empresa();
+
+		//Required variable.
 		$convenio=Convenio::find($c_id);
 		$count_fatura=Fatura::whereConvenio_id($c_id)
 		->count();
 
 		/**
-		* 1. Setting enviroment for FIRST TIME INVOICE
-		* (first time "fatura")
-		* @param first_dia_fatura_date_format
-		* @param invoice_due_date
+		* STARTING DATE INVOICE
+		* Setting the date that will be used as the 
+		* invoice start day.
+		* @param starting_period_date: invoice start day
 		*/
+		//
+		//First time invoice
 		if ($count_fatura==0) {
 			$starting_period_date=$convenio->dt_inicio;
-			$dia_fatura=$convenio->dia_fatura;
-			//php date format conversion for
-			//calculations between dates
-			$dt_inicio_strtotime_format=strtotime($convenio->dt_inicio);
-
-			$first_dia_fatura_date_format=$df->replaceDay($convenio->dt_inicio,$dia_fatura);
-			
-			$period_due_date_month=
-			date('Y-m-d',strtotime('+1 month',$dt_inicio_strtotime_format));
-			$period_due_date_semester=
-			date('Y-m-d',strtotime('+6 month',$dt_inicio_strtotime_format));
-			$period_due_date_year=
-			date('Y-m-d',strtotime('+1 year',$dt_inicio_strtotime_format));
-			$invoice_due_date;
-
-			if (
-				$first_dia_fatura_date_format
-				<
-				$convenio->dt_inicio
-				) 
-			{
-				$first_dia_fatura_date_format=
-				strtotime($first_dia_fatura_date_format);
-
-				//
-				$invoice_due_date=
-				date(
-					'Y-m-d',
-					strtotime(
-						"+1 month",
-						$first_dia_fatura_date_format
-						)
-					)
-				;
-			} else {
-				$invoice_due_date=$first_dia_fatura_date_format;
-			}
-			//
-		} else {
+		} 
+		//
+		//Already existant invoice
+		else {
 			$starting_period_date=
-					Fatura::whereConvenio_id($convenio->id)
-					->where(function($query){
-						$query->max('data_vencimento');
-					})
-					->first()->data_vencimento;
-				$invoice_due_date=$first_dia_fatura_date_format;
+			Fatura::whereConvenio_id($convenio->id)
+			->where(function($query){
+				$query->max('plan_period_end_date')
+				;
+			}
+			)
+			->first()->plan_period_end_date;
+			$starting_period_date=date('Y-m-d',strtotime($starting_period_date.'+1 day'));
+			//$starting_period_date=date('Y-m-d',strtotime($starting_period_date+0));
 		}
+		//$starting_period_datetime contains the core date to do 
+		//date calculations related to first time or consecutive invoices
+		$starting_period_datetime=strtotime($starting_period_date);
 
-			
+		//
+		$dia_fatura=$convenio->dia_fatura;
+
+		//php date format conversion to time format required on
+		//calculations between dates
+		$dt_inicio_strtotime_format=strtotime($convenio->dt_inicio);
+
+		//
+		$first_dia_fatura_date_format=$df->replaceDay($starting_period_date,$dia_fatura);
+		$first_dia_fatura_datetime_format=strtotime($first_dia_fatura_date_format);
+		
+
+		//Invoice end dates for month, semester and year
+		$period_due_date_month=
+		date('Y-m-d',strtotime('+1 month',$starting_period_datetime));
+		$period_due_date_semester=
+		date('Y-m-d',strtotime('+6 month',$starting_period_datetime));
+		$period_due_date_year=
+		date('Y-m-d',strtotime('+1 year',$starting_period_datetime));
+		//
+
+		//Invoice date limit payment
+		if (
+			$first_dia_fatura_datetime_format
+			<
+			$starting_period_datetime
+			) 
+		{
+			//
+			$invoice_due_date=
+			date(
+				'Y-m-d',
+				strtotime(
+					"+1 month",
+					$first_dia_fatura_datetime_format
+					)
+				)
+			;
+		} else {
+			$invoice_due_date=$first_dia_fatura_date_format;
+		}
 			
 		$plano_total=//1000000
 		$convenio->plano->valor_total
