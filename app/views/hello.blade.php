@@ -20,7 +20,7 @@
 		<a href="{[URL::to('endereco') ]}" >endereco</a> <br>
 		<a href="{[URL::to('fatura') ]}" >fatura</a> <br>
 		<a href="{[URL::to('limite') ]}" >limite</a> <br>
-		<a href="{[URL::to('plano') ]}" >plano</a> <br>
+		<a href="{[URL::to('plano') ]}" >plano (contains limite CRUD actions)</a> <br>
 		<a href="{[URL::to('produto') ]}" >produto</a> <br>
 		<a href="{[URL::to('resumoempresacliente') ]}" >resumoempresacliente</a> <br>
 		<a href="{[URL::to('resumofinanceiro') ]}" >resumofinanceiro</a> <br>

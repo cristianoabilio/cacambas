@@ -15,22 +15,30 @@
 	<!-- $h var comes from controller convenio, containing
 	the header names on table convenio -->
 	<tr>
-	@foreach($header as $h)
-		@if($h[1]==1)
-			<th>
-				{[$h[0]  ]}
-			</th>
-		@endif
-	@endforeach
-	<th>Invoices</th>
+		<th>
+			convenio number
+		</th>
+		@foreach($header as $h)
+			@if($h[1]==1)
+				<th>
+					{[$h[0]  ]}
+				</th>
+			@endif
+		@endforeach
+		<th>Invoices</th>
 	</tr>
 	@foreach($convenio as $e)
 		<tr>
+			<td>
+				<a href="{[URL::to('convenio/'.$e->id)]}">
+					{[$e->id]}
+				</a>
+			</td>
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<td>
 						@if($h[0]=='plano_id')
-						<a href="{[URL::to('convenio/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+						{[$e->plano->nome  ]}
 						@else
 						{[$e->$h[0]  ]}
 						@endif
