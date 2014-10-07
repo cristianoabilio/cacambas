@@ -24,6 +24,31 @@ class PlanoData extends StandardResponse{
 		return $header;
 	}
 
+	public function limiteheader(){
+		/*
+		$enderecoheader= headers on table enderecos
+		In order to display or hide on HTML table, set as
+		1 (visible) or 2 (not shown)
+		*/
+		$header=array(	
+			array('motoristas',1)
+			,array('caminhoes',1)
+			,array('rastreamento',0)
+			,array('cacambas',0)
+			,array('NFSe',0)
+			,array('manutencao',0)
+			,array('pagamentos',0)
+			,array('fluxo_caixa',0)
+			,array('relatorio_avancado',0)
+			,array('benchmarks',0)
+			,array('sessao_id',0)
+			,array('dthr_cadastro',0)
+
+			)
+		;	
+		return $header;
+	}
+
 	/**
 	* @param edata retrieves all data from table "plano"
 	*/
@@ -149,13 +174,10 @@ class PlanoController extends \BaseController {
 	 */
 	public function create()
 	{
-
-		$limite=Limite::all();
-
 		return
 		View::make(
-			'tempviews.plano.create',
-			compact('limite')
+			'tempviews.plano.create'
+
 			)
 		;
 	}
@@ -271,6 +293,7 @@ class PlanoController extends \BaseController {
 			}
 			$data=array(
 				'header'=>$d->header(),
+				'limiteheader'=>$d->limiteheader(),
 				'plano'=>$d->show($id),
 				'id' 		=>$id
 				)
