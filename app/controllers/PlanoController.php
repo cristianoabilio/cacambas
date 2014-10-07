@@ -53,28 +53,64 @@ class PlanoData extends StandardResponse{
 	*/
 	public function formatdata(){
 
-		return array(
-			'nome'				=>Input::get('nome'),
-			'descricao'			=>Input::get('descricao'),
+		$formdata=array(
+			'nome'					=>Input::get('nome'),
 			'valor_total'			=>Input::get('valor_total'),
-			'percentual_desconto'	=>Input::get('percentual_desconto'),
-			'valor_desconto'		=>Input::get('valor_desconto'),
 			'status'				=>1,
-			'validade_meses'		=>Input::get('validade_meses'),
-			'valiade_dias'		=>Input::get('valiade_dias'),
 			'disponivel'			=>Input::get('disponivel')
-				)
+			)
+		;
+
+		$nullable=array(
+			'descricao'				=>Input::get('descricao'),
+			'percentual_desconto'	=>Input::get('percentual_desconto'),
+			'validade_meses'		=>Input::get('validade_meses'),
+			'valiade_dias'			=>Input::get('valiade_dias')
+			)
+		;
+
+		foreach ($nullable as $k => $v) {
+			if ( trim($v)!='')
+			{
+				$formdata[$k]=$v;
+			}
+		}
+
+		
+		return $formdata;
+	}
+
+	public function formatDataFromLimite() {
+		return array(
+			'motoristas'			=>Input::get('motoristas'),
+			'caminhoes'				=>Input::get('caminhoes'),
+			'rastreamento'			=>Input::get('rastreamento'),
+			'cacambas'				=>Input::get('cacambas'),
+			'NFSe'					=>Input::get('NFSe'),
+			'manutencao'			=>Input::get('manutencao'),
+			'pagamentos'			=>Input::get('pagamentos'),
+			'fluxo_caixa'			=>Input::get('fluxo_caixa'),
+			'relatorio_avancado'	=>Input::get('relatorio_avancado'),
+			'benchmarks'			=>Input::get('benchmarks')
+			)
 		;
 	}
 
 	public function validrules(){
 		return array(
-			'nome'			=>'required'
-			//,'descricao'	=>'required'
-			,'valor_total'	=>'required'
-			,'disponivel'	=>'required'
-			// ,'dthr_cadastro'=> timestamp, not required
-			// ,'sessao_id'=> sessao, not required
+			'nome'					=>	'required'
+			,'valor_total'			=>	'required'
+			,'disponivel'			=>	'required'
+			,'motoristas'			=>	'required|integer'
+			,'caminhoes'			=>	'required|integer'
+			,'rastreamento'			=>	'required|integer'
+			,'cacambas'				=>	'required|integer'
+			,'NFSe'					=>	'required|integer'
+			,'manutencao'			=>	'required|boolean'
+			,'pagamentos'			=>	'required|boolean'
+			,'fluxo_caixa'			=>	'required|boolean'
+			,'relatorio_avancado'	=>	'required|boolean'
+			,'benchmarks'			=>	'required|boolean'
 			)
 		;
 	}
@@ -91,6 +127,7 @@ class PlanoController extends \BaseController {
 	public function index()
 	{
 		$d=new PlanoData;
+
 		$data=array(
 
 			'header'=>$d->header(),
@@ -112,9 +149,13 @@ class PlanoController extends \BaseController {
 	 */
 	public function create()
 	{
+
+		$limite=Limite::all();
+
 		return
 		View::make(
-			'tempviews.plano.create'
+			'tempviews.plano.create',
+			compact('limite')
 			)
 		;
 	}
@@ -134,6 +175,9 @@ class PlanoController extends \BaseController {
 
 		$d=new PlanoData;
 		$success=$d->formatdata();
+
+		$success_limite=$d->formatDataFromLimite();
+
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -165,6 +209,19 @@ class PlanoController extends \BaseController {
 			$e->save();
 
 			$success['id']=$e->id;
+
+			$e_limite=new Limite;
+			foreach ($success_limite as $key => $value) {
+				$e_limite->$key 	=$value;
+				$success[$key]		=$value;
+			}
+			$e_limite->plano_id=$e->id;
+			$e_limite->sessao_id	=$fake->sessao_id();
+			//$e_limite->sessao_id	=$this->id_sessao;
+
+			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+			$e_limite->save();
+			$success['idlimit']=$e_limite->id;
 
 			$res=$d->responsedata(
 				'plano',

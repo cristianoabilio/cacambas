@@ -63,18 +63,16 @@ class LimiteData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'motoristas'	=>	'required|integer'
-			,'caminhoes'	=>	'required|integer'
-			,'rastreamento'	=>	'required|integer'
-			,'cacambas'		=>	'required|integer'
-			,'NFSe'			=>	'required|integer'
-			,'manutencao'	=>	'required|boolean'
-			,'pagamentos'	=>	'required|boolean'
-			,'fluxo_caixa'	=>	'required|boolean'
-			,'relatorio_avancado'=>	'required|boolean'
-			,'benchmarks'	=>	'required|boolean'
-			// ,'dthr_cadastro'=> timestamp, not required
-			// ,'sessao_id'=> sessao, not required
+			'motoristas'			=>	'required|integer'
+			,'caminhoes'			=>	'required|integer'
+			,'rastreamento'			=>	'required|integer'
+			,'cacambas'				=>	'required|integer'
+			,'NFSe'					=>	'required|integer'
+			,'manutencao'			=>	'required|boolean'
+			,'pagamentos'			=>	'required|boolean'
+			,'fluxo_caixa'			=>	'required|boolean'
+			,'relatorio_avancado'	=>	'required|boolean'
+			,'benchmarks'			=>	'required|boolean'
 			)
 		;
 	}

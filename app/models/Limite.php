@@ -4,9 +4,6 @@ class Limite extends Eloquent {
 
 	protected $table = 'limite';
 
-	//Override default PK 'id' from Eloquent  
-	protected $primaryKey = 'id';
-
 	protected $guarded = array();
 	public static $rules = array();
 
@@ -14,12 +11,8 @@ class Limite extends Eloquent {
 			return $this->belongsTo('Plano');
 	}
 
-	/*public function Convenio() { 
-		return $this->belongsTo('Convenio');
-	}*/
-
 	public function Convenio() { 
-		return $this->hasOne('Convenio');
+		return $this->hasMany('Convenio');
 	}
 
 }

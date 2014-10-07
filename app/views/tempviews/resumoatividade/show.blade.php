@@ -1,3 +1,6 @@
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <h1>Funcionario {[$resumoatividade->Funcionario->nome]}</h1>
 <p>
 	empresa <b> {[$resumoatividade->Funcionario->Empresa->nome]}</b>

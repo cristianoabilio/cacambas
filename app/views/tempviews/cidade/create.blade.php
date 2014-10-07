@@ -1,3 +1,6 @@
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <div style='margin-left:200px'>
 	Add a new "cidade"
 

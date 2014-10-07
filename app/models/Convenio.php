@@ -13,10 +13,6 @@ class Convenio extends Eloquent {
 			return $this->hasMany('Fatura');
 	}
 
-	/*public function Limite() { 
-			return $this->hasOne('Limite');
-	}*/
-
 	public function Limite() { 
 			return $this->belongsTo('Limite');
 	}

@@ -65,8 +65,7 @@ class FuncionarioData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'login_id'	=>	'required'
-			,'nome'		=>	'required'
+			'nome'		=>	'required'
 			,'funcao'	=>	'required'
 			,'telefone'	=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required

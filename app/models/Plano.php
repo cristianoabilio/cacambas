@@ -4,9 +4,6 @@ class Plano extends Eloquent {
 
 	protected $table = 'plano';
 
-	//Override default PK 'id' from Eloquent  
-	protected $primaryKey = 'id';
-
 	protected $guarded = array();
 	public static $rules = array();
 
