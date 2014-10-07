@@ -20,21 +20,18 @@
 			@foreach($limite as $e)
 				<tr>
 					<td>
+						<a href="{[URL::to('limite/'.$e->id)]}">
 						@if(isset($e->plano->nome))
 							{[$e->plano->nome]}
 						@elseif(isset($e->convenio->id))
 							{[$e->convenio->empresa->nome]}
 						@endif
+						</a>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
 							<td>
-								@if($h[0]=='motoristas')
-								<a href="{[URL::to('limite/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								@else
 								{[$e->$h[0]  ]}
-								@endif
-								
 							</td>
 						@endif
 					@endforeach
@@ -43,12 +40,3 @@
 		</table>
 	</div>
 </body>
-
-
-		
-
-<br>
-<br>
-<br>
-<br>
-

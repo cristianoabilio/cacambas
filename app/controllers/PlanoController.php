@@ -357,6 +357,7 @@ class PlanoController extends \BaseController {
 
 		$d=new PlanoData;
 		$success=$d->formatdata();
+		$success_limite=$d->formatDataFromLimite();
 		//
 		try{
 			$validator= Validator::make(			
@@ -388,6 +389,15 @@ class PlanoController extends \BaseController {
 			$e->dthr_cadastro		=date('Y-m-d H:i:s');
 			$e->save();	
 
+			$e_limite=Limite::find($e->limite->id);
+			foreach ($success_limite as $key => $value) {
+				$e_limite->$key 	=$value;
+				$success[$key]		=$value;
+			}
+			$e_limite->sessao_id	=$fake->sessao_id();
+			//$e_limite->sessao_id	=$this->id_sessao;
+			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+			$e_limite->save();
 			$res=$d->responsedata(
 				'plano',
 				true,
@@ -454,6 +464,4 @@ class PlanoController extends \BaseController {
 		}
 		return Response::json($res);
 	}
-
-
 }
