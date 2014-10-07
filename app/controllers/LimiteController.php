@@ -14,8 +14,8 @@ class LimiteData extends StandardResponse{
 		$header=array(	
 			array('motoristas',1)
 			,array('caminhoes',1)
-			,array('rastreamento',0)
-			,array('cacambas',0)
+			,array('rastreamento',1)
+			,array('cacambas',1)
 			,array('NFSe',0)
 			,array('manutencao',0)
 			,array('pagamentos',0)

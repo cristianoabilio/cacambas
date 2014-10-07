@@ -20,11 +20,13 @@ class LimiteTableSeeder extends Seeder {
 			,'benchmarks'			=>	false
 			,'sessao_id'			=>	9
 			,'dthr_cadastro'			=>	date('Y-m-d H:i:s')
+			,'created_at'			=> date('Y-m-d H:i:s')
+			,'updated_at'			=> date('Y-m-d H:i:s')
 		));				
     							
 		DB::table('limite')->insert(array(					
 							
-			'plano_id'				=>	1
+			'plano_id'				=>	2
 			,'motoristas'			=>	5
 			,'caminhoes'			=>	5
 			,'rastreamento'			=>	5
@@ -37,11 +39,13 @@ class LimiteTableSeeder extends Seeder {
 			,'benchmarks'			=>	false
 			,'sessao_id'			=>	9
 			,'dthr_cadastro'			=>	date('Y-m-d H:i:s')
+			,'created_at'			=> date('Y-m-d H:i:s')
+			,'updated_at'			=> date('Y-m-d H:i:s')
 		));					
     							
 		DB::table('limite')->insert(array(
 							
-			'plano_id'				=>	1
+			'plano_id'				=>	3
 			,'motoristas'			=>	30
 			,'caminhoes'			=>	30
 			,'rastreamento'			=>	30
@@ -54,6 +58,8 @@ class LimiteTableSeeder extends Seeder {
 			,'benchmarks'			=>	true
 			,'sessao_id'			=>	9
 			,'dthr_cadastro'			=>	date('Y-m-d H:i:s')
+			,'created_at'			=> date('Y-m-d H:i:s')
+			,'updated_at'			=> date('Y-m-d H:i:s')
 		));					
     }						
 							
