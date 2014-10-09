@@ -135,6 +135,10 @@
 		$sumofproductusage_mes 		=0;
 		$sumofproductusage_semestre =0;
 		$sumofproductusage_ano 		=0;
+		/*
+		
+		
+		
 
 		//set number of days for one month invoice
 		$rangeofdays_mes=
@@ -153,6 +157,7 @@
 		strtotime($period_due_date_year)
 		-strtotime($starting_period_date);
 		$rangeofdays_ano=$rangeofdays_ano/(60*60*24);
+		/**/
 		?>
 		<table class="table">
 			<tr>
