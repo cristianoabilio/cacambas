@@ -209,6 +209,7 @@ class ConvenioController extends \BaseController {
 			foreach ($success_convenio as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->status=1;
 
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id		=$fake->sessao_id();
@@ -264,13 +265,23 @@ class ConvenioController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'convenio' 	=>$d->show($id),
-				'header' 	=>$d->header(),
-				'id' 		=>$id
+			$convenio=$d->show($id);
+			if ($convenio->limite==null) {
+				$limite=$convenio->limite;
+			} else {
+				$limite=$convenio->plano->limite;
+			}
+			$header=$d->header();
+
+			return View::make('tempviews.convenio.show',
+				compact(
+					'convenio',
+					'header',
+					'limite',
+					'id'
+					) 
 				)
 			;
-			return View::make('tempviews.convenio.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -305,13 +316,26 @@ class ConvenioController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'convenio'=>$d->show($id),
-				'header'=>$d->header(),
-				'id'=>$id
+			$convenio=$d->show($id);
+			if ($convenio->limite!=null) {
+				$limite=$convenio->limite;
+			} else {
+				$limite=$convenio->plano->limite;
+			}
+			$header=$d->header();
+			$limiteheader=$d->limiteHeader();
+
+			return View::make(
+				'tempviews.convenio.edit',
+				compact(
+					'convenio',
+					'header',
+					'limiteheader',
+					'limite',
+					'id'
+					) 
 				)
 			;
-			return View::make('tempviews.convenio.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -332,7 +356,11 @@ class ConvenioController extends \BaseController {
 		$fake=new fakeuser;
 		//
 		$d=new ConvenioData;
-		$success=$d->formatdata();
+
+		$success=			$d->formatdata();
+
+		$success_limite=	$d->formatDataFromLimite();
+
 		try{
 			$validator= Validator::make(		
 				Input::All(),
@@ -355,7 +383,7 @@ class ConvenioController extends \BaseController {
 			}
 
 			$e=Convenio::find($id);	
-			$e->empresa_id	=$fake->empresa();
+			//$e->empresa_id	=$fake->empresa();
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -364,6 +392,20 @@ class ConvenioController extends \BaseController {
 			//$e->sessao_id	=$this->id_sessao;
 
 			$e->save();
+
+			//adding limite value
+			$e_limite=Limite::find($e->limite_id);
+			foreach ($success_limite as $key => $value) {
+				$e_limite->$key 	=$value;
+				$success[$key]		=$value;
+			}
+
+			$e_limite->sessao_id	=$fake->sessao_id();
+			//$e_limite->sessao_id	=$this->id_sessao;
+
+			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+
+			$e_limite->save();
 
 			$res=$d->responsedata(
 				'convenio',
