@@ -449,10 +449,6 @@ class EnderecoController extends \BaseController {
 				$ebase->$key=$value;
 			}
 			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
-			$ebase->cep 			=Input::get( 'cep');
-			$ebase->restricao_hr_inicio=Input::get( 'restricao_hr_inicio');
-			$ebase->restricao_hr_fim=Input::get( 'restricao_hr_fim');
-			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
 			$ebase->sessao_id		=$fake->sessao_id();
 
 			$ebase->save();
@@ -464,7 +460,6 @@ class EnderecoController extends \BaseController {
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}
-			$e->cep 			=Input::get( 'cep');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
