@@ -123,9 +123,13 @@ class PlanoData extends StandardResponse{
 
 	public function validrules(){
 		return array(
+			//
+			//rules for plano
 			'nome'					=>	'required'
 			,'valor_total'			=>	'required'
 			,'disponivel'			=>	'required'
+			//
+			//rules for limite
 			,'motoristas'			=>	'required|integer'
 			,'caminhoes'			=>	'required|integer'
 			,'rastreamento'			=>	'required|integer'

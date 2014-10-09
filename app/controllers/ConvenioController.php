@@ -12,20 +12,35 @@ class ConvenioData extends StandardResponse{
 		*/
 		$header=array(	
 			array('plano_id',1)
-			,array('limite_id',0)
-			//,array('total_nfse',0)
 			,array('dia_fatura',0)
 			,array('tipo_pagamento',0)
 			,array('dt_inicio',0)
 			,array('dt_fim',0)
-			// ,array('dthr_cadastro',0)
-			// ,array('sessao_id',0)
 
 
 			)
 		;	
 		return $header;
 	}
+
+	public function limiteHeader() {
+		return array(
+			'motoristas',
+			'caminhoes',
+			'rastreamento',
+			'cacambas',
+			'NFSe',
+			'manutencao',
+			'pagamentos',
+			'fluxo_caixa',
+			'relatorio_avancado',
+			'benchmarks'
+			)
+		;
+	}
+	/*
+	
+			*/
 	
 	/**
 	* @param edata retrieves all data from table "limite"
@@ -45,8 +60,6 @@ class ConvenioData extends StandardResponse{
 
 		return array(
 			'plano_id'			=>Input::get('plano_id'),
-			'limite_id'			=>Input::get('limite_id'),
-			//'total_nfse'		=>Input::get('total_nfse'),
 			'dia_fatura'		=>Input::get('dia_fatura'),
 			'tipo_pagamento'	=>Input::get('tipo_pagamento'),
 			'dt_inicio'			=>Input::get('dt_inicio'),
@@ -55,15 +68,42 @@ class ConvenioData extends StandardResponse{
 		;
 	}
 
+	public function formatDataFromLimite() {
+		return array(
+			'motoristas'			=>Input::get('motoristas'),
+			'caminhoes'				=>Input::get('caminhoes'),
+			'rastreamento'			=>Input::get('rastreamento'),
+			'cacambas'				=>Input::get('cacambas'),
+			'NFSe'					=>Input::get('NFSe'),
+			'manutencao'			=>Input::get('manutencao'),
+			'pagamentos'			=>Input::get('pagamentos'),
+			'fluxo_caixa'			=>Input::get('fluxo_caixa'),
+			'relatorio_avancado'	=>Input::get('relatorio_avancado'),
+			'benchmarks'			=>Input::get('benchmarks')
+			)
+		;
+	}
+
 	public function validrules(){
 		return array(
+			//
+			//rules for convenio
 			'plano_id'=>		'required|integer'
-			//,'dia_fatura'=>		'required'
 			,'tipo_pagamento'=>	'required|integer'
 			,'dt_inicio'=>		'required|date'
-			//,'dt_fim'=>			'required'
-			// ,'dthr_cadastro'=> timestamp, not required
-			// ,'sessao_id'=> sessao, not required
+			//
+			//
+			//rules for limite
+			,'motoristas'			=>	'required|integer'
+			,'caminhoes'			=>	'required|integer'
+			,'rastreamento'			=>	'required|integer'
+			,'cacambas'				=>	'required|integer'
+			,'NFSe'					=>	'required|integer'
+			,'manutencao'			=>	'required|boolean'
+			,'pagamentos'			=>	'required|boolean'
+			,'fluxo_caixa'			=>	'required|boolean'
+			,'relatorio_avancado'	=>	'required|boolean'
+			,'benchmarks'			=>	'required|boolean'
 			)
 		;
 	}
@@ -100,8 +140,14 @@ class ConvenioController extends \BaseController {
 	 */
 	public function create()
 	{
-		
-		return View::make('tempviews.convenio.create');
+		$d=new ConvenioData;
+		$limite_h=$d->limiteHeader();
+		return 
+		View::make(
+			'tempviews.convenio.create',
+			compact('limite_h')
+			)
+		;
 
 	}
 
@@ -121,6 +167,10 @@ class ConvenioController extends \BaseController {
 		$d=new ConvenioData;
 
 		$success= $d->formatdata();
+
+		$success_convenio=$success;
+
+		$success_limite=$d->formatDataFromLimite();
 		try{
 			$validator= Validator::make(		
 				Input::All(),
@@ -141,10 +191,22 @@ class ConvenioController extends \BaseController {
 					)
 				;
 			}
+			$e_limite=new Limite;
+			foreach ($success_limite as $key => $value) {
+				$e_limite->$key 	=$value;
+				$success[$key]		=$value;
+			}
+			$e_limite->sessao_id	=$fake->sessao_id();
+			//$e_limite->sessao_id	=$this->id_sessao;
+
+			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+			$e_limite->save();
+			$success['idlimit']=$e_limite->id;
 
 			$e=new Convenio;
+			$e->limite_id=$success['idlimit'];
 			$e->empresa_id		=$fake->empresa();
-			foreach ($success as $key => $value) {
+			foreach ($success_convenio as $key => $value) {
 				$e->$key 	=$value;
 			}
 

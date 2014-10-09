@@ -23,14 +23,6 @@
 					<br>
 					<div class="row">
 						<div class="col-sm-6">
-							limite_id
-							<br>
-							<input type="text" name="limite_id" id="limite_id" class='form-control'>
-						</div>
-					</div>
-					<br>
-					<div class="row">
-						<div class="col-sm-6">
 							dia_fatura
 							<br>
 							<input type="text" name="dia_fatura" id="dia_fatura" class='form-control'>
@@ -60,13 +52,26 @@
 							<input type="text" name="dt_fim" id="dt_fim" class='form-control'>
 						</div>
 					</div>
+					<h3 class="text-muted">Limite</h3>
+					<div class="text-info">
+						Shown data as default plan values.
+						Modify according to your expectations.
+					</div>
+					@foreach($limite_h as $l)
+						<div class="row">
+							<div class="col-sm-6">
+								{[$l]}
+								<br>
+								<input type="text" name="{[$l]}" id="{[$l]}" class='form-control'>
+							</div>
+						</div>
+					@endforeach
 					<br>
 					<input type="submit" value='create'>
 					<br>
 				{[Form::close()  ]}
 			</div>
 			<div class="col-sm-6">
-				
 				<div class="row">
 					<div class="col-sm-3 text-info">
 						nome<br>
@@ -80,6 +85,11 @@
 							{[$p->descricao]}  <br>
 							{[$p->valor_total]}  <br>
 							{[$p->disponivel]}  <br>
+							<div class="hide ">
+								@foreach($limite_h as $l)
+								<div id="standardlimite_{[$l.'_'.$p->id]}" class='limite{[$p->id]}'>{[$p->limite->$l]}</div>
+								@endforeach
+							</div>
 						</div>
 					@endforeach
 				</div>
@@ -98,6 +108,14 @@
 			var plano_id=$(this).val();
 			$('.plano_desc').addClass('text-muted').removeClass('lead');
 			$('#plano_'+plano_id).removeClass('text-muted').addClass('lead');
+			$('.limite'+plano_id).each(function(){
+				var limitefeature=$(this).attr('id');
+				limitefeature=limitefeature.replace('standardlimite_','');
+				limitefeature=limitefeature.replace('_'+plano_id,'');
+				limitefeature=limitefeature.trim();
+				var limitevalue=$(this).html();
+				$('#'+limitefeature).val(limitevalue);
+			});
 		});
 	});
 </script>

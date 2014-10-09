@@ -172,5 +172,7 @@
 		<br>
 		<input type="submit" value='create'>
 		{[Form::close()]}
+		<br>
+		<a href="{[URL::to('endereco') ]}">Back to endereco index</a>
 	</div>
 </body>
