@@ -27,11 +27,11 @@ class EnderecoData extends StandardResponse{
 			array('enderecobase','bairro_id',1),
 			array('enderecobase','cidade_id',0),
 			array('enderecobase','estado_id',1),
-			array('enderecobase','cep',0),
+			array('enderecobase','cep_base',0),
 			array('enderecobase','logradouro',0),
 			array('enderecobase','regiao',1),
-			array('enderecobase','restricao_hr_inicio',0),
-			array('enderecobase','restricao_hr_fim',0),
+			array('enderecobase','restricao_hr_inicio_base',0),
+			array('enderecobase','restricao_hr_fim_base',0),
 			array('enderecobase','numero_inicio',0),
 			array('enderecobase','numero_fim',0),
 			array('enderecoempresa','empresa_id',1),
@@ -67,12 +67,14 @@ class EnderecoData extends StandardResponse{
 			'cep'					=>array( Input::get( 'cep'),'endereco'),
 			'latitude'				=>array( Input::get( 'latitude'),'endereco'),
 			'longitude'				=>array( Input::get( 'longitude'),'endereco'),
-			//'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
-			//'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
+			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
+			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
 			'bairro_id'				=>array( Input::get( 'bairro_id'),'enderecobase'),
 			'cidade_id'				=>array( Input::get( 'cidade_id'),'enderecobase'),
 			'estado_id'				=>array( Input::get( 'estado_id'),'enderecobase'),
-			'cep'					=>array( Input::get( 'cep'),'enderecobase'),
+			'cep_base'				=>array( Input::get( 'cep_base'),'enderecobase'),
+			'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio_base'),'enderecobase'),
+			'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim_base'),'enderecobase'),
 			'logradouro'			=>array( Input::get( 'logradouro'),'enderecobase'),
 			'regiao'				=>array( Input::get( 'regiao'),'enderecobase'),
 			'numero_inicio'			=>array( Input::get( 'numero_inicio'),'enderecobase'),
@@ -85,8 +87,8 @@ class EnderecoData extends StandardResponse{
 
 		$nullable=array(
 			//restricao_hr_inicio,restricao_hr_fim,complemento,observacao
-			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
-			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
+			'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
+			'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
 			'complemento'			=>array( Input::get( 'complemento'),'enderecoempresa'),
 			'observacao'			=>array( Input::get( 'observacao'),'enderecoempresa')
 			)
@@ -236,10 +238,6 @@ class EnderecoController extends \BaseController {
 				$ebase->$key=$value;
 			}
 			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
-			$ebase->cep 			=Input::get( 'cep');
-			$ebase->restricao_hr_inicio=Input::get( 'restricao_hr_inicio');
-			$ebase->restricao_hr_fim=Input::get( 'restricao_hr_fim');
-			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
 			$ebase->sessao_id		=$fake->sessao_id();
 
 			$ebase->save();
@@ -254,7 +252,6 @@ class EnderecoController extends \BaseController {
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}
-			$e->cep 			=Input::get( 'cep');
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
 			//$e->sessao_id	=$this->id_sessao;
