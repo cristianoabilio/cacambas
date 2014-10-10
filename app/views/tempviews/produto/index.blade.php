@@ -1,75 +1,70 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-index
-
-
-<br>
-<br>
-<a href="{[URL::to('produto/create')]}">Add new "produto"</a>
-<br>
-
-<table>
-	<!-- $h var comes from controller produto, containing
-	the header names on table produto -->
-	@foreach($header as $h)
-		@if($h[1]==1)
-			<th>
-				{[$h[0]  ]}
-			</th>
-		@endif
-	@endforeach
-
-	@foreach($produto as $e)
-		<tr>
+<body>
+	<div class="container">
+		<h1>Index for produto</h1>
+		<br>
+		<a href="{[URL::to('produto/create')]}">Add new "produto"</a>
+		<br>
+		<table>
+			<!-- $h var comes from controller produto, containing
+			the header names on table produto -->
 			@foreach($header as $h)
 				@if($h[1]==1)
-					<td>
-						@if($h[0]=='nome')
-						<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-						@else
-						{[$e->$h[0]  ]}
-						@endif
-						
-					</td>
+					<th>
+						{[$h[0]  ]}
+					</th>
 				@endif
 			@endforeach
-		</tr>
-	@endforeach
-</table>
 
-<br>
-<br>
-<br>
-<br>
+			@foreach($produto as $e)
+				<tr>
+					@foreach($header as $h)
+						@if($h[1]==1)
+							<td>
+								@if($h[0]=='nome')
+								<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+								@else
+								{[$e->$h[0]  ]}
+								@endif
+								
+							</td>
+						@endif
+					@endforeach
+				</tr>
+			@endforeach
+		</table>
+		<h1>Deleted products</h1>
 
-Deleted
-
-<table>
-	<!-- $h var comes from controller produto, containing
-	the header names on table produto -->
-	@foreach($header as $h)
-		@if($h[1]==1)
-			<th>
-				{[$h[0]  ]}
-			</th>
-		@endif
-	@endforeach
-
-	@foreach($deleted as $e)
-		<tr>
+		<table>
+			<!-- $h var comes from controller produto, containing
+			the header names on table produto -->
 			@foreach($header as $h)
 				@if($h[1]==1)
-					<td>
-						@if($h[0]=='nome')
-						<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-						@else
-						{[$e->$h[0]  ]}
-						@endif
-						
-					</td>
+					<th>
+						{[$h[0]  ]}
+					</th>
 				@endif
 			@endforeach
-		</tr>
-	@endforeach
-</table>
+
+			@foreach($deleted as $e)
+				<tr>
+					@foreach($header as $h)
+						@if($h[1]==1)
+							<td>
+								@if($h[0]=='nome')
+								<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+								@else
+								{[$e->$h[0]  ]}
+								@endif
+								
+							</td>
+						@endif
+					@endforeach
+				</tr>
+			@endforeach
+		</table>
+	</div>
+</body>
+		

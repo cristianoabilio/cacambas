@@ -146,6 +146,10 @@ class ConvenioFaturaController extends BaseController{
 		$count_fatura=Fatura::whereConvenio_id($c_id)
 		->count();
 
+		$sumofproductusage_mes 		=0;
+		$sumofproductusage_semestre =0;
+		$sumofproductusage_ano 		=0;
+
 		/**
 		* STARTING DATE INVOICE
 		* Setting the date that will be used as the 
@@ -240,6 +244,9 @@ class ConvenioFaturaController extends BaseController{
 				'c_id',
 				'convenio',
 				'count_fatura',
+				'sumofproductusage_mes',
+				'sumofproductusage_semestre',
+				'sumofproductusage_ano',
 				'starting_period_date',
 				'period_due_date_month',
 				'period_due_date_semester',
