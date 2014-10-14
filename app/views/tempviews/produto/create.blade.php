@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>Add a new produto</h1>
-		{[Form::open(array('URL'=>URL::to('produto')  )  )]}
+		{[Form::open(array('url'=>URL::to('produto')  )  )]}
 			<div class="row">
 				<div class="col-sm-2">
 					nome
