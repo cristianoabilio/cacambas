@@ -34,7 +34,7 @@ $st_r=new StandardResponse;
 Route::get('/myproduction', function() use ($st_r)
 {
 	$allviews=$st_r->allviews();
-	return View::make('hello',compact('allviews'));
+	return View::make('viewindex',compact('allviews'));
 });
 
 Route::get('/jsontest',function(){
@@ -58,14 +58,16 @@ foreach ($st_r->allviews() as  $v) {
 	//Resful resource routes
 	Route::resource($v, ucfirst($v).'Controller');
 
-	//temporary routes, can be removed on original project
+	//temporary routes, not required in original project
 	Route::get('visible'.$v, ucfirst($v).'Controller@visible');
+	Route::get('showvisible'.$v.'/{id}', ucfirst($v).'Controller@showvisible');
 }
 
 //nested controllers
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
+Route::resource('empresa.resumoempresacliente', 'EmpresaResumoempresaclienteController');
 
 
 

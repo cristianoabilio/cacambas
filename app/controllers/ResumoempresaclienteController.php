@@ -1,7 +1,7 @@
 <?php
 
 /**
- * comprasdata class only contains data related to
+ *  class only contains data related to
  * the table Compras
  */
 class ResumoempresaclienteData extends StandardResponse{
@@ -28,10 +28,10 @@ class ResumoempresaclienteData extends StandardResponse{
 	}
 	
 	/**
-	* @param edata retrieves all data from table "empresa"
+	* @param edata retrieves all data from table "Resumoempresacliente"
 	*/
-	public function edata ($empresa) {
-		return Empresa::find($empresa)->Resumoempresacliente;
+	public function edata () {
+		return Resumoempresacliente::all();
 	}
 
 	public function show($id){
@@ -195,7 +195,14 @@ class ResumoempresaclienteController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+
+	public function show ($id) {
+		$d=new ResumoempresaclienteData;
+		return $d->show($id);
+	}
+
+	//
+	public function showvisible($id)
 	{
 		$d=new ResumoempresaclienteData;
 		try {
