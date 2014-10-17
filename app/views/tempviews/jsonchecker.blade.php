@@ -18,7 +18,7 @@
 		<br>
 		Second test
 		<?php  
-		//$st_res
+		
 		$routes=array(
 			'compras',
 			'contabancaria',

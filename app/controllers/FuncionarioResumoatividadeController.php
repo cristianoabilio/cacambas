@@ -3,7 +3,7 @@
 * resumoatividadedata class only contains data related to						
  * the table resumoatividade						
  */						
-class ResumoatividadeData extends StandardResponse{						
+class FuncionarioResumoatividadeData extends StandardResponse{						
 	/** 					
 	* function name: header.					
 	* @param header with headers of empresa table					
@@ -74,11 +74,14 @@ class FuncionarioResumoatividadeController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index($id)
+	public function index () {
+		
+	}
+	public function visible($id)
 	{
 		$e=Funcionario::find($id);
 		$fake=new fakeuser;
-		$d=new ResumoatividadeData;
+		$d=new FuncionarioResumoatividadeData;
 		$data=array(
 			//all compras
 			'funcionario'=>$e,
@@ -88,7 +91,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 		;
 
 		return //$e->Resumoatividade
-		View::make('tempviews.resumoatividade.index',$data);
+		View::make('tempviews.funcionarioresumoatividade.index',$data);
 		;
 	}
 
@@ -104,7 +107,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 			'funcionario'=>Funcionario::find($id)
 			)
 		;
-		return View::make('tempviews.resumoatividade.create',$data);
+		return View::make('tempviews.funcionarioresumoatividade.create',$data);
 	}
 
 
@@ -120,7 +123,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
-		$d=new ResumoatividadeData;
+		$d=new FuncionarioResumoatividadeData;
 		$success=$d->formatdata();
 
 		try{
@@ -188,7 +191,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 	public function show($funcionario,$id)
 	{
 		//$func=Funcionario::find($funcionario);
-		$d=new ResumoatividadeData;
+		$d=new FuncionarioResumoatividadeData;
 
 		try {
 			if (Resumoatividade::whereId($id)->count()==0) {
@@ -209,7 +212,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 				'id'				=>$id
 				)
 			;
-			return View::make('tempviews.resumoatividade.show',$data);
+			return View::make('tempviews.funcionarioresumoatividade.show',$data);
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -225,7 +228,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 	 */
 	public function edit($funcionario,$id)
 	{
-		$d=new ResumoatividadeData;
+		$d=new FuncionarioResumoatividadeData;
 
 		try {
 			if (Resumoatividade::whereId($id)->count()==0) {
@@ -246,7 +249,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 				'id'				=>$id
 				)
 			;
-			return View::make('tempviews.resumoatividade.edit',$data);
+			return View::make('tempviews.funcionarioresumoatividade.edit',$data);
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
@@ -267,7 +270,7 @@ class FuncionarioResumoatividadeController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new ResumoatividadeData;
+		$d=new FuncionarioResumoatividadeData;
 		$success=$d->formatdata();
 
 		try{

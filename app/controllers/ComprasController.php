@@ -112,7 +112,6 @@ class ComprasController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-
 	public function visible () {
 		$d=new ComprasData;
 		$data=array(

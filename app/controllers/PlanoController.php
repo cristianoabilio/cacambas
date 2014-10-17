@@ -153,7 +153,22 @@ class PlanoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index () {
+		$d=new PlanoData;
+		return Response::json($d->edata());
+	}
+
+
+	/**
+	* Visible action IS NOT A RESTFUL RESOURCE 
+	* but is required for generating the view
+	* with access links to each resource,
+	* this is, the visible index page.
+	* The reason of this method is because the
+	* index resource will throw a JSON object
+	* and no view at all.
+	*/
+	public function visible()
 	{
 		$d=new PlanoData;
 

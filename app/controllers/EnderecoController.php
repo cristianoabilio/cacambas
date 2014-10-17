@@ -144,7 +144,10 @@ class EnderecoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index () {
+		//
+	}
+	public function visible()
 	{
 		$d=new EnderecoData;
 		$fake=new fakeuser;

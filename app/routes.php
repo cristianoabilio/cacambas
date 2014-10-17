@@ -19,6 +19,9 @@ Route::get('/', array('as' => 'app.view', function (){
     ;
 }));
 
+//Standard response instantiantion for creating all 
+//views and routes.
+$st_r=new StandardResponse;
 
 /**
 * ---------------------------------------------------------------------------------
@@ -28,12 +31,12 @@ Route::get('/', array('as' => 'app.view', function (){
 * THESE ROUTES CAN BE REMOVED FROM THE ORIGINAL PROJECT
 * 
 */
-Route::get('/myproduction', function()
+Route::get('/myproduction', function() use ($st_r)
 {
-	$st_r=new StandardResponse;
 	$allviews=$st_r->allviews();
 	return View::make('hello',compact('allviews'));
 });
+
 Route::get('/jsontest',function(){
 	return View::make('tempviews.jsonchecker');
 })
@@ -50,24 +53,14 @@ Route::get('/login',  array('as' => 'login.index',         'uses' => 'LoginContr
 //Route::get('fatura/empresa');
 
 
-Route::resource('compras', 'ComprasController');
-Route::resource('contabancaria', 'ContabancariaController');
-Route::controller('contaempresa', 'ContabancariaEmpresaController');
-Route::resource('convenio', 'ConvenioController');
-Route::resource('empresa', 'EmpresaController');
-Route::resource('funcionario', 'FuncionarioController');
-Route::resource('endereco','EnderecoController');
-Route::resource('fatura', 'FaturaController');
-Route::resource('limite', 'LimiteController');
-Route::resource('plano', 'PlanoController');
-Route::resource('produto', 'ProdutoController');
-Route::resource('resumoatividade', 'ResumoatividadeController');
-Route::resource('resumoempresacliente', 'ResumoempresaclienteController');
-Route::resource('resumofinanceiro', 'ResumofinanceiroController');
-Route::resource('bairro', 'BairroController');
-Route::resource('cidade', 'CidadeController');
-Route::resource('estado', 'EstadoController');
 
+foreach ($st_r->allviews() as  $v) {
+	//Resful resource routes
+	Route::resource($v, ucfirst($v).'Controller');
+
+	//temporary routes, can be removed on original project
+	Route::get('visible'.$v, ucfirst($v).'Controller@visible');
+}
 
 //nested controllers
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
@@ -75,20 +68,6 @@ Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeContro
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
 
 
-//temporary routes, can be removed on original project
-Route::get('visiblecompras','ComprasController@visible');
-Route::get('visiblecontabancaria','ContabancariaController@visible');
-Route::get('visibleconvenio','ConvenioController@visible');
-Route::get('visibleempresa','EmpresaController@visible');
-Route::get('visibleendereco','EnderecoController@visible');
-Route::get('visiblefatura','FaturaController@visible');
-Route::get('visiblelimite','LimiteController@visible');
-Route::get('visibleplano','PlanoController@visible');
-Route::get('visibleproduto','ProdutoController@visible');
-Route::get('visibleresumoatividade','ResumoatividadeController@visible');
-Route::get('visibleresumoempresacliente','ResumoempresaclienteController@visible');
-Route::get('visibleresumofinanceiro','ResumofinanceiroController@visible');
-Route::get('visiblefuncionario','FuncionarioController@visible');
-Route::get('visiblebairro','BairroController@visible');
-Route::get('visiblecidade','CidadeController@visible');
-Route::get('visibleestado','EstadoController@visible');
+
+
+

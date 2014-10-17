@@ -1,28 +1,67 @@
 <?php
-
-
-
+class ResumoatividadeData extends StandardResponse{
+	/** 					
+	* function name: header.					
+	* @param header with headers of empresa table					
+	*/					
+	public function header(){					
+		/*				
+		$header= headers on table resumoatividade				
+		In order to display or hide on HTML table, set as				
+		1 (visible) or 2 (not shown)				
+		*/				
+		$header=array(				
+			array('funcionario_id',0)			
+			,array('empresa_id',0)			
+			,array('mes_referencia',1)			
+			,array('ano_referencia',1)			
+			,array('total_os_colocada',1)			
+			,array('total_os_troca',0)			
+			,array('total_os_retirada',0)			
+		);				
+		return $header;				
+	}					
+						
+	/**					
+	* @param edata retrieves all data from table "empresa"					
+	*/
+	public function edata () {					
+		return resumoatividade::all();			
+	}	
+}
 
 class ResumoatividadeController extends \BaseController {
-
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index () {
+		$d=new resumoatividadeData;
+		return Response::json($d->edata());
+	}
+
+
+
+	/**
+	* Visible action IS NOT A RESTFUL RESOURCE 
+	* but is required for generating the view
+	* with access links to each resource,
+	* this is, the visible index page.
+	* The reason of this method is because the
+	* index resource will throw a JSON object
+	* and no view at all.
+	*/
+	public function visible () {
 		$fake=new fakeuser;
 		$d=new resumoatividadedata;
 		$data=array(
-			//all compras
-			'resumoatividade'=>$d->edata($fake->empresa() ),
+			'resumoatividade'=>$d->edata(),
 			'header'=>$d->header()
 			)
 		;
 		return View::make('tempviews.resumoatividade.index',$data);
 	}
-
 
 	/**
 	 * Show the form for creating a new resource.
@@ -221,6 +260,9 @@ class ResumoatividadeController extends \BaseController {
 	{
 		//
 	}*/
-
-
 }
+
+	
+
+
+//}
