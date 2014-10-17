@@ -115,7 +115,7 @@ class EnderecoData extends StandardResponse{
 			,'bairro_id'=>	'required|integer'
 			,'cidade_id'=>	'Required|integer'
 			,'estado_id'=>	'Required|integer'
-			//,'cep'=>	'required'
+			,'cep_base'=>	'required'
 			,'logradouro'=>	'required'
 			//,'regiao'=>	'required'
 			//,'restricao_hr_inicio'=>	'required'

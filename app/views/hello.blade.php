@@ -12,23 +12,37 @@
 		<h1>Temporary RESTfull controllers tester.</h1>
 
 		<br>
-		<a href="{[URL::to('compras') ]}" >compras</a> <br>
-		<a href="{[URL::to('contabancaria') ]}" >contabancaria</a> <br>
-		<a href="{[URL::to('convenio') ]}" >convenio (contains nested "Fatura" invoices)</a> <br>
-		<a href="{[URL::to('empresa') ]}" >empresa</a> <br>
-		<a href="{[URL::to('funcionario') ]}" >funcionario (contains resumoatividade as nested)</a> <br>
-		<a href="{[URL::to('endereco') ]}" >endereco</a> <br>
-		<a href="{[URL::to('fatura') ]}" >fatura</a> <br>
-		<a href="{[URL::to('limite') ]}" >limite</a> <br>
-		<a href="{[URL::to('plano') ]}" >plano (contains limite CRUD actions)</a> <br>
-		<a href="{[URL::to('produto') ]}" >produto</a> <br>
-		<a href="{[URL::to('resumoempresacliente') ]}" >resumoempresacliente</a> <br>
-		<a href="{[URL::to('resumofinanceiro') ]}" >resumofinanceiro</a> <br>
-		<a href="{[URL::to('bairro') ]}" >bairro</a> <br>
-		<a href="{[URL::to('cidade') ]}" >cidade</a> <br>
-		<a href="{[URL::to('estado') ]}" >estado</a> <br>
+		<table class="table table-condensed">
+			<tr>
+				<th>indexes as HTML views</th>
+				<th>indexes as JSON responses</th>
+			</tr>
+		
+			@foreach($allviews as $v)
+			<tr>
+				<td>
+					<a href="{[URL::to('visible'.$v) ]}" >{[$v]}</a>
+				</td>
+				<td>
+					<a href="{[URL::to($v) ]}" >json index on {[$v]}</a>
+				</td>
+			</tr>
+			@endforeach
+		</table>
 
-	
+		<hr>
+		<h3>Nested or combined resources in same view</h3>
+		<a href="{[URL::to('convenio') ]}" >convenio (contains nested "Fatura" invoices)</a> <br>
+		<a href="{[URL::to('funcionario') ]}" >funcionario (contains resumoatividade as nested)</a> <br>
+		<a href="{[URL::to('plano') ]}" >plano (contains limite CRUD actions)</a> <br>
+		
+		<hr>
+		<h3><a href="{[URL::to('jsontest') ]}">JSON checker</a></h3>
+		<hr>
+		<br>
+		<br>
+		<br>
+
 	</div>
 </body>
 </html>

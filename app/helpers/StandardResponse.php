@@ -27,4 +27,26 @@ class StandardResponse {
 	}
 
 	public $noexist='resource does not exist';
+
+	public function allviews(){
+		return array(
+			'compras',
+			'contabancaria',
+			'convenio',
+			'empresa',
+			'endereco',
+			'fatura',
+			'limite',
+			'plano',
+			'produto',
+			'resumoatividade',
+			'resumoempresacliente',
+			'resumofinanceiro',
+			'funcionario',
+			'bairro',
+			'cidade',
+			'estado'
+			)
+		;
+	}
 }

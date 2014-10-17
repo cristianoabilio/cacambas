@@ -18,13 +18,13 @@ class ComprasData extends StandardResponse{
 		$header=array(	
 			array('produto_id',1)
 			,array('convenio_id',1)
-			,array('limite',0)
-			,array('desconto_valor',0)
-			,array('desconto_percentual',0)
-			,array('ativado',0)
-			,array('data_compra',0)
-			,array('data_ativacao',0)
-			,array('data_desativacao',0)
+			,array('limite',1)
+			,array('desconto_valor',1)
+			,array('desconto_percentual',1)
+			,array('ativado',1)
+			,array('data_compra',1)
+			,array('data_ativacao',1)
+			,array('data_desativacao',1)
 		);	
 		return $header;
 	}
@@ -98,6 +98,22 @@ class ComprasController extends \BaseController {
 	 */
 	public function index()
 	{
+		$d=new ComprasData;
+		return Response::json($d->edata());
+	}
+
+
+	/**
+	* Visible action IS NOT A RESTFUL RESOURCE 
+	* but is required for generating the view
+	* with access links to each resource,
+	* this is, the visible index page.
+	* The reason of this method is because the
+	* index resource will throw a JSON object
+	* and no view at all.
+	*/
+
+	public function visible () {
 		$d=new ComprasData;
 		$data=array(
 			//all compras

@@ -51,7 +51,7 @@ class ConvenioFaturaData extends StandardResponse{
 			,array('forma_pagamento',0)
 			,array('status_pagamento',0)
 			,array('valor_plano',0)
-			,array('valor_prod_compra',0)
+			//,array('valor_prod_compra',0)
 			,array('valor_prod_uso',0)
 			,array('valor_boleto',0)
 			,array('valor_total',1)
@@ -87,7 +87,7 @@ class ConvenioFaturaData extends StandardResponse{
 			'forma_pagamento'		=>Input::get('forma_pagamento'),
 			'status_pagamento'		=>Input::get('status_pagamento'),
 			'valor_plano'			=>Input::get('valor_plano'),
-			'valor_prod_compra'		=>Input::get('valor_prod_compra'),
+			//'valor_prod_compra'		=>Input::get('valor_prod_compra'),
 			'valor_prod_uso'		=>Input::get('valor_prod_uso'),
 			'valor_boleto'			=>Input::get('valor_boleto'),
 			'valor_total'			=>Input::get('valor_total'),
@@ -102,11 +102,18 @@ class ConvenioFaturaData extends StandardResponse{
 
 	public function validrules() {
 		return array(
-			'plan_period_end_date'=>'required'
+			'plan_period_end_date'=>'required | date',
+			'forma_pagamento'=>'required |integer',
+			'status_pagamento'=>'required | integer',
+			'valor_plano'=>'required |numeric',
+			'valor_prod_uso'=>'required |  numeric',
+			'valor_boleto'=>'required |numeric',
+			'valor_total'=>'required |  numeric'
 			)
 		;
 	}
 }
+//array('')
 
 class ConvenioFaturaController extends BaseController{
 
@@ -280,6 +287,16 @@ class ConvenioFaturaController extends BaseController{
 					)
 				)
 			;
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
 			
 			$e=new Fatura;
 			$e->convenio_id			=$c_id;
@@ -291,7 +308,7 @@ class ConvenioFaturaController extends BaseController{
 			$e->dthr_cadastro		=date('Y-m-d');
 
 			$e->sessao_id			=$fake->sessao_id();
-			$e->save();
+			//$e->save();
 
 			$success['id']=$e->id;
 

@@ -19,10 +19,30 @@ Route::get('/', array('as' => 'app.view', function (){
     ;
 }));
 
+
+/**
+* ---------------------------------------------------------------------------------
+* Temporary routes: next routes contain TEMPORARY
+* ---------------------------------------------------------------------------------
+* VIEWS for project cacambas.
+* THESE ROUTES CAN BE REMOVED FROM THE ORIGINAL PROJECT
+* 
+*/
 Route::get('/myproduction', function()
 {
-	return View::make('hello');
+	$st_r=new StandardResponse;
+	$allviews=$st_r->allviews();
+	return View::make('hello',compact('allviews'));
 });
+Route::get('/jsontest',function(){
+	return View::make('tempviews.jsonchecker');
+})
+;
+/**
+* ---------------------------------------------------------------------------------
+* End of temporary routes.
+* ---------------------------------------------------------------------------------
+*/
 
 /*Fake routes: no auth set yet*/
 
@@ -53,3 +73,22 @@ Route::resource('estado', 'EstadoController');
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
+
+
+//temporary routes, can be removed on original project
+Route::get('visiblecompras','ComprasController@visible');
+Route::get('visiblecontabancaria','ContabancariaController@visible');
+Route::get('visibleconvenio','ConvenioController@visible');
+Route::get('visibleempresa','EmpresaController@visible');
+Route::get('visibleendereco','EnderecoController@visible');
+Route::get('visiblefatura','FaturaController@visible');
+Route::get('visiblelimite','LimiteController@visible');
+Route::get('visibleplano','PlanoController@visible');
+Route::get('visibleproduto','ProdutoController@visible');
+Route::get('visibleresumoatividade','ResumoatividadeController@visible');
+Route::get('visibleresumoempresacliente','ResumoempresaclienteController@visible');
+Route::get('visibleresumofinanceiro','ResumofinanceiroController@visible');
+Route::get('visiblefuncionario','FuncionarioController@visible');
+Route::get('visiblebairro','BairroController@visible');
+Route::get('visiblecidade','CidadeController@visible');
+Route::get('visibleestado','EstadoController@visible');
