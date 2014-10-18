@@ -6,7 +6,7 @@
 		<h1>
 			Edit resumofinanceiro resource number {[$id]}
 		</h1>
-		{[ Form::model($resumofinanceiro, array('route' => array('resumofinanceiro.update', $resumofinanceiro->id), 'method' => 'PUT')) ]}
+		{[ Form::model($resumofinanceiro, array('route' => array('empresa.resumofinanceiro.update', $empresa_id,$resumofinanceiro->id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
 				mes_referencia
@@ -161,9 +161,9 @@
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
 		{[Form::close()]}
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visibleresumofinanceiro')]}">Back to resumofinanceiro </a>
+		<br>
+		<br>
 		
-		<br>
-		<br>
-		<a href="{[URL::to('visibleresumofinanceiro')]}">Back to resumofinanceiro</a>
 	</div>
 </body>

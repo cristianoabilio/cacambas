@@ -4,9 +4,9 @@
 <body>
 	<div class="container">
 		<h1>
-			Index for all funcionario
+			Index for funcionario related to empresa number {[$empresa_id]}
 		</h1>
-		<a href="{[URL::to('funcionario/create')]}" class='hide'>Add new "funcionario"</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/create')]}">Add new "funcionario"</a>
 		<br>
 		<table class='table'>
 			<!-- $h var comes from controller, containing
@@ -29,8 +29,8 @@
 							@if($h[1]==1)
 								<td>
 									@if($h[0]=='nome')
-									<a href="{[URL::to('showvisiblefuncionario/'.$e->id)]}">HTML {[$e->$h[0]  ]}</a> |
-									<a href="{[URL::to('funcionario/'.$e->id)]}">JSON {[$e->$h[0]  ]}</a>
+									<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblefuncionario/'.$e->id)]}">HTML {[$e->$h[0]  ]}</a> |
+									<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id)]}">JSON {[$e->$h[0]  ]}</a>
 									@else
 									{[$e->$h[0]  ]}
 									@endif
@@ -39,7 +39,7 @@
 							@endif
 						@endforeach
 						<td>
-							<a href="{[URL::to('funcionario/'.$e->id.'/resumoatividade')]}">See atividade</a>
+							<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/resumoatividade')]}">See atividade</a>
 						</td>
 					</tr>
 				@endif

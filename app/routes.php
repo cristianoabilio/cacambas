@@ -63,11 +63,32 @@ foreach ($st_r->allviews() as  $v) {
 	Route::get('showvisible'.$v.'/{id}', ucfirst($v).'Controller@showvisible');
 }
 
-//nested controllers
+
+/**
+* ---------------------------------------------------------------------------------
+* NESTED CONTROLLERS
+* ---------------------------------------------------------------------------------
+*
+*/
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
 
+
+//Nested funcionario
+Route::resource('empresa.funcionario', 'EmpresaFuncionarioController');
+Route::get('empresa/{id_empresa}/visiblefuncionario','EmpresaFuncionarioController@visible');
+Route::get('empresa/{id_empresa}/showvisiblefuncionario/{id}','EmpresaFuncionarioController@showvisible');
+
+
+//Nested resumoempresacliente
+Route::resource('empresa.resumofinanceiro', 'EmpresaResumofinanceiroController');
+Route::get('empresa/{id_empresa}/visibleresumofinanceiro','EmpresaResumofinanceiroController@visible');
+Route::get('empresa/{id_empresa}/showvisibleresumofinanceiro/{id}','EmpresaResumofinanceiroController@showvisible');
+
+
+
+//Nested resumoempresacliente
 Route::resource('empresa.resumoempresacliente', 'EmpresaResumoempresaclienteController');
 Route::get('empresa/{id_empresa}/visibleresumoempresacliente','EmpresaResumoempresaclienteController@visible');
 Route::get('empresa/{id_empresa}/showvisibleresumoempresacliente/{id}','EmpresaResumoempresaclienteController@showvisible');

@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>Edit funcionario number {[$funcionario->id]}</h1>
-		{[ Form::model($funcionario, array('route' => array('funcionario.update', $funcionario->id), 'method' => 'PUT')) ]}
+		{[ Form::model($funcionario, array('route' => array('empresa.funcionario.update', $empresa_id,$funcionario->id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
 				login_id

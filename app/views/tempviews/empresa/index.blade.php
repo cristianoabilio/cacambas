@@ -26,6 +26,16 @@
 								<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 								<ul>
 									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/visiblefuncionario']}">HTML funcionario</a>
+										|
+										<a href="{[URL::to('empresa/'.$e->id).'/funcionario']}">JSON funcionario</a>
+									</li>
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/visibleresumofinanciero']}">HTML resumofinanciero</a>
+										|
+										<a href="{[URL::to('empresa/'.$e->id).'/resumofinanciero']}">JSON Resumofinanciero</a>
+									</li>
+									<li>
 										<a href="{[URL::to('empresa/'.$e->id).'/visibleresumoempresacliente']}">HTML resumoempresacliente</a>
 										|
 										<a href="{[URL::to('empresa/'.$e->id).'/resumoempresacliente']}">JSON Resumoempresacliente</a>

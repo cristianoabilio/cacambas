@@ -3,7 +3,7 @@
  *  class only contains data related to
  * the table mentioned on this controller
  */
-class ResumofinanceiroData extends StandardResponse{
+class EmpresaResumofinanceiroData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -42,14 +42,10 @@ class ResumofinanceiroData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
-	public function edata() {
-		return Resumofinanceiro::all();
-	}
-
-	/*public function edata ($empresa) {
+	public function edata ($empresa) {
 		return Empresa::find($empresa)
 		->Resumofinanceiro;
-	}*/
+	}
 
 	public function show($id){
 		return Resumofinanceiro::find($id);
@@ -115,18 +111,17 @@ class ResumofinanceiroData extends StandardResponse{
 
 }
 
-
-class ResumofinanceiroController extends \BaseController {
+class EmpresaResumofinanceiroController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	public function index () {
-		$d=new ResumofinanceiroData;
-		return Response::json($d->edata());
+	public function index($empresa_id)
+	{
+		$d=new EmpresaResumofinanceiroData;
+		return Response::json($d->edata($empresa_id));
 	}
 
 
@@ -140,16 +135,17 @@ class ResumofinanceiroController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-	public function visible()
-	{
-		$d=new ResumofinanceiroData;
+	public function visible ($empresa_id) {
+		$fake=new fakeuser;
+		$d=new EmpresaResumofinanceiroData;
 		$data=array(
 			//all compras
-			'resumofinanceiro'=>$d->edata(),
-			'header'=>$d->header()
+			'resumofinanceiro'	=>$d->edata($empresa_id),
+			'header'			=>$d->header(),
+			'empresa_id' 		=>$empresa_id
 			)
 		;
-		return View::make('tempviews.resumofinanceiro.index',$data);
+		return View::make('tempviews.Empresaresumofinanceiro.index',$data);
 	}
 
 
@@ -158,10 +154,10 @@ class ResumofinanceiroController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		$data=array();
-		return View::make('tempviews.resumofinanceiro.create',$data);
+		$data=compact('empresa_id');
+		return View::make('tempviews.Empresaresumofinanceiro.create',$data);
 	}
 
 
@@ -170,14 +166,9 @@ class ResumofinanceiroController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
-		/*//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-		//
-
-		$d=new ResumofinanceiroData;
+		$d=new EmpresaResumofinanceiroData;
 		$success=$d->formatdata();
 
 		try{
@@ -202,7 +193,7 @@ class ResumofinanceiroController extends \BaseController {
 			}
 
 			$e=new Resumofinanceiro;
-			$e->empresa_id=$fake->empresa();
+			$e->empresa_id=$empresa_id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -231,7 +222,7 @@ class ResumofinanceiroController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);*/
+		return Response::json($res,$code);
 	}
 
 
@@ -241,16 +232,16 @@ class ResumofinanceiroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($empresa_id,$id)
 	{
-		$d=new ResumofinanceiroData;
+		$d=new EmpresaResumofinanceiroData;
 		return $d->show($id);
 	}
 
 
-	public function showvisible($id)
+	public function showvisible($empresa_id,$id)
 	{
-		$d=new ResumofinanceiroData;
+		$d=new EmpresaResumofinanceiroData;
 		try {
 			if (Resumofinanceiro::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -266,10 +257,11 @@ class ResumofinanceiroController extends \BaseController {
 			$data=array(
 				'resumofinanceiro'	=>$d->show($id),
 				'header'	=>$d->header(),
-				'id'		=>$id
+				'id'		=>$id,
+				'empresa_id'=>$empresa_id
 				)
 			;
-			return View::make('tempviews.resumofinanceiro.show',$data);
+			return View::make('tempviews.Empresaresumofinanceiro.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -284,9 +276,9 @@ class ResumofinanceiroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		$d=new ResumofinanceiroData;
+		$d=new EmpresaResumofinanceiroData;
 		try {
 			if (Resumofinanceiro::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -301,16 +293,16 @@ class ResumofinanceiroController extends \BaseController {
 			}
 			$data=array(
 				'resumofinanceiro'	=>$d->show($id),
-				'header'	=>$d->header(),
-				'id'		=>$id
+				'header'			=>$d->header(),
+				'id'				=>$id,
+				'empresa_id'		=>$empresa_id
 				)
 			;
-			return View::make('tempviews.resumofinanceiro.edit',$data);
+			return View::make('tempviews.Empresaresumofinanceiro.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
 	}
 
 
@@ -320,11 +312,9 @@ class ResumofinanceiroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$id)
 	{
-		
-
-		$d=new ResumofinanceiroData;
+		$d=new EmpresaResumofinanceiroData;
 		$success=$d->formatdata();
 
 		try{
@@ -386,10 +376,10 @@ class ResumofinanceiroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	public function destroy($empresa_id,$id)
 	{
 		//
-	}*/
+	}
 
 
 }

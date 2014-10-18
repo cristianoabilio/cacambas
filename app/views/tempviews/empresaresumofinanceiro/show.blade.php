@@ -10,9 +10,14 @@
 			<div class="col-sm-6">{[$resumofinanceiro->$h[0]   ]}</div>
 		</div>
 		@endforeach
-		<a href="{[URL::to('resumofinanceiro/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/resumofinanceiro/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
 		<br>
-		<a href="{[URL::to('visibleresumofinanceiro')]}">Back to resumofinanceiro</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visibleresumofinanceiro')]}">Back to resumofinanceiro </a>
+		<br>
+		<br>
+		<br>
 	</div>
 </body>
+
+

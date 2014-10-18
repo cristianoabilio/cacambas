@@ -10,12 +10,12 @@
 			<div class="col-sm-6">{[$funcionario->$h[0]   ]}</div>
 		</div>
 		@endforeach
-		<a href="{[URL::to('funcionario/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
 		{[ Form::model($funcionario, array('route' => array('funcionario.destroy', $funcionario->id), 'method' => 'DELETE')) ]}
 		<input type='submit' value='delete'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('visiblefuncionario')]}       ">Back to funcionario</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visiblefuncionario')]}       ">Back to funcionario</a>
 	</div>
 </body>

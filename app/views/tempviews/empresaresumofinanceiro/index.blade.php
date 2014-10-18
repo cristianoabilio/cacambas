@@ -3,10 +3,8 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Index on resumofinanciero for all companies (empresa) </h1>
-		<a 
-		class='hide'
-		href="{[URL::to('resumofinanceiro/create')]}">Add new "resumofinanceiro"</a>
+		<h1>Index on resumofinanciero for empresa {[$empresa_id]} </h1>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/resumofinanceiro/create')]}">Add new "resumofinanceiro"</a>
 		<br>
 		<table class='table'>
 			<tr>
@@ -23,10 +21,10 @@
 			@foreach($resumofinanceiro as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisibleresumofinanceiro/'.$e->id)]}">
+						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisibleresumofinanceiro/'.$e->id)]}">
 							HTML for {[$e->id]}
 						</a> |
-						<a href="{[URL::to('resumofinanceiro/'.$e->id)]}">
+						<a href="{[URL::to('empresa/'.$empresa_id.'/resumofinanceiro/'.$e->id)]}">
 							JSON for {[$e->id]}
 						</a> |
 					</td>
@@ -40,6 +38,3 @@
 		</table>
 	</div>
 </body>
-		
-
-		

@@ -1,10 +1,9 @@
 <?php
-
 /**
  * FuncionarioData class only contains data related to
  * the table Funcionario 
  */
-class FuncionarioData extends StandardResponse{
+class EmpresaFuncionarioData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -29,13 +28,13 @@ class FuncionarioData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
-	/*public function edata ($empresa) {
+	public function edata ($empresa) {
 		return Empresa::find($empresa)->Funcionario;
-	}*/
-	public function edata () {
+	}
+	/*public function edata ($id) {
 		return Funcionario::all();
 	}
-
+	*/
 	public function show($id){
 		return Funcionario::find($id);
 	}
@@ -79,19 +78,18 @@ class FuncionarioData extends StandardResponse{
 
 }
 
-
-class FuncionarioController extends \BaseController {
+class EmpresaFuncionarioController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		$d=new FuncionarioData;
-		return Response::json($d->edata());
+	public function index($empresa_id)
+	{
+		$d=new EmpresaFuncionarioData;
+		return Response::json($d->edata($empresa_id) );	
 	}
-
 
 	/**
 	* Visible action IS NOT A RESTFUL RESOURCE 
@@ -102,17 +100,16 @@ class FuncionarioController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-	public function visible()
-	{
-		$d=new FuncionarioData;
+	public function visible ($empresa_id) {
+		$d=new EmpresaFuncionarioData;
 		$data=array(
 			//all funcionario
-			'funcionario'=>$d->edata(),
-			'header'=>$d->header()
+			'funcionario'=>$d->edata($empresa_id),
+			'header'=>$d->header(),
+			'empresa_id'=>$empresa_id
 			)
 		;
-		return View::make('tempviews.funcionario.index',$data);
-
+		return View::make('tempviews.empresafuncionario.index',$data);
 	}
 
 
@@ -121,11 +118,10 @@ class FuncionarioController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		$data=array();
-		return View::make('tempviews.funcionario.create',$data);
-
+		$data=compact('empresa_id');
+		return View::make('tempviews.empresafuncionario.create',$data);
 	}
 
 
@@ -134,15 +130,11 @@ class FuncionarioController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-		//
-
-		$d=new FuncionarioData;
+		$d=new EmpresaFuncionarioData;
 		$success=$d->formatdata();
+		$fake=new fakeuser;
 
 		try{
 			$validator= Validator::make(			
@@ -166,7 +158,7 @@ class FuncionarioController extends \BaseController {
 			}
 
 			$e=new Funcionario;	
-			$e->empresa_id= $fake->empresa();
+			$e->empresa_id= $empresa_id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -212,14 +204,14 @@ class FuncionarioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
-		$d=new FuncionarioData;
+	public function show($empresa_id,$id)
+	{
+		$d=new EmpresaFuncionarioData;
 		return $d->show($id);
 	}
-	//
-	public function showvisible($id)
-	{
-		$d=new FuncionarioData;
+
+	public function showvisible($empresa_id,$id) {
+		$d=new EmpresaFuncionarioData;
 		try {
 			if (Funcionario::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -235,10 +227,11 @@ class FuncionarioController extends \BaseController {
 			$data=array(
 				'funcionario'	=>$d->show($id),
 				'header'		=>$d->header(),
-				'id'			=>$id
+				'id'			=>$id,
+				'empresa_id'	=>$empresa_id
 				)
 			;
-			return View::make('tempviews.funcionario.show',$data);
+			return View::make('tempviews.empresafuncionario.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -252,9 +245,9 @@ class FuncionarioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		$d=new FuncionarioData;
+		$d=new EmpresaFuncionarioData;
 		try {
 			if (Funcionario::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -270,16 +263,15 @@ class FuncionarioController extends \BaseController {
 			$data=array(
 				'funcionario'	=>$d->show($id),
 				'header'		=>$d->header(),
-				'id'			=>$id
+				'id'			=>$id,
+				'empresa_id'	=>$empresa_id
 				)
 			;
-			return View::make('tempviews.funcionario.edit',$data);
+			return View::make('tempviews.empresafuncionario.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
-
 	}
 
 
@@ -289,13 +281,13 @@ class FuncionarioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new FuncionarioData;
+		$d=new EmpresaFuncionarioData;
 		$success=$d->formatdata();
 
 		try{
@@ -363,7 +355,7 @@ class FuncionarioController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new FuncionarioData;
+		$d=new EmpresaFuncionarioData;
 		try{
 			if (Funcionario::whereId($id)->count()==0) {
 				throw new Exception(json_encode($d->noexist));
@@ -398,4 +390,6 @@ class FuncionarioController extends \BaseController {
 
 		return Response::json($res,$code);
 	}
+
+
 }

@@ -1,1 +1,0 @@
-C:\Users\by.me\Desktop\projects\github\xps/resources/views/tempviews/empresaresumoempresacliente/edit2.blade.php
