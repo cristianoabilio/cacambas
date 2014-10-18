@@ -43,6 +43,12 @@
 		<a href="{[URL::to('convenio') ]}" >convenio (contains nested "Fatura" invoices)</a> <br>
 		<a href="{[URL::to('funcionario') ]}" >funcionario (contains resumoatividade as nested)</a> <br>
 		<a href="{[URL::to('plano') ]}" >plano (contains limite CRUD actions)</a> <br>
+		<br>
+		Nested on empresa
+		<ul>
+			<li>resumoempresacliente</li>
+		</ul>
+		
 		
 		<hr>
 		<h3><a href="{[URL::to('jsontest') ]}">JSON checker</a></h3>

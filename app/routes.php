@@ -67,7 +67,10 @@ foreach ($st_r->allviews() as  $v) {
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
+
 Route::resource('empresa.resumoempresacliente', 'EmpresaResumoempresaclienteController');
+Route::get('empresa/{id_empresa}/visibleresumoempresacliente','EmpresaResumoempresaclienteController@visible');
+Route::get('empresa/{id_empresa}/showvisibleresumoempresacliente/{id}','EmpresaResumoempresaclienteController@showvisible');
 
 
 

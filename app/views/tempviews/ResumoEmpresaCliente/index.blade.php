@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>Resumoempresacliente index for all companies (empresas) </h1>
-		<a href="{[URL::to('resumoempresacliente/create')]}">Add new "resumoempresacliente"</a>
+		<a href="{[URL::to('resumoempresacliente/create')]}"  class='hide'>Add new "resumoempresacliente"</a>
 		<br>
 		<table class='table'>
 			<!-- $h var comes from controller Empresa2, containing

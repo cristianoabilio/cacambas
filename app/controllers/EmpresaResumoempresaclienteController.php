@@ -92,17 +92,17 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-	public function visible($id_empresa)
+	public function visible($empresa_id)
 	{
-		$fake=new fakeuser;
+		//$fake=new fakeuser;
 		$d=new EmpresaResumoempresaclienteData;
 		$data=array(
-			//all compras
-			'resumoempresacliente'=>$d->edata($fake->empresa()),
+			'empresa_id'=>$empresa_id,
+			'resumoempresacliente'=>$d->edata($empresa_id),
 			'header'=>$d->header()
 			)
 		;
-		return View::make('tempviews.ResumoEmpresaCliente.index',$data);
+		return View::make('tempviews.empresaResumoEmpresaCliente.index',$data);
 
 	}
 
@@ -112,9 +112,13 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		//
+		return View::make(
+			'tempviews.empresaResumoEmpresaCliente.create',
+			compact('empresa_id')
+			)
+		;
 	}
 
 
@@ -123,9 +127,62 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
-		//
+		$d=new EmpresaResumoempresaclienteData;
+		$success=$d->formatdata();
+		
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=new Resumoempresacliente;
+			$e->empresa_id = $empresa_id;	
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->save();
+
+			$success['id']=$e->id;
+
+			$res=$d->responsedata(
+				'resumoempresacliente',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'resumoempresacliente',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -137,7 +194,35 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$d=new EmpresaResumoempresaclienteData;
+		return $d->show($id);
+	}
+
+	public function showvisible ($empresa_id,$id) {
+		$d=new EmpresaResumoempresaclienteData;
+		try {
+			if (Resumoempresacliente::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumoempresacliente',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'resumoempresacliente'	=>$d->show($id),
+				'header'				=>$d->header(),
+				'id'					=>$id,
+				'empresa_id'			=>$empresa_id
+				)
+			;
+			return View::make('tempviews.EmpresaResumoEmpresaCliente.show',$data);
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -147,9 +232,33 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		//
+		$d=new EmpresaResumoempresaclienteData;
+		try {
+			if (Resumoempresacliente::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'resumoempresacliente',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$data=array(
+				'resumoempresacliente'	=>$d->show($id),
+				'header'				=>$d->header(),
+				'id'					=>$id,
+				'empresa_id'			=>$empresa_id
+				)
+			;
+			return View::make('tempviews.EmpresaResumoEmpresaCliente.edit',$data);
+
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -159,9 +268,60 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresaid,$id)
 	{
-		//
+		$d=new EmpresaResumoempresaclienteData;
+		$success=$d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),	
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=Resumoempresacliente::find($id);
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->save();	
+
+			//response structure required for angularjs
+			$res=$d->responsedata(
+				'resumoempresacliente',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'resumoempresacliente',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 

@@ -1,14 +1,11 @@
-<?php 
-$fake=new fakeuser;
-?>
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
 		<h1>Resumoempresacliente index for empresa 
-		{[Empresa::find($fake->empresa())->nome ]}</h1>
-		<a href="{[URL::to('resumoempresacliente/create')]}">Add new "resumoempresacliente"</a>
+		{[Empresa::find($empresa_id)->nome ]}</h1>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/resumoempresacliente/create')]}">Add new "resumoempresacliente"</a>
 		<br>
 		 <table class='table'>
 		 	<!-- $h var comes from controller Empresa2, containing
@@ -28,18 +25,18 @@ $fake=new fakeuser;
 						@if($h[1]==1)
 							<td>
 								@if($h[0]=='cliente_id')
-								<a href="{[URL::to('resumoempresacliente/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+								<a href="{[URL::to('empresa/'.$empresa_id.'/resumoempresacliente/'.$e->id)]}">JSON data: {[$e->$h[0]  ]}</a>
 								@else
 								{[$e->$h[0]  ]}
 								@endif
 								
 							</td>
 						@endif
-						<td>
-							{[$e->id]}
-						</td>
+					
 					@endforeach
-
+					<td>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisibleresumoempresacliente/'.$e->id)]}">HTML view  {[$e->id]}</a>
+					</td>
 				</tr>
 			@endforeach
 		</table>

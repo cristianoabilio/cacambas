@@ -95,11 +95,11 @@ class ResumoempresaclienteController extends \BaseController {
 	*/
 	public function visible()
 	{
-		$fake=new fakeuser;
+		
 		$d=new ResumoempresaclienteData;
 		$data=array(
 			//all compras
-			'resumoempresacliente'=>$d->edata($fake->empresa()),
+			'resumoempresacliente'=>$d->edata(),
 			'header'=>$d->header()
 			)
 		;
@@ -127,7 +127,8 @@ class ResumoempresaclienteController extends \BaseController {
 	 */
 	public function store()
 	{
-		//instantiate fake user (for empresa and sessao)
+		//DEPRECATED AS STORE ACTION IS NESTED WITHIN EMPRESA!!!
+		/*//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
@@ -185,7 +186,7 @@ class ResumoempresaclienteController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);
+		return Response::json($res,$code);*/
 	}
 
 
@@ -263,9 +264,7 @@ class ResumoempresaclienteController extends \BaseController {
 
 		} catch (Exception $e) {
 			return $e->getMessage();
-		}
-
-			
+		}	
 	}
 
 

@@ -24,6 +24,13 @@
 							<td>
 								@if($h[0]=='nome')
 								<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
+								<ul>
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/visibleresumoempresacliente']}">HTML resumoempresacliente</a>
+										|
+										<a href="{[URL::to('empresa/'.$e->id).'/resumoempresacliente']}">JSON Resumoempresacliente</a>
+									</li>
+								</ul>
 								@else
 								{[$e->$h[0]  ]}
 								@endif
