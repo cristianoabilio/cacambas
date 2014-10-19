@@ -26,6 +26,11 @@
 								<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 								<ul>
 									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/visibleendereco']}">HTML endereco</a>
+										|
+										<a href="{[URL::to('empresa/'.$e->id).'/endereco']}">JSON endereco</a>
+									</li>
+									<li>
 										<a href="{[URL::to('empresa/'.$e->id).'/visiblefuncionario']}">HTML funcionario</a>
 										|
 										<a href="{[URL::to('empresa/'.$e->id).'/funcionario']}">JSON funcionario</a>

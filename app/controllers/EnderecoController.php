@@ -372,8 +372,6 @@ class EnderecoController extends \BaseController {
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-
-			
 	}
 
 
