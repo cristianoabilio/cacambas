@@ -53,14 +53,6 @@
 			</div>
 		</div>
 		<br>
-		 
-		 
-		 
-		 
-		 
-		 
-
-		
 		<br>
 		<br>
 		<input type="submit" value='SAVE CHANGES'>

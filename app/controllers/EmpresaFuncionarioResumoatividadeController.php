@@ -1,15 +1,19 @@
 <?php
-class ResumoatividadeData extends StandardResponse{
-	/** 					
-	* function name: header.					
-	* @param header with headers of empresa table					
-	*/					
-	public function header(){					
-		/*				
-		$header= headers on table resumoatividade				
-		In order to display or hide on HTML table, set as				
-		1 (visible) or 2 (not shown)				
-		*/				
+/**
+ * FuncionarioData class only contains data related to
+ * the table Funcionario 
+ */
+class EmpresaFuncionarioResumoatividadeData extends StandardResponse{
+	/** 
+	* function name: header.
+	* @param header with headers of empresa table
+	*/
+	public function header(){
+		/*
+		$header= headers on table empresas
+		In order to display or hide on HTML table, set as
+		1 (visible) or 2 (not shown)
+		*/
 		$header=array(				
 			array('funcionario_id',0)			
 			,array('empresa_id',0)			
@@ -18,19 +22,22 @@ class ResumoatividadeData extends StandardResponse{
 			,array('total_os_colocada',1)			
 			,array('total_os_troca',0)			
 			,array('total_os_retirada',0)			
-		);				
-		return $header;				
-	}					
-						
-	/**					
-	* @param edata retrieves all data from table "empresa"					
+		);
+		return $header;
+	}
+	
+	/**
+	* @param edata retrieves all data from table "empresa"
 	*/
-	public function edata () {					
-		return resumoatividade::all();			
-	}	
-
-	public function show ($id) {
-		return resumoatividade::find($id);
+	public function edata ($funcionario_id) {
+		return Funcionario::find($funcionario_id)->Resumoatividade;
+	}
+	/*public function edata ($id) {
+		return Funcionario::all();
+	}
+	*/
+	public function show($id){
+		return Resumoatividade::find($id);
 	}
 
 	/**
@@ -39,10 +46,8 @@ class ResumoatividadeData extends StandardResponse{
 	public function formatdata(){
 
 		$formatdata= array(
-			'funcionario_id'	=>Input::get('funcionario_id'),
 			'mes_referencia'	=>Input::get('mes_referencia'),
 			'ano_referencia'	=>Input::get('ano_referencia'),
-			'empresa_id'		=>Input::get('empresa_id'),
 			'total_os_colocada'	=>Input::get('total_os_colocada'),
 			'total_os_troca'	=>Input::get('total_os_troca'),
 			'total_os_retirada'	=>Input::get('total_os_retirada')
@@ -76,48 +81,42 @@ class ResumoatividadeData extends StandardResponse{
 
 }
 
-class ResumoatividadeController extends \BaseController {
+class EmpresaFuncionarioResumoatividadeController extends \BaseController {
+
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		$d=new resumoatividadeData;
-		return Response::json($d->edata());
+	public function index($empresa_id,$funcionario_id)
+	{
+		$d=new EmpresaFuncionarioResumoatividadeData;
+		return $d->edata($funcionario_id);
 	}
 
-
-
-	/**
-	* Visible action IS NOT A RESTFUL RESOURCE 
-	* but is required for generating the view
-	* with access links to each resource,
-	* this is, the visible index page.
-	* The reason of this method is because the
-	* index resource will throw a JSON object
-	* and no view at all.
-	*/
-	public function visible () {
-		
-		$d=new resumoatividadedata;
+	public function visible($empresa_id,$funcionario_id)
+	{
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		$data=array(
-			'resumoatividade'=>$d->edata(),
-			'header'=>$d->header()
+			'resumoatividade'=>$d->edata($funcionario_id),
+			'header'=>$d->header(),
+			'empresa_id'=>$empresa_id,
+			'funcionario_id'=>$funcionario_id
 			)
 		;
-		return View::make('tempviews.resumoatividade.index',$data);
+		return View::make('tempviews.EmpresaFuncionarioResumoatividade.index',$data);
 	}
+
 
 	/**
 	 * Show the form for creating a new resource.
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id,$funcionario_id)
 	{
-		$data=array();
-		return View::make('tempviews.resumoatividade.create',$data);
+		$data=compact('empresa_id','funcionario_id');
+		return View::make('tempviews.EmpresaFuncionarioResumoatividade.create',$data);
 	}
 
 
@@ -126,13 +125,8 @@ class ResumoatividadeController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id,$funcionario_id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-		//
-
 		$d=new resumoatividadedata;
 		$success=$d->formatdata();
 
@@ -161,8 +155,8 @@ class ResumoatividadeController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->empresa_id= $fake->empresa();
-			
+			$e->empresa_id= $empresa_id;
+			$e->funcionario_id= $funcionario_id;
 			$e->save();	
 
 			$res=$d->responsedata(
@@ -195,23 +189,26 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($empresa_id,$funcionario_id,$id)
 	{
-		$d=new ResumoatividadeData;
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		return $d->show($id);
 	}
 
-	public function showvisible ($id) {
-		//resumoatividadedata
-		$d=new ResumoatividadeData;
+	public function showvisible($empresa_id,$funcionario_id,$id)
+	{
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		$data=array(
 			'resumoatividade'	=>$d->show($id),
 			'header'	=>$d->header(),
+			'empresa_id'=>$empresa_id,
+			'funcionario_id'=>$funcionario_id,
 			'id'		=>$id
 			)
 		;
-		return View::make('tempviews.resumoatividade.show',$data);
+		return View::make('tempviews.EmpresaFuncionarioResumoatividade.show',$data);
 	}
+
 
 
 	/**
@@ -220,17 +217,18 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$funcionario_id,$id)
 	{
-		//resumoatividadedata
-		$d=new resumoatividadedata;
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		$data=array(
 			'resumoatividade'	=>$d->show($id),
-			'header'			=>$d->header(),
-			'id'				=>$id
+			'header'	=>$d->header(),
+			'empresa_id'=>$empresa_id,
+			'funcionario_id'=>$funcionario_id,
+			'id'		=>$id
 			)
 		;
-		return View::make('tempviews.resumoatividade.edit',$data);
+		return View::make('tempviews.EmpresaFuncionarioResumoatividade.edit',$data);
 	}
 
 
@@ -240,13 +238,9 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$funcionario_id,$id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-
-		$d=new resumoatividadedata;
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		$success=$d->formatdata();
 
 		try{
@@ -274,6 +268,8 @@ class ResumoatividadeController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			//$e->empresa_id= $empresa_id;
+			//$e->funcionario_id= $funcionario_id;
 			$e->save();	
 
 			//response structure required for angularjs
@@ -307,13 +303,10 @@ class ResumoatividadeController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	public function destroy($empresa_id,$funcionario_id,$id)
 	{
 		//
-	}*/
+	}
+
+
 }
-
-	
-
-
-//}

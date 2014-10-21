@@ -3,9 +3,11 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Index for all plans "resumoatividade"</h1>
+		<h1>Index for "resumoatividade" on funcionario {[Funcionario::find($funcionario_id)->nome]}  </h1>
 		<div>
-			<a href="{[URL::to('resumoatividade/create')]}">Add new "resumoatividade"</a>
+			<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$funcionario_id.'/resumoatividade/create')]}">
+				Add new "resumoatividade" for {[Funcionario::find($funcionario_id)->nome]}
+			</a>
 		</div>
 		<br><br>
 		<table class='table'>
@@ -22,9 +24,9 @@
 			@foreach($resumoatividade as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisibleresumoatividade/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$funcionario_id.'/showvisibleresumoatividade/'.$e->id)]}">HTML resource {[$e->id]}</a>
 						|
-						<a href="{[URL::to('resumoatividade/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$funcionario_id.'/resumoatividade/'.$e->id)]}">JSON resource {[$e->id]}</a>
 					</td>
 					@foreach($header as $h)
 					

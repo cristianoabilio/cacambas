@@ -88,6 +88,11 @@ Route::resource('empresa.funcionario', 'EmpresaFuncionarioController');
 Route::get('empresa/{id_empresa}/visiblefuncionario','EmpresaFuncionarioController@visible');
 Route::get('empresa/{id_empresa}/showvisiblefuncionario/{id}','EmpresaFuncionarioController@showvisible');
 
+//Nested resumoatividade (inside empresa.funcionario)
+Route::resource('empresa.funcionario.resumoatividade', 'EmpresaFuncionarioResumoatividadeController');
+Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visibleresumoatividade','EmpresaFuncionarioResumoatividadeController@visible');
+Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisibleresumoatividade/{id}','EmpresaFuncionarioResumoatividadeController@showvisible');
+
 
 //Nested resumoempresacliente
 Route::resource('empresa.resumofinanceiro', 'EmpresaResumofinanceiroController');

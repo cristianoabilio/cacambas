@@ -19,7 +19,6 @@
 					</th>
 				@endif
 			@endforeach
-				<th>ResumoAtividade</th>
 			</tr>
 			@foreach($funcionario as $e)
 
@@ -31,6 +30,13 @@
 									@if($h[0]=='nome')
 									<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblefuncionario/'.$e->id)]}">HTML {[$e->$h[0]  ]}</a> |
 									<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id)]}">JSON {[$e->$h[0]  ]}</a>
+									<ul>
+										<li>
+											<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/visibleresumoatividade')]}">HTML resumoatividade</a>
+											|
+											<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/resumoatividade')]}">JSON resumoatividade</a>
+										</li>
+									</ul>
 									@else
 									{[$e->$h[0]  ]}
 									@endif
@@ -38,9 +44,6 @@
 								</td>
 							@endif
 						@endforeach
-						<td>
-							<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/resumoatividade')]}">See atividade</a>
-						</td>
 					</tr>
 				@endif
 					
