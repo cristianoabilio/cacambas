@@ -6,15 +6,9 @@
 		<h1>Data for endereco record {[$id]} </h1>
 		@foreach($header as $h)
 			<div class="row">
-				<div class="col-sm-2">{[$h[1] ]}</div>
+				<div class="col-sm-2">{[$h[0] ]}</div>
 				<div class="col-sm-6">
-					@if($h[0]=='endereco')
-						{[$endereco->enderecobase->endereco->first()->$h[1]   ]}
-					@elseif( $h[0]=='enderecobase')
-						{[$endereco->enderecobase->$h[1]   ]}
-					@elseif( $h[0]=='enderecoempresa' )
-						{[$endereco->$h[1]   ]}
-					@endif
+					{[$endereco->$h[0] ]}
 				</div>
 			</div>
 		@endforeach
@@ -25,10 +19,10 @@
 			....  Edit .... 
 		</a>
 		<br>
-		{[ Form::model($endereco, array('route' => array('endereco.destroy', $endereco->id), 'method' => 'DELETE')) ]}
-			<input type="submit" value='DELETE'>
-		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('endereco')]}">Back to endereco</a>
+		<a href="{[URL::to('visibleendereco')]}">Back to endereco</a>
+		<br>
+		<br>
+		<br>
 	</div>
 </body>	

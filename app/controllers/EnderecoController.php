@@ -17,30 +17,12 @@ class EnderecoData extends StandardResponse{
 		*/
 		$header=
 		array(	
-			//array('endereco','enderecobase_id',1),
-			array('endereco','numero',1),
-			array('endereco','cep',0),
-			array('endereco','latitude',0),
-			array('endereco','longitude',0),
-			array('endereco','restricao_hr_inicio',0),
-			array('endereco','restricao_hr_fim',0),
-			array('enderecobase','bairro_id',1),
-			array('enderecobase','cidade_id',0),
-			array('enderecobase','estado_id',1),
-			array('enderecobase','cep_base',0),
-			array('enderecobase','logradouro',0),
-			array('enderecobase','regiao',1),
-			array('enderecobase','restricao_hr_inicio_base',0),
-			array('enderecobase','restricao_hr_fim_base',0),
-			array('enderecobase','numero_inicio',0),
-			array('enderecobase','numero_fim',0),
-			array('enderecoempresa','empresa_id',1),
-			array('enderecoempresa','enderecobase_id',1),
-			array('enderecoempresa','endereco_id',0),
-			array('enderecoempresa','tipo',0),
-			array('enderecoempresa','complemento',0),
-			array('enderecoempresa','observacao',0),
-			array('enderecoempresa','status',1)
+			array('numero',0),
+			array('cep',1),
+			array('latitude',0),
+			array('longitude',0),
+			array('restricao_hr_inicio',0),
+			array('restricao_hr_fim',0)
 			)
 		;	
 		return $header;
@@ -49,12 +31,12 @@ class EnderecoData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "endereco"
 	*/
-	public function edata ($empresa) {
-		return Empresa::find($empresa)->Enderecoempresa;
+	public function edata () {
+		return Endereco::all();
 	}
 
 	public function show($id){
-		return Enderecoempresa::find($id);
+		return Endereco::find($id);
 	}
 
 	/**
@@ -63,34 +45,17 @@ class EnderecoData extends StandardResponse{
 	public function formatdata(){
 		$formatdata=array(
 			//'enderecobase_id'	=>array( Input::get( 'enderecobase_id'),'endereco'),
-			'numero'				=>array( Input::get( 'numero'),'endereco'),
-			'cep'					=>array( Input::get( 'cep'),'endereco'),
-			'latitude'				=>array( Input::get( 'latitude'),'endereco'),
-			'longitude'				=>array( Input::get( 'longitude'),'endereco'),
-			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
-			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
-			'bairro_id'				=>array( Input::get( 'bairro_id'),'enderecobase'),
-			'cidade_id'				=>array( Input::get( 'cidade_id'),'enderecobase'),
-			'estado_id'				=>array( Input::get( 'estado_id'),'enderecobase'),
-			'cep_base'				=>array( Input::get( 'cep_base'),'enderecobase'),
-			'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio_base'),'enderecobase'),
-			'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim_base'),'enderecobase'),
-			'logradouro'			=>array( Input::get( 'logradouro'),'enderecobase'),
-			'regiao'				=>array( Input::get( 'regiao'),'enderecobase'),
-			'numero_inicio'			=>array( Input::get( 'numero_inicio'),'enderecobase'),
-			'numero_fim'			=>array( Input::get( 'numero_fim'),'enderecobase'),
-			//'endereco_id'	=>array( Input::get( 'endereco_id'),'enderecoempresa'),
-			'tipo'					=>array( Input::get( 'tipo'),'enderecoempresa'),
-			'status'				=>array( Input::get( 'status'),'enderecoempresa')
+			'numero'				=>Input::get( 'numero'),
+			'cep'					=>Input::get( 'cep'),
+			'latitude'				=>Input::get( 'latitude'),
+			'longitude'				=>Input::get( 'longitude'),
+			'restricao_hr_inicio'	=>Input::get( 'restricao_hr_inicio'),
+			'restricao_hr_fim'		=>Input::get( 'restricao_hr_fim')
 			)
 		;
 
 		$nullable=array(
 			//restricao_hr_inicio,restricao_hr_fim,complemento,observacao
-			'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
-			'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
-			'complemento'			=>array( Input::get( 'complemento'),'enderecoempresa'),
-			'observacao'			=>array( Input::get( 'observacao'),'enderecoempresa')
 			)
 		;
 
@@ -105,37 +70,13 @@ class EnderecoData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'numero'=>	'required'
-			,'cep'=>	'required|integer'
-			/*
-			,'latitude'=>	'required'
-			,'longitude'=>	'required'
-			,'restricao_hr_inicio'=>	'required'
-			,'restricao_hr_fim'=>	'required'*/
-			,'bairro_id'=>	'required|integer'
-			,'cidade_id'=>	'Required|integer'
-			,'estado_id'=>	'Required|integer'
-			,'cep_base'=>	'required'
-			,'logradouro'=>	'required'
-			//,'regiao'=>	'required'
-			//,'restricao_hr_inicio'=>	'required'
-			//,'restricao_hr_fim'=>	'required'
-			/*,'numero_inicio'=>	'required'
-			,'numero_fim'=>	'required'*/
-			//,'empresa_id'=>	'required'
-			//,'enderecobase_id'=>	'required'
-			//,'endereco_id'=>	'required'
-			,'tipo'=>	'required'
-			/*,'complemento'=>	'required'
-			,'observacao'=>	'required'
-			,'status'=>	'required'*/
-
-			// ,'dthr_cadastro'=> timestamp, not required
-			// ,'sessao_id'=> sessao, not required
+			'numero'	=>	'required'
+			,'cep'		=>	'required|integer'
 			)
 		;
 	}
 }
+
 
 class EnderecoController extends \BaseController {
 
@@ -144,18 +85,16 @@ class EnderecoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		//
-	}
-	public function visible()
+	public function index()
 	{
 		$d=new EnderecoData;
-		$fake=new fakeuser;
-		$data=array(
-			//retrieve all "endereco"
-			'enderecoempresa'=>$d->edata($fake->empresa() ),
+		return $d->edata();
+	}
 
-			//retrieving table headers
+	public function visible () {
+		$d=new EnderecoData;
+		$data=array(
+			'endereco'=>$d->edata(),
 			'header'=>$d->header()
 			)
 		;
@@ -170,12 +109,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function create()
 	{
-		//form for new Empresa
-		return
-		View::make(
-			'tempviews.endereco.create'
-			)
-		;
+		return View::make('tempviews.endereco.create');
 	}
 
 
@@ -186,120 +120,7 @@ class EnderecoController extends \BaseController {
 	 */
 	public function store()
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
 		//
-
-		$d=new EnderecoData;
-		$success=$d->formatdata();
-		$succesresponse=array();
-
-		$data_from_enderecobase=array();
-
-		$data_from_endereco=array();
-
-		$data_from_enderecoempresa=array();
-
-		foreach ($success as $key => $value) {
-			$succesresponse[$key]=$value[0];
-
-			if ($value[1]=='enderecobase') {
-				$data_from_enderecobase[$key]=$value[0];
-			}
-			else if ($value[1]=='endereco') {
-				$data_from_endereco[$key]=$value[0];
-			}
-			else if ($value[1]=='enderecoempresa') {
-				$data_from_enderecoempresa[$key]=$value[0];
-			}
-		}
-
-		try{
-			$validator= Validator::make(		
-				Input::All(),	
-				$d->validrules(),
-				array(	
-					'required'=>'Required field'
-					)
-				)	
-			;
-
-			if ($validator->fails()){
-				throw new Exception(
-					json_encode(
-						array(
-							'validation_errors'=>$validator->messages()->all()
-							)
-						)
-					)
-				;
-			}
-
-			$ebase=new Enderecobase;
-			foreach ($data_from_enderecobase as $key => $value) {
-				$ebase->$key=$value;
-			}
-			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
-			$ebase->sessao_id		=$fake->sessao_id();
-
-			$ebase->save();
-
-			$enderecobaseid=$ebase->id;
-
-			//adding id to success array
-			$succesresponse['enderecobase_id']=$enderecobaseid;
-
-			$e=new Endereco;
-			$e->enderecobase_id=	$enderecobaseid;
-			foreach ($data_from_endereco as $key => $value) {
-				$e->$key=$value;
-			}
-			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->sessao_id	=$fake->sessao_id();
-			//$e->sessao_id	=$this->id_sessao;
-			$e->save();
-
-			//adding id to success array
-			$succesresponse['endereco_id']=$e->id;
-
-			$e_empresa=new Enderecoempresa;
-			$e_empresa->empresa_id=$fake->empresa();
-			$e_empresa->enderecobase_id=	$enderecobaseid;
-			foreach ($data_from_enderecoempresa as $key => $value) {
-				$e_empresa->$key=$value;
-			}
-			$e_empresa->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e_empresa->sessao_id	=$fake->sessao_id();
-			//$e_empresa->sessao_id	=$this->id_sessao;
-			$e_empresa->save();
-
-			//adding id to success array
-			$succesresponse['enderecoempresa_id']=$e_empresa->id;
-
-
-			$res=$d->responsedata(
-				'endereco',
-				true,
-				'store',
-				$succesresponse
-				)
-			;
-			$code=200;
-
-
-		} catch (Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'endereco',
-				false,
-				'store',
-				$validator->messages()
-				)
-			;
-			$code=400;
-		}
-		return Response::json($res);
 	}
 
 
@@ -312,8 +133,14 @@ class EnderecoController extends \BaseController {
 	public function show($id)
 	{
 		$d=new EnderecoData;
+		return $d->show($id);
+	}
+
+	public function showvisible($id)
+	{
+		$d=new EnderecoData;
 		try {
-			if (Enderecoempresa::whereId($id)->count()==0) {
+			if (Endereco::whereId($id)->count()==0) {
 				$res=$d->responsedata(
 					'enderecoempresa',
 					false,
@@ -335,8 +162,6 @@ class EnderecoController extends \BaseController {
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-
-			
 	}
 
 
@@ -363,8 +188,8 @@ class EnderecoController extends \BaseController {
 			}
 			$data=array(
 				'endereco' 	=>$d->show($id),
-				'header' 	=>$d->header(),
-				'id' 		=>$id
+				'header' 		=>$d->header(),
+				'id' 			=>$id
 				)
 			;
 			return View::make('tempviews.endereco.edit',$data);
@@ -383,34 +208,10 @@ class EnderecoController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
-		//
-
 		$d=new EnderecoData;
 		$success=$d->formatdata();
-		$succesresponse=array();
 
-		$data_from_enderecobase=array();
-
-		$data_from_endereco=array();
-
-		$data_from_enderecoempresa=array();
-
-		foreach ($success as $key => $value) {
-			$succesresponse[$key]=$value[0];
-
-			if ($value[1]=='enderecobase') {
-				$data_from_enderecobase[$key]=$value[0];
-			}
-			else if ($value[1]=='endereco') {
-				$data_from_endereco[$key]=$value[0];
-			}
-			else if ($value[1]=='enderecoempresa') {
-				$data_from_enderecoempresa[$key]=$value[0];
-			}
-		}
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
@@ -432,40 +233,15 @@ class EnderecoController extends \BaseController {
 				;
 			}
 
-			$e_empresa=Enderecoempresa::find($id);
-			//$e_empresa->empresa_id=$fake->empresa();
-			//$e_empresa->enderecobase_id=	$enderecobaseid;
-			foreach ($data_from_enderecoempresa as $key => $value) {
-				$e_empresa->$key=$value;
-			}
-			$e_empresa->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e_empresa->sessao_id	=$fake->sessao_id();
-			//$e_empresa->sessao_id	=$this->id_sessao;
-			$e_empresa->save();
-
-			$ebase_id=$e_empresa->enderecobase_id;
-
-			$ebase=Enderecobase::find($ebase_id);
-			foreach ($data_from_enderecobase as $key => $value) {
-				$ebase->$key=$value;
-			}
-			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
-			$ebase->sessao_id		=$fake->sessao_id();
-
-			$ebase->save();
-
-			$enderecoid=$ebase->endereco->first()->id;
-
-			$e=Endereco::find($enderecoid);
-			$e->enderecobase_id=	$ebase_id;
-			foreach ($data_from_endereco as $key => $value) {
-				$e->$key=$value;
+			$e=Endereco::find($id);
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
 			}
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->sessao_id	=$fake->sessao_id();
-			//$e->sessao_id	=$this->id_sessao;
-			$e->save();
+			$e->sessao_id		=$fake->sessao_id();
+			$e->save();	
 
+			//response structure required for angularjs
 			$res=$d->responsedata(
 				'endereco',
 				true,
@@ -498,45 +274,8 @@ class EnderecoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new EnderecoData;
-		try{
-
-			if (Enderecoempresa::whereId($id)->count()==0) {
-				throw new Exception(json_encode($d->noexist));
-			}
-
-
-			//$enderecoempresaid=$id;
-			$enderecobaseid=Enderecoempresa::find($id)->enderecobase_id;
-			$enderecoid=Enderecobase::find($enderecobaseid)->endereco->first()->id;
-			
-			//Deleting associated records to enderecoempresa
-			Endereco::whereId($enderecoid)->delete();
-			Enderecobase::whereId($enderecobaseid)->delete();
-			Enderecoempresa::whereId($id)->delete();
-
-			//Response
-			$res=$d->responsedata(
-				'endereco',
-				true,
-				'delete',
-				array('msg' => 'Registro excluído com sucesso!')
-				)
-			;
-			$code=200;
-		}
-		catch(Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'endereco',
-				false,
-				'delete',
-				array('msg' => json_decode($e->getMessage()))
-				)
-			;
-			$code=400;
-		}
-
-		return Response::json($res,$code);
+		//
 	}
+
+
 }

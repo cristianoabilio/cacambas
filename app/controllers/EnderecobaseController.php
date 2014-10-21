@@ -262,7 +262,7 @@ class EnderecobaseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'endereco',
+				'enderecobase',
 				false,
 				'update',
 				$validator->messages()

@@ -70,6 +70,14 @@ foreach ($st_r->allviews() as  $v) {
 * ---------------------------------------------------------------------------------
 *
 */
+
+//Nested enderecoempresa
+Route::resource('empresa.enderecoempresa', 'EmpresaEnderecoempresaController');
+Route::get('empresa/{id_empresa}/visibleenderecoempresa','EmpresaEnderecoempresaController@visible');
+Route::get('empresa/{id_empresa}/showvisibleenderecoempresa/{id}','EmpresaEnderecoempresaController@showvisible');
+
+
+//Nested fatura
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
