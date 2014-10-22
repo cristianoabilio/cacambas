@@ -25,26 +25,13 @@
 								@if($h[0]=='nome')
 								<a href="{[URL::to('empresa/'.$e->id)]}">{[$e->$h[0]  ]}</a>
 								<ul>
+									@foreach($nested as $k=>$v)
 									<li>
-										<a href="{[URL::to('empresa/'.$e->id).'/visibleenderecoempresa']}">HTML enderecoempresa</a>
-										|
-										<a href="{[URL::to('empresa/'.$e->id).'/enderecoempresa']}">JSON enderecoempresa</a>
+										<a href="{[URL::to('empresa/'.$e->id).'/visible'.$v]}">HTML {[$v]}</a> |
+										<a href="{[URL::to('empresa/'.$e->id).'/'.$v]}">JSON {[$v]}</a>
 									</li>
-									<li>
-										<a href="{[URL::to('empresa/'.$e->id).'/visiblefuncionario']}">HTML funcionario</a>
-										|
-										<a href="{[URL::to('empresa/'.$e->id).'/funcionario']}">JSON funcionario</a>
-									</li>
-									<li>
-										<a href="{[URL::to('empresa/'.$e->id).'/visibleresumofinanciero']}">HTML resumofinanciero</a>
-										|
-										<a href="{[URL::to('empresa/'.$e->id).'/resumofinanciero']}">JSON Resumofinanciero</a>
-									</li>
-									<li>
-										<a href="{[URL::to('empresa/'.$e->id).'/visibleresumoempresacliente']}">HTML resumoempresacliente</a>
-										|
-										<a href="{[URL::to('empresa/'.$e->id).'/resumoempresacliente']}">JSON Resumoempresacliente</a>
-									</li>
+										
+									@endforeach
 								</ul>
 								@else
 								{[$e->$h[0]  ]}

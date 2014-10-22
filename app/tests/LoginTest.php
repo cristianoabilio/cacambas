@@ -1,6 +1,6 @@
 <?php
 
-class LoginTest extends TestCase {
+/*class LoginTest extends TestCase {
 
 	public function testRequest()
 	{
@@ -44,4 +44,4 @@ class LoginTest extends TestCase {
         $response = $this->call('POST', '/backend/usuario/excluir');
         $this->assertTrue($this->client->getResponse()->isOk());
     }
-}
+}*/

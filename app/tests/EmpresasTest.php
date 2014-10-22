@@ -1,6 +1,6 @@
 <?php
 
-class EmpresasTest extends TestCase {
+/*class EmpresasTest extends TestCase {
 
 
     public function testEmptyFields(){
@@ -26,4 +26,4 @@ class EmpresasTest extends TestCase {
         $response = $this->call('POST', '/backend/empresas/excluir',array('id'=>'1'));
         $this->assertTrue($this->client->getResponse()->isOk());
     }
-}
+}*/

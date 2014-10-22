@@ -71,11 +71,12 @@ foreach ($st_r->allviews() as  $v) {
 *
 */
 
-//Nested enderecoempresa
-Route::resource('empresa.enderecoempresa', 'EmpresaEnderecoempresaController');
-Route::get('empresa/{id_empresa}/visibleenderecoempresa','EmpresaEnderecoempresaController@visible');
-Route::get('empresa/{id_empresa}/showvisibleenderecoempresa/{id}','EmpresaEnderecoempresaController@showvisible');
-
+//Nested controllers on empresa
+foreach ($st_r->empresa_nested() as $k=>$v) {
+	Route::resource('empresa.'.$v, $k);
+	Route::get('empresa/{id_empresa}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{id_empresa}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}
 
 //Nested fatura
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
@@ -83,28 +84,12 @@ Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeContro
 Route::resource('convenio.fatura', 'ConvenioFaturaController');
 
 
-//Nested funcionario
-Route::resource('empresa.funcionario', 'EmpresaFuncionarioController');
-Route::get('empresa/{id_empresa}/visiblefuncionario','EmpresaFuncionarioController@visible');
-Route::get('empresa/{id_empresa}/showvisiblefuncionario/{id}','EmpresaFuncionarioController@showvisible');
+
 
 //Nested resumoatividade (inside empresa.funcionario)
 Route::resource('empresa.funcionario.resumoatividade', 'EmpresaFuncionarioResumoatividadeController');
 Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visibleresumoatividade','EmpresaFuncionarioResumoatividadeController@visible');
 Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisibleresumoatividade/{id}','EmpresaFuncionarioResumoatividadeController@showvisible');
-
-
-//Nested resumoempresacliente
-Route::resource('empresa.resumofinanceiro', 'EmpresaResumofinanceiroController');
-Route::get('empresa/{id_empresa}/visibleresumofinanceiro','EmpresaResumofinanceiroController@visible');
-Route::get('empresa/{id_empresa}/showvisibleresumofinanceiro/{id}','EmpresaResumofinanceiroController@showvisible');
-
-
-
-//Nested resumoempresacliente
-Route::resource('empresa.resumoempresacliente', 'EmpresaResumoempresaclienteController');
-Route::get('empresa/{id_empresa}/visibleresumoempresacliente','EmpresaResumoempresaclienteController@visible');
-Route::get('empresa/{id_empresa}/showvisibleresumoempresacliente/{id}','EmpresaResumoempresaclienteController@showvisible');
 
 
 

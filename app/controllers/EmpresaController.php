@@ -105,6 +105,8 @@ class EmpresaController extends \BaseController {
 	public function visible()
 	{
 		$h=new EmpresaData;
+
+		$st_r=new StandardResponse;
 		
 		$data=array(
 			//retrieving all "Empresas" 
@@ -114,7 +116,10 @@ class EmpresaController extends \BaseController {
 			'deleted'=>Empresa::whereStatus(0)->get(),
 
 			//retrieving table headers
-			'header'=>$h->header()
+			'header'=>$h->header(),
+
+			//nested resources
+			'nested'=>$st_r->empresa_nested()
 			)
 		;
 

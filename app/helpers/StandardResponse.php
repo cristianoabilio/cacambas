@@ -51,4 +51,18 @@ class StandardResponse {
 			)
 		;
 	}
+
+	public function empresa_nested () {
+		return array(
+			//Controller => route name / subname
+			'EmpresaEnderecoempresaController'	=>'enderecoempresa'
+			,'EmpresaContabancariaController'	=>'contabancaria'
+			,'EmpresaConvenioController'		=>'convenio'
+			,'EmpresaFuncionarioController'		=>'funcionario'
+			,'EmpresaResumofinanceiroController'=>'resumofinanceiro'
+			,'EmpresaResumoempresaclienteController'=>'resumoempresacliente'
+			)
+		;
+		
+	}
 }
