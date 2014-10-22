@@ -17,8 +17,6 @@ class EmpresaConvenioData extends StandardResponse{
 			,array('tipo_pagamento',0)
 			,array('dt_inicio',0)
 			,array('dt_fim',0)
-
-
 			)
 		;	
 		return $header;
@@ -62,14 +60,17 @@ class EmpresaConvenioData extends StandardResponse{
 		$form_data=array(
 			'plano_id'		=>Input::get('plano_id'),
 			'tipo_pagamento'=>Input::get('tipo_pagamento'),
-
-			
-			'dt_inicio'		=>Input::get('dt_inicio')
+			'dt_inicio'		=>Input::get('dt_inicio'),
+			//
+			//plano_custom required for detecting between
+			//default or customized  plano
+			'plano_custom'	=>Input::get('plano_custom')
 			)
 		;
 
 		$nullable=array(
-			'dt_fim'		=>Input::get('dt_fim')
+			'dt_fim'		=>Input::get('dt_fim'),
+			//'limite_id'		=>Input::get('limite_id'),
 			)
 		;
 
@@ -114,27 +115,37 @@ class EmpresaConvenioData extends StandardResponse{
 	}
 
 	public function validrules(){
-		return array(
+		$rules=array(
 			//
 			//rules for convenio
-			'plano_id'=>		'required|integer'
-			,'tipo_pagamento'=>	'required|integer'
-			,'dt_inicio'=>		'required|date'
+			'plano_id'			=>'required|integer'
+			,'tipo_pagamento'	=>'required|integer'
+			,'dt_inicio'		=>'required|date'
 			//
-			//
-			//rules for limite
-			,'motoristas'			=>	'required|integer'
-			,'caminhoes'			=>	'required|integer'
-			,'rastreamento'			=>	'required|integer'
-			,'cacambas'				=>	'required|integer'
-			,'NFSe'					=>	'required|integer'
-			,'manutencao'			=>	'required|boolean'
-			,'pagamentos'			=>	'required|boolean'
-			,'fluxo_caixa'			=>	'required|boolean'
-			,'relatorio_avancado'	=>	'required|boolean'
-			,'benchmarks'			=>	'required|boolean'
+			//required for saving default or custom plano
+			,'plano_custom'		=>'required'
 			)
 		;
+
+		$limiterules=array(
+			//
+			//rules for limite
+			'motoristas'		=>	'required|integer'
+			,'caminhoes'		=>	'required|integer'
+			,'rastreamento'		=>	'required|integer'
+			,'cacambas'			=>	'required|integer'
+			,'NFSe'				=>	'required|integer'
+			,'manutencao'		=>	'required|boolean'
+			,'pagamentos'		=>	'required|boolean'
+			,'fluxo_caixa'		=>	'required|boolean'
+			,'relatorio_avancado'=>	'required|boolean'
+			,'benchmarks'		=>	'required|boolean'
+			)
+		;
+		if ( trim(Input::get('plano_custom'))=='custom' ) {
+			$rules=array_merge($rules, $limiterules);
+		}
+		return $rules;
 	}
 }
 
@@ -217,23 +228,35 @@ class EmpresaConvenioController extends \BaseController {
 					)
 				;
 			}
-			$e_limite=new Limite;
-			foreach ($success_limite as $key => $value) {
-				$e_limite->$key 	=$value;
-				$success[$key]		=$value;
-			}
-			$e_limite->sessao_id	=$fake->sessao_id();
-			//$e_limite->sessao_id	=$this->id_sessao;
 
-			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
-			$e_limite->save();
-			$success['idlimit']=$e_limite->id;
+			//Saving customized limite data if choosen
+			if ($success['plano_custom']=='custom') {
+				$e_limite=new Limite;
+				foreach ($success_limite as $key => $value) {
+					$e_limite->$key 	=$value;
+					$success[$key]		=$value;
+				}
+				$e_limite->sessao_id	=$fake->sessao_id();
+				//$e_limite->sessao_id	=$this->id_sessao;
+				$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+				$e_limite->save();
+				$success['limite_id']=$e_limite->id;
+			}
+			//leaving default limite related to plano
+			else if ($success['plano_custom']=='default') {
+				$success['limite_id']=null;
+			}
 
 			$e=new Convenio;
-			$e->limite_id=$success['idlimit'];
+			$e->limite_id=$success['limite_id'];
 			$e->empresa_id		=$empresa_id;
 			foreach ($success_convenio as $key => $value) {
-				$e->$key 	=$value;
+
+				//overiding plano_custom as it is not part of convenio table
+				if ($key!='plano_custom') {
+					$e->$key 	=$value;
+				}
+				
 			}
 			$e->status=1;
 
@@ -283,7 +306,41 @@ class EmpresaConvenioController extends \BaseController {
 	}
 
 	public function showvisible ($empresa_id,$id) {
-		//
+		$d=new EmpresaConvenioData;
+		try {
+			if (Convenio::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'convenio',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$convenio=$d->show($id);
+			if ($convenio->limite==null) {
+				$limite=$convenio->limite;
+			} else {
+				$limite=$convenio->plano->limite;
+			}
+			$header=$d->header();
+
+			return View::make('tempviews.EmpresaConvenio.show',
+				compact(
+					'convenio',
+					'header',
+					'limite',
+					'empresa_id',
+					'id'
+					) 
+				)
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -295,7 +352,48 @@ class EmpresaConvenioController extends \BaseController {
 	 */
 	public function edit($empresa_id,$id)
 	{
-		//
+		$d=new EmpresaConvenioData;
+		try {
+			if (
+				Convenio::whereId($id)
+				->count()==0
+				) {
+				$msg=array();
+				$res=$d->responsedata(
+					'convenio',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$convenio=$d->show($id);
+			if ($convenio->limite!=null) {
+				$limite=$convenio->limite;
+			} else {
+				$limite=$convenio->plano->limite;
+			}
+			$header=$d->header();
+			$limiteheader=$d->limiteHeader();
+
+			return View::make(
+				'tempviews.EmpresaConvenio.edit',
+				compact(
+					'convenio',
+					'header',
+					'limiteheader',
+					'limite',
+					'empresa_id',
+					'id'
+					) 
+				)
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -307,7 +405,81 @@ class EmpresaConvenioController extends \BaseController {
 	 */
 	public function update($empresa_id,$id)
 	{
+		$fake=new fakeuser;
 		//
+		$d=new EmpresaConvenioData;
+
+		$success=			$d->formatdata();
+
+		$success_limite=	$d->formatDataFromLimite();
+
+		try{
+			$validator= Validator::make(		
+				Input::All(),
+				$d->validrules(),
+				array(	
+					'required'=>'Required field'
+					)
+				)	
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=Convenio::find($id);	
+			//$e->empresa_id	=$fake->empresa();
+			foreach ($success as $key => $value) {
+				$e->$key 	=$value;
+			}
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
+			$e->sessao_id	=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
+
+			$e->save();
+
+			//adding limite value
+			$e_limite=Limite::find($e->limite_id);
+			foreach ($success_limite as $key => $value) {
+				$e_limite->$key 	=$value;
+				$success[$key]		=$value;
+			}
+
+			$e_limite->sessao_id	=$fake->sessao_id();
+			//$e_limite->sessao_id	=$this->id_sessao;
+
+			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+
+			$e_limite->save();
+
+			$res=$d->responsedata(
+				'convenio',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'convenio',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 
@@ -319,7 +491,7 @@ class EmpresaConvenioController extends \BaseController {
 	 */
 	public function destroy($empresa_id,$id)
 	{
-		//
+		$d=new EmpresaConvenioData;
 	}
 
 

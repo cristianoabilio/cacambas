@@ -57,15 +57,39 @@
 						Shown data as default plan values.
 						Modify according to your expectations.
 					</div>
-					@foreach($limite_h as $l)
-						<div class="row">
-							<div class="col-sm-6">
-								{[$l]}
-								<br>
-								<input type="text" name="{[$l]}" id="{[$l]}" class='form-control'>
-							</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-12">plano limite (choose between default or customized)</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<select name="plano_custom" id="plano_custom" class='form-control'>
+								<option value=""></option>
+								<option value="default">default</option>
+								<option value="custom">customized</option>
+							</select>
 						</div>
-					@endforeach
+					</div>
+					<div id="plano_default_values">
+						@foreach($limite_h as $l)
+							<div class="row">
+								<div class="col-sm-4">{[$l]}</div>
+								<div id='default_plano{[$l]}' class="col-sm-6"></div>
+							</div>
+						@endforeach
+					</div>
+					<div id="plano_customizable_form">
+						@foreach($limite_h as $l)
+							<div class="row">
+								<div class="col-sm-6">
+									{[$l]}
+									<br>
+									<input type="text" name="{[$l]}" id="{[$l]}" class='form-control'>
+								</div>
+							</div>
+						@endforeach
+					</div>
+						
 					<br>
 					<input type="submit" value='create'>
 					<br>
@@ -106,18 +130,58 @@
 </body>
 <script>
 	$(function(){
+		//Hide tags with default limite data and customizable limite form
+		$('#plano_default_values').hide();
+		$('#plano_customizable_form').hide();
+
+		//Toggle between default - customizable tags content 
+		//depending on select list choosen option
+		$('#plano_custom').on('change',function(e){
+			//e.preventDefault();
+			if ( $(this).val()=='default' ) {
+				$('#plano_default_values').show('fast');
+				$('#plano_customizable_form').hide('fast');
+			}
+			else if ( $(this).val()=='custom' ) {
+				$('#plano_default_values').hide('fast');
+				$('#plano_customizable_form').show('fast');
+			}
+			else {
+				$('#plano_default_values').hide('fast');
+				$('#plano_customizable_form').hide('fast');
+			}
+
+		});
+
+		//change default and customizable tag data according to choosen plano
 		$('#plano_id').change(function(e){
 			e.preventDefault();
 			var plano_id=$(this).val();
+
+			//Highlight choosen plano
 			$('.plano_desc').addClass('text-muted').removeClass('lead');
+
+			//Mute  unselected planos
 			$('#plano_'+plano_id).removeClass('text-muted').addClass('lead');
+
+			//Set limite data for default and customizable tagas
+			//For each plano record, limite data would be picked up
 			$('.limite'+plano_id).each(function(){
+
+				//retrieving id on limite[plano] class
 				var limitefeature=$(this).attr('id');
+
+				//finding the limite_id value
 				limitefeature=limitefeature.replace('standardlimite_','');
 				limitefeature=limitefeature.replace('_'+plano_id,'');
 				limitefeature=limitefeature.trim();
+
+				//retrieving limite data on each limite[plano_id] class
+				//and sending it to each #limite[each limit field]
+				//on default and customizable tags
 				var limitevalue=$(this).html();
 				$('#'+limitefeature).val(limitevalue);
+				$('#default_plano'+limitefeature).text(limitevalue);
 			});
 		});
 	});
