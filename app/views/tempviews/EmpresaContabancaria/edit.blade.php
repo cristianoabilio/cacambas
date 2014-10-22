@@ -4,8 +4,8 @@
 <body>
 	<div class="container">
 		<h1>Edit contabancaria {[$contabancaria->nome_banco]}</h1>
-		Edit conta for empresa {[ Empresa::find($contabancaria->empresa_id)->nome ]}
-		{[ Form::model($contabancaria, array('route' => array('contabancaria.update', $id), 'method' => 'PUT')) ]}
+		Edit conta for empresa {[ Empresa::find($empresa_id)->nome ]}
+		{[ Form::model($contabancaria, array('route' => array('empresa.contabancaria.update', $empresa_id,$id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
 				nome_banco
@@ -90,11 +90,11 @@
 		<br>
 		{[Form::close()]}
 		<hr>
-		{[ Form::model($contabancaria, array('route' => array('contabancaria.destroy', $contabancaria->id), 'method' => 'DELETE')) ]}
+		{[ Form::model($contabancaria, array('route' => array('empresa.contabancaria.destroy', $empresa_id, $id), 'method' => 'DELETE')) ]}
 		<input type="submit" value='DELETE'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('visiblecontabancaria')]}">go back to contabancaria index</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecontabancaria')]}">Return to contabancaria index</a>
 		<br>
 		<br>
 		<br>

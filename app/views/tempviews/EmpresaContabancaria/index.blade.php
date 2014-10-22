@@ -4,13 +4,11 @@
 <body>
 	<div class="container">
 		<h1>Contabancaria index</h1>
-		<a href="{[URL::to('contabancaria/create')]}">Add new "contabancaria"</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/contabancaria/create')]}">Add new "contabancaria"</a>
 		<br>
 		<table class='table'>
 			<tr>
-				<th>
-					Resource
-				</th>
+				<td>Resource</td>
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<th>
@@ -22,13 +20,13 @@
 			@foreach($conta as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisiblecontabancaria/'.$e->id)]}">HTLM resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecontabancaria/'.$e->id)]}">HTML resource {[$e->id]}</a>
 						|
-						<a href="{[URL::to('contabancaria/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/contabancaria/'.$e->id)]}">JSON resource {[$e->id]}</a>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
-							<td> {[$e->$h[0] ]} </td>
+							<td> {[$e->$h[0]  ]} </td>
 						@endif
 					@endforeach
 				</tr>
@@ -36,4 +34,3 @@
 		</table>
 	</div>
 </body>
-

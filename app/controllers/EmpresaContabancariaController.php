@@ -4,7 +4,7 @@
  * ContabancariaData class only contains data related to
  * the table ContaBancaria
  */
-class ContabancariaData extends StandardResponse {
+class EmpresaContabancariaData extends StandardResponse {
 	/** 
 	* function name: header.
 	* @param header with headers of contabancaria table
@@ -36,9 +36,14 @@ class ContabancariaData extends StandardResponse {
 	/**
 	* @return all records from table "contabancaria"
 	*/
-	public function edata () {
+	/*public function edata () {
 		return 
 		Contabancaria::all();
+	}*/
+
+	public function edata($empresa_id) {
+		return 
+		Empresa::find($empresa_id)->contabancaria;
 	}
 
 	public function show($id){
@@ -51,19 +56,31 @@ class ContabancariaData extends StandardResponse {
 	*/
 	public function forminputdata(){
 
-		return array(
+		$formdata=array(
 			'nome_banco'	=>Input::get('nome_banco'),
 			'codigo_banco'	=>Input::get('codigo_banco'),
 			'conta'			=>Input::get('conta'),
 			'conta_dig'		=>Input::get('conta_dig'),
 			'conta_tipo'	=>Input::get('conta_tipo'),
 			'agencia'		=>Input::get('agencia'),
-			'agencia_dig'	=>Input::get('agencia_dig'),
-			'cpf_cnpj'		=>Input::get('cpf_cnpj'),
-			'pj'			=>Input::get('pj'),
-			'titular'		=>Input::get('titular')
-				)
+			'agencia_dig'	=>Input::get('agencia_dig')
+			)
 		;
+
+		$nullable=array(
+			//'cpf_cnpj'		=>Input::get('cpf_cnpj')
+			/*,*/'pj'			=>Input::get('pj')
+			//,'titular'		=>Input::get('titular')
+			)
+		;
+
+		foreach ($nullable as $k => $v) {
+			if ( trim($v)!='' ) {
+				$formdata[$k]=$v;
+			}
+		}
+
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -84,20 +101,18 @@ class ContabancariaData extends StandardResponse {
 
 }
 
-class ContabancariaController extends \BaseController {
+class EmpresaContabancariaController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	public function index()
+	public function index($empresa_id)
 	{
-		$d=new ContabancariaData;
-		return Response::json($d->edata());
+		$d=new EmpresaContabancariaData;
+		return Response::json($d->edata($empresa_id));
 	}
-
 
 	/**
 	* Visible action IS NOT A RESTFUL RESOURCE 
@@ -108,16 +123,17 @@ class ContabancariaController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-
-	public function visible () {
-		$d=new ContabancariaData;
+	public function visible($empresa_id)
+	{
+		$d=new EmpresaContabancariaData;
 		$data=array(
-			'conta'=>$d->edata(),
-			'header'=>$d->header()
+			'conta'=>$d->edata($empresa_id),
+			'header'=>$d->header(),
+			'empresa_id'=>$empresa_id
 			)
 		;
 		return 
-		View::make('tempviews.contabancaria.index',
+		View::make('tempviews.EmpresaContabancaria.index',
 			$data);
 	}
 
@@ -127,13 +143,16 @@ class ContabancariaController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		return
-		View::make(
-			'tempviews.contabancaria.create'
+		$d=new EmpresaContabancariaData;
+		$data=array(
+			'empresa_id'=>$empresa_id
 			)
 		;
+		return 
+		View::make('tempviews.EmpresaContabancaria.create',
+			$data);
 	}
 
 
@@ -142,19 +161,13 @@ class ContabancariaController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
-		/**
-		* instantiating fake user (for empresa and sessao)
-		* through "fakenuser" class
-		* Should be deleted in original project
-		*/
-		/*$fake=new fakeuser;
-		// -delete up to here
+		$fake=new fakeuser;
 
 		//instantiating data for the json response
-		$d=new ContabancariaData;
-		$succesdata=$d->forminputdata();
+		$d=new EmpresaContabancariaData;
+		$success=$d->forminputdata();
 
 		try{
 			$validator= Validator::make(			
@@ -176,11 +189,11 @@ class ContabancariaController extends \BaseController {
 			}
 
 			$e=new Contabancaria;	
-			$e->empresa_id		=$fake->empresa();
+			$e->empresa_id		=$empresa_id;
 
 			// $succes variable contains array name=>value
 			//from the form required in this controller
-			foreach ($succesdata as $key => $value) {
+			foreach ($success as $key => $value) {
 				$e->$key = $value;
 			}
 
@@ -195,7 +208,7 @@ class ContabancariaController extends \BaseController {
 				'contabancaria',
 				true,
 				'store',
-				$succesdata
+				$success
 				)
 			;
 			$code=200;
@@ -211,7 +224,7 @@ class ContabancariaController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);*/
+		return Response::json($res,$code);
 	}
 
 
@@ -221,16 +234,16 @@ class ContabancariaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-
-	public function show ($id) {
-		$d=new ContabancariaData;
+	public function show($empresa_id,$id)
+	{
+		$d=new EmpresaContabancariaData;
 		return $d->show($id);
 	}
 
-	
-	public function showvisible($id)
+
+	public function showvisible($empresa_id,$id)
 	{
-		$d=new ContabancariaData;
+		$d=new EmpresaContabancariaData;
 		try {
 			if (Contabancaria::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -244,13 +257,14 @@ class ContabancariaController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'contabancaria'=>$d->show($id),
-				'header'=>$d->header(),
-				'id'=> $id
+				'contabancaria'	=>$d->show($id),
+				'header'		=>$d->header(),
+				'empresa_id'	=> $empresa_id,
+				'id'			=> $id
 				)
 			;
 			return 
-			View::make('tempviews.contabancaria.show',
+			View::make('tempviews.EmpresaContabancaria.show',
 				$data);
 			
 		} catch (Exception $e) {
@@ -265,9 +279,9 @@ class ContabancariaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		$d=new ContabancariaData;
+		$d=new EmpresaContabancariaData;
 		try {
 			if (Contabancaria::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -281,12 +295,13 @@ class ContabancariaController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'contabancaria'=>$d->show($id),
-				'header'=>$d->header(),
+				'contabancaria'	=>$d->show($id),
+				'header'		=>$d->header(),
+				'empresa_id'	=> $empresa_id,
 				'id'=> $id
 				)
 			;
-			return View::make('tempviews.contabancaria.edit',$data);
+			return View::make('tempviews.EmpresaContabancaria.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -300,18 +315,12 @@ class ContabancariaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$id)
 	{
-		/**
-		* instantiating fake user (for empresa and sessao)
-		* through "fakenuser" class
-		* Should be deleted in original project
-		*/
 		$fake=new fakeuser;
 		// -delete up to here
+		$d=new EmpresaContabancariaData;
 
-		//instantiating data for the json response
-		$d=new ContabancariaData;
 		$succesdata=$d->forminputdata();
 		
 		try{
@@ -336,7 +345,7 @@ class ContabancariaController extends \BaseController {
 			}
 
 			$e=Contabancaria::find($id);
-			$e->empresa_id		=$fake->empresa();
+			$e->empresa_id		=$empresa_id;
 
 			// $succes variable contains array name=>value
 			//from the form required in this controller
@@ -370,6 +379,7 @@ class ContabancariaController extends \BaseController {
 			$code=400;
 		}
 		return Response::json($res,$code);
+
 	}
 
 
@@ -379,41 +389,10 @@ class ContabancariaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($empresa_id,$id)
 	{
-		$d=new ContabancariaData;
-		try{
-			if (Contabancaria::whereId($id)->count()==0) {
-				throw new Exception(json_encode($d->noexist));
-			}
-
-			Contabancaria::whereId($id)
-			->delete();	
-
-			$res = $d->responsedata(
-				'contabancaria',
-				true,
-				'delete',
-				array('msg' => 'Registro excluído com sucesso!')
-				)
-			;
-			$code=200;
-
-		}catch(Exception $e){
-
-			SysAdminHelper::NotifyError($e->getMessage());
-
-			$res = $d->responsedata(
-				'contabancaria',
-				false,
-				'delete',
-				array('msg' => json_decode($e->getMessage()))
-				)
-			;
-			$code=400;
-
-		}
-
-		return Response::json($res,$code);
+		//
 	}
+
+
 }

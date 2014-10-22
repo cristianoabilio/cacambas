@@ -10,19 +10,15 @@
 			<div class="col-sm-6">{[$contabancaria->$h[0]   ]}</div>
 		</div>
 		@endforeach
-		<a href="{[URL::to('contabancaria/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/contabancaria/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
-		{[ Form::model($contabancaria, array('route' => array('contabancaria.destroy', $contabancaria->id), 'method' => 'DELETE')) ]}
+		{[ Form::model($contabancaria, array('route' => array('empresa.contabancaria.destroy', $empresa_id,$id), 'method' => 'DELETE')) ]}
 			<input type="submit" value='DELETE'>
 			</form>
 			<br>
-		<a href="{[URL::to('visiblecontabancaria')]}">Back to contabancaria</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecontabancaria')]}">Return to contabancaria index</a>
 		<br>
 		<br>
 		<br>
 	</div>
 </body>
-		
-		
-
-		
