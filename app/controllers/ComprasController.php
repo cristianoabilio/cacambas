@@ -66,6 +66,9 @@ class ComprasData extends StandardResponse{
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
 			}
+			else {
+				$formdata[$key]=null;
+			}
 		}
 		return $formdata;
 	}

@@ -17,7 +17,4 @@ class Compras extends Eloquent {
 	public function Produto() { 
 		return $this->belongsTo('Produto');
 	}
-
-
-
 }

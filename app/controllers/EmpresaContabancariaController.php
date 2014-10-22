@@ -78,6 +78,9 @@ class EmpresaContabancariaData extends StandardResponse {
 			if ( trim($v)!='' ) {
 				$formdata[$k]=$v;
 			}
+			else {
+				$formdata[$k]=null;
+			}
 		}
 
 		return $formdata;
@@ -391,8 +394,39 @@ class EmpresaContabancariaController extends \BaseController {
 	 */
 	public function destroy($empresa_id,$id)
 	{
-		//
+		$d=new EmpresaContabancariaData;
+
+		try{
+			if (Contabancaria::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+			}
+
+			Contabancaria::whereId($id)
+			->delete();	
+
+			$res = $d->responsedata(
+				'contabancaria',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
+
+		}catch(Exception $e){
+
+			SysAdminHelper::NotifyError($e->getMessage());
+
+			$res = $d->responsedata(
+				'contabancaria',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+		}
+
+		return Response::json($res,$code);
 	}
-
-
 }

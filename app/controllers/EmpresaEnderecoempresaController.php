@@ -98,6 +98,9 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 			if ( trim($value[0])!="" ) {
 				$formdata[$key]=$value;
 			}
+			else {
+				$formdata[$key]=null;
+			}
 		}
 
 		return $formatdata;

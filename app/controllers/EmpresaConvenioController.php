@@ -1,5 +1,6 @@
 <?php
-class ConvenioData extends StandardResponse{
+
+class EmpresaConvenioData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of convenio table
@@ -45,8 +46,8 @@ class ConvenioData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "limite"
 	*/
-	public function edata () {
-		return Convenio::all();
+	public function edata ($empresa_id) {
+		return Empresa::find($empresa_id)->Convenio;
 	}
 
 	public function show($id){
@@ -58,14 +59,42 @@ class ConvenioData extends StandardResponse{
 	*/
 	public function formatdata(){
 
-		return array(
-			'plano_id'			=>Input::get('plano_id'),
-			'dia_fatura'		=>Input::get('dia_fatura'),
-			'tipo_pagamento'	=>Input::get('tipo_pagamento'),
-			'dt_inicio'			=>Input::get('dt_inicio'),
-			'dt_fim'			=>Input::get('dt_fim')
+		$form_data=array(
+			'plano_id'		=>Input::get('plano_id'),
+			'tipo_pagamento'=>Input::get('tipo_pagamento'),
+
+			
+			'dt_inicio'		=>Input::get('dt_inicio')
 			)
 		;
+
+		$nullable=array(
+			'dt_fim'		=>Input::get('dt_fim')
+			)
+		;
+
+		$autoasigned=array(
+			'dia_fatura'	=>Input::get('dia_fatura')
+			)
+		;
+
+		foreach ($nullable as $k => $v) {
+			if (trim($v)!='') {
+				$form_data[$k]=$v;
+			} else {
+				$form_data[$k]=null;
+			}
+		}
+
+		foreach ($autoasigned as $k => $v) {
+			if (trim($v)!='') {
+				$form_data[$k]=$v;
+			} else {
+				$form_data[$k]=5;
+			}
+		}
+
+		return $form_data;
 	}
 
 	public function formatDataFromLimite() {
@@ -109,42 +138,29 @@ class ConvenioData extends StandardResponse{
 	}
 }
 
-class ConvenioController extends \BaseController {
+class EmpresaConvenioController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		$d=new ConvenioData;
-		return Response::json($d->edata());
+	public function index($empresa_id)
+	{
+		$d=new EmpresaConvenioData;
+		return Response::json($d->edata($empresa_id));
 	}
 
-
-	/**
-	* Visible action IS NOT A RESTFUL RESOURCE 
-	* but is required for generating the view
-	* with access links to each resource,
-	* this is, the visible index page.
-	* The reason of this method is because the
-	* index resource will throw a JSON object
-	* and no view at all.
-	*/
-	public function visible()
-	{
-		$d=new ConvenioData;
-		$fake=new fakeuser;
+	public function visible ($empresa_id) {
+		$d=new EmpresaConvenioData;
 
 		$data=array(
 			'header' 	=> $d->header(),
-			'convenio'	=> $d->edata(),
-			'empresa'	=> $fake->empresa()
+			'convenio'	=> $d->edata($empresa_id),
+			'empresa_id'	=> $empresa_id
 			)
 		;
-		return View::make('tempviews.convenio.index',$data);
-
-
+		return View::make('tempviews.EmpresaConvenio.index',$data);
 	}
 
 
@@ -153,17 +169,12 @@ class ConvenioController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		$d=new ConvenioData;
+		$d=new EmpresaConvenioData;
 		$limite_h=$d->limiteHeader();
-		return 
-		View::make(
-			'tempviews.convenio.create',
-			compact('limite_h')
-			)
-		;
-
+		$data=compact('empresa_id','limite_h');
+		return View::make('tempviews.EmpresaConvenio.create',$data);
 	}
 
 
@@ -172,14 +183,14 @@ class ConvenioController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
 
-		$d=new ConvenioData;
+		$d=new EmpresaConvenioData;
 
 		$success= $d->formatdata();
 
@@ -220,7 +231,7 @@ class ConvenioController extends \BaseController {
 
 			$e=new Convenio;
 			$e->limite_id=$success['idlimit'];
-			$e->empresa_id		=$fake->empresa();
+			$e->empresa_id		=$empresa_id;
 			foreach ($success_convenio as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -265,48 +276,14 @@ class ConvenioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
-		$d=new ConvenioData;
+	public function show($empresa_id,$id)
+	{
+		$d=new EmpresaConvenioData;
 		return $d->show($id);
 	}
-	public function showvisible($id)
-	{
-		$d=new ConvenioData;
-		try {
-			if (Convenio::whereId($id)->count()==0) {
-				$res=$d->responsedata(
-					'convenio',
-					false,
-					'show',
-					$d->noexist
-					)
-				;
-				$res=json_encode($res);
-				throw new Exception($res);
-			}
-			$convenio=$d->show($id);
-			if ($convenio->limite==null) {
-				$limite=$convenio->limite;
-			} else {
-				$limite=$convenio->plano->limite;
-			}
-			$header=$d->header();
 
-			return View::make('tempviews.convenio.show',
-				compact(
-					'convenio',
-					'header',
-					'limite',
-					'id'
-					) 
-				)
-			;
-			
-		} catch (Exception $e) {
-			return $e->getMessage();
-		}
-			
-		
+	public function showvisible ($empresa_id,$id) {
+		//
 	}
 
 
@@ -316,49 +293,9 @@ class ConvenioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		$d=new ConvenioData;
-		try {
-			if (
-				Convenio::whereId($id)
-				->count()==0
-				) {
-				$msg=array();
-				$res=$d->responsedata(
-					'convenio',
-					false,
-					'edit',
-					$d->noexist
-					)
-				;
-				$res=json_encode($res);
-				throw new Exception($res);
-			}
-			$convenio=$d->show($id);
-			if ($convenio->limite!=null) {
-				$limite=$convenio->limite;
-			} else {
-				$limite=$convenio->plano->limite;
-			}
-			$header=$d->header();
-			$limiteheader=$d->limiteHeader();
-
-			return View::make(
-				'tempviews.convenio.edit',
-				compact(
-					'convenio',
-					'header',
-					'limiteheader',
-					'limite',
-					'id'
-					) 
-				)
-			;
-			
-		} catch (Exception $e) {
-			return $e->getMessage();
-		}
+		//
 	}
 
 
@@ -368,85 +305,9 @@ class ConvenioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
 		//
-		$d=new ConvenioData;
-
-		$success=			$d->formatdata();
-
-		$success_limite=	$d->formatDataFromLimite();
-
-		try{
-			$validator= Validator::make(		
-				Input::All(),
-				$d->validrules(),
-				array(	
-					'required'=>'Required field'
-					)
-				)	
-			;
-
-			if ($validator->fails()){
-				throw new Exception(
-					json_encode(
-						array(
-							'validation_errors'=>$validator->messages()->all()
-							)
-						)
-					)
-				;
-			}
-
-			$e=Convenio::find($id);	
-			//$e->empresa_id	=$fake->empresa();
-			foreach ($success as $key => $value) {
-				$e->$key 	=$value;
-			}
-			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->sessao_id	=$fake->sessao_id();
-			//$e->sessao_id	=$this->id_sessao;
-
-			$e->save();
-
-			//adding limite value
-			$e_limite=Limite::find($e->limite_id);
-			foreach ($success_limite as $key => $value) {
-				$e_limite->$key 	=$value;
-				$success[$key]		=$value;
-			}
-
-			$e_limite->sessao_id	=$fake->sessao_id();
-			//$e_limite->sessao_id	=$this->id_sessao;
-
-			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
-
-			$e_limite->save();
-
-			$res=$d->responsedata(
-				'convenio',
-				true,
-				'update',
-				$success
-				)
-			;
-			$code=200;
-		}
-		catch (Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'convenio',
-				false,
-				'update',
-				$validator->messages()
-				)
-			;
-			$code=400;
-		}
-		return Response::json($res,$code);
 	}
 
 
@@ -456,10 +317,10 @@ class ConvenioController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	public function destroy($empresa_id,$id)
 	{
 		//
-	}*/
+	}
 
 
 }
