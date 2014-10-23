@@ -155,13 +155,13 @@
 
 		//change default and customizable tag data according to choosen plano
 		$('#plano_id').change(function(e){
-			e.preventDefault();
+			
 			var plano_id=$(this).val();
 
-			//Highlight choosen plano
+			//Mute all planos
 			$('.plano_desc').addClass('text-muted').removeClass('lead');
 
-			//Mute  unselected planos
+			//Highlight choosen plano
 			$('#plano_'+plano_id).removeClass('text-muted').addClass('lead');
 
 			//Set limite data for default and customizable tagas

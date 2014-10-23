@@ -12,16 +12,18 @@
 */
 
 
+//Standard response instantiantion for creating all 
+//views and routes.
+$st_r=new StandardResponse;
+
 // Route for make the AngularJS App
-Route::get('/', array('as' => 'app.view', function (){
+Route::get('/', array('as' => 'app.view', function(){
+	
     return //1
     View::make('app')
     ;
 }));
 
-//Standard response instantiantion for creating all 
-//views and routes.
-$st_r=new StandardResponse;
 
 /**
 * ---------------------------------------------------------------------------------
@@ -34,7 +36,15 @@ $st_r=new StandardResponse;
 Route::get('/myproduction', function() use ($st_r)
 {
 	$allviews=$st_r->allviews();
-	return View::make('viewindex',compact('allviews'));
+	$empresanested=$st_r->empresa_nested();
+	return View::make(
+		'viewindex',
+		compact(
+			'allviews',
+			'empresanested'
+			)
+		)
+	;
 });
 
 Route::get('/jsontest',function(){

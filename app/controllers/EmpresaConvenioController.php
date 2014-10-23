@@ -376,14 +376,14 @@ class EmpresaConvenioController extends \BaseController {
 				$limite=$convenio->plano->limite;
 			}
 			$header=$d->header();
-			$limiteheader=$d->limiteHeader();
+			$limite_h=$d->limiteHeader();
 
 			return View::make(
 				'tempviews.EmpresaConvenio.edit',
 				compact(
 					'convenio',
 					'header',
-					'limiteheader',
+					'limite_h',
 					'limite',
 					'empresa_id',
 					'id'
@@ -405,12 +405,16 @@ class EmpresaConvenioController extends \BaseController {
 	 */
 	public function update($empresa_id,$id)
 	{
+		//fakeuser is required for adding a fake session
 		$fake=new fakeuser;
-		//
+
+		//instantiating convenio and limite data and field names
 		$d=new EmpresaConvenioData;
 
+		//data from convenio form fields
 		$success=			$d->formatdata();
 
+		//data from limite form fields
 		$success_limite=	$d->formatDataFromLimite();
 
 		try{
@@ -435,9 +439,71 @@ class EmpresaConvenioController extends \BaseController {
 			}
 
 			$e=Convenio::find($id);	
+			//
+			//Checking if previous convenio->limite_id is null and 
+			//limite is a new customized instead of previos
+			//plano inheritance
+			/*
+			1. check if plano_custom is customized
+			   a. check if convenio->limite_id is null
+			      if yes: create new limite and add limite_id to success array
+			   b. if no: update limite with existent limite_id
+			2. check if plano_custom is default
+			   set plano_id as null
+			*/
+
+			//First option: customized limite with previous limite as null
+			if ($success['plano_custom']=='customized') {
+				if ($e->limite_id==null||$e->limite_id=='') {
+
+					//creating a new limite
+					$e_limite=new Limite;
+					foreach ($success_limite as $key => $value) {
+						$e_limite->$key 	=$value;
+						//$success[$key]		=$value;
+					}
+					$e_limite->sessao_id	=$fake->sessao_id();
+					//$e_limite->sessao_id	=$this->id_sessao;
+					$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+					$e_limite->save();
+					$success['limite_id']=$e_limite->id;
+				} 
+				//Second option: customized limite with previous existent limite
+				// - updating existing limite -
+				else {
+					$e_limite=Limite::find($e->limite_id);
+					foreach ($success_limite as $key => $value) {
+						$e_limite->$key 	=$value;
+						//$success[$key]		=$value;
+					}
+
+					$e_limite->sessao_id	=$fake->sessao_id();
+					//$e_limite->sessao_id	=$this->id_sessao;
+
+					$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
+
+					$e_limite->save();
+				}
+			} else {
+				//Third option: removing existing customized limite
+				//and setting default plano limite
+				if ($e->limite_id!=null||$e->limite_id!='') {
+					Limite::find($e->limite_id)->delete();
+				}
+				$e->limite_id=null;
+			}
+			
+			//
 			//$e->empresa_id	=$fake->empresa();
 			foreach ($success as $key => $value) {
-				$e->$key 	=$value;
+				//skipping "plano_custom" field
+				if ($key!='plano_custom') {
+					$e->$key 	=$value;
+				}
+			}
+
+			if ($success['plano_custom']=='default' ) {
+				$e->limite_id=null;
 			}
 			$e->dthr_cadastro	=date('Y-m-d H:i:s');
 			$e->sessao_id	=$fake->sessao_id();
@@ -445,19 +511,9 @@ class EmpresaConvenioController extends \BaseController {
 
 			$e->save();
 
-			//adding limite value
-			$e_limite=Limite::find($e->limite_id);
 			foreach ($success_limite as $key => $value) {
-				$e_limite->$key 	=$value;
 				$success[$key]		=$value;
 			}
-
-			$e_limite->sessao_id	=$fake->sessao_id();
-			//$e_limite->sessao_id	=$this->id_sessao;
-
-			$e_limite->dthr_cadastro=date('Y-m-d H:i:s');
-
-			$e_limite->save();
 
 			$res=$d->responsedata(
 				'convenio',
@@ -493,6 +549,4 @@ class EmpresaConvenioController extends \BaseController {
 	{
 		$d=new EmpresaConvenioData;
 	}
-
-
 }

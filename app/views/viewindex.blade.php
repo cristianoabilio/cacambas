@@ -37,17 +37,37 @@
 			</tr>
 			@endforeach
 		</table>
-
 		<hr>
 		<h3>Nested or combined resources in same view</h3>
+		<small class="text-muted">
+			In order to see resources go to 
+			<a href="{[URL::to('visibleempresa')]}">empresa </a>
+			and choose one first
+		</small>
+		<table class="table">
+			<tr>
+				<th>indexes as HTML views</th>
+				<th>Index url</th>
+				<th>Show url</th>
+			</tr>
+		@foreach($empresanested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'empresa/{empresa_id}/{[$n]}'  
+				</td>
+				<td>
+					'empresa/{empresa_id}/{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
 		<a href="{[URL::to('convenio') ]}" >convenio (contains nested "Fatura" invoices)</a> <br>
 		<a href="{[URL::to('funcionario') ]}" >funcionario (contains resumoatividade as nested)</a> <br>
 		<a href="{[URL::to('plano') ]}" >plano (contains limite CRUD actions)</a> <br>
 		<br>
-		Nested on empresa
-		<ul>
-			<li>resumoempresacliente</li>
-		</ul>
 		
 		
 		<hr>
