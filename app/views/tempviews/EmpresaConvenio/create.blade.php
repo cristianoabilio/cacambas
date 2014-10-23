@@ -164,7 +164,7 @@
 			//Highlight choosen plano
 			$('#plano_'+plano_id).removeClass('text-muted').addClass('lead');
 
-			//Set limite data for default and customizable tagas
+			//Set limite data for default and customizable tags
 			//For each plano record, limite data would be picked up
 			$('.limite'+plano_id).each(function(){
 
