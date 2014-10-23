@@ -13,6 +13,10 @@ class Convenio extends Eloquent {
 			return $this->hasMany('Fatura');
 	}
 
+	public function produtofatura () {
+		return $this->hasMany('Produtofatura');
+	}
+
 	public function Limite() { 
 			return $this->belongsTo('Limite');
 	}

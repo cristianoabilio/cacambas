@@ -35,6 +35,23 @@
 						<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id)]}">
 							JSON resource {[$e->id]}
 						</a>
+						<ul>
+							<li>
+								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/visibleprodutofatura')]} ">
+									HTML produto faturas
+								</a>
+								|
+								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/produtofatura')]} ">
+									JSON produto faturas
+								</a>
+							</li>
+							<li>
+								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/fatura')]} ">
+									servico faturas
+									(total {[Fatura::whereConvenio_id($e->id)->count() ]}  )
+								</a>
+							</li>
+						</ul>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)

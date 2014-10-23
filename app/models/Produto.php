@@ -13,4 +13,26 @@ class Produto extends Eloquent {
 	public function Compras() { 
 			return $this->hasMany('Compras');
 	}
+
+
+
+	/**
+	* --------------------------------------------------
+	* PRODUTO SCOPES
+	* --------------------------------------------------
+	*/
+
+	//scoping produto as servico
+	public function scopeServico ($query) {
+		return $query->whereServico(1)
+		->whereStatus(1)
+		;
+	}
+
+	//scoping produto as tangible produto
+	public function scopeIsproduto ($query) {
+		return $query->whereServico(0)
+		->whereStatus(1)
+		;
+	}
 }

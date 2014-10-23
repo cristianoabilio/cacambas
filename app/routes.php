@@ -88,6 +88,13 @@ foreach ($st_r->empresa_nested() as $k=>$v) {
 	Route::get('empresa/{id_empresa}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
+//Nested controllers on empresa.convenio
+foreach ($st_r->empresaconvenio_nested() as $k => $v) {
+	Route::resource('empresa.convenio.'.$v, $k);
+	Route::get('empresa/{id_empresa}/convenio/{id_convenio}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{id_empresa}/convenio/{id_convenio}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}
+
 //Nested fatura
 Route::resource('empresa.fatura', 'EmpresaFaturaController');
 Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
