@@ -398,23 +398,19 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 			//$e->sessao_id	=$this->id_sessao;
 			$e->save();
 
-			//update produtocompra
-			//1. Converting products field value as array
-			//  1:4,3:2  ---> array('1'=>'4','3'=>'2')
-			//where key:produto_id, value:amount
+			//upgrade produtocompra
+			//1. Removing all items
+			Produtocompra::whereProdutofatura_id($id)->delete();
+			
+			//2. Converting produto:quantity data into a php array
 			$preitems=explode(',', $success['products']);
 			$item=array();
 			foreach ($preitems as $i) {
 				$i=explode(':', $i);
 				$item[$i[0] ] = $i[1] ;
 			}
-
-			//2. Check each product on produtocompra items
-			//bug: iteration is deleting everything except last
-			//loop
-			//fast solution: delete all items and add new ones
-			Produtocompra::whereProdutofatura_id($id)->delete();
-
+			
+			//3. Creating new produtocompra records
 			foreach ($item as $k => $v) {
 				if ($v>0) {
 					$p_c=new Produtocompra;

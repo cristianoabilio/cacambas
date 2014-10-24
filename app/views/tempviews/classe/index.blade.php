@@ -1,0 +1,1 @@
+app/views/tempviews/classe/index.blade.php

@@ -3,7 +3,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Index for produto</h1>
+		<h1>Index for produtofatura</h1>
 		<br>
 		<a href="{[URL::to('produtofatura/create')]}">Add new "produto"</a>
 		<br>

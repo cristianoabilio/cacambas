@@ -30,6 +30,7 @@ class StandardResponse {
 
 	public function allviews(){
 		return array(
+			'classe',
 			'compras',
 			'contabancaria',
 			'convenio',
