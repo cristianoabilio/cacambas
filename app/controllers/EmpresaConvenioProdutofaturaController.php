@@ -55,18 +55,19 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 		$formatdata= array(
 			//'convenio_id'	=>Input::get('convenio_id'),
 			//'closed'	=>Input::get('closed'),
-			'data_compra'	=>Input::get('data_compra'),
+			'data_compra'		=>Input::get('data_compra'),
 			'data_vencimiento'	=>Input::get('data_vencimiento'),
 			'data_pagamento'	=>Input::get('data_pagamento'),
+			'products'			=>Input::get('products'),
 			'valor_subtotal'	=>Input::get('valor_subtotal'),
 			'valor_ajuste_tipo'	=>Input::get('valor_ajuste_tipo'),
 			'valor_ajuste_percentual'	=>Input::get('valor_ajuste_percentual'),
-			'valor_total'	=>Input::get('valor_total'),
-			'observacao'	=>Input::get('observacao'),
+			'valor_total'		=>Input::get('valor_total'),
+			'observacao'		=>Input::get('observacao'),
 			'forma_pagamento'	=>Input::get('forma_pagamento'),
 			'status_pagamento'	=>Input::get('status_pagamento'),
-			'pagarme'	=>Input::get('pagarme'),
-			'NSFe'	=>Input::get('NSFe'),
+			'pagarme'			=>Input::get('pagarme'),
+			'NSFe'				=>Input::get('NSFe'),
 			//'sessao_id'	=>Input::get('sessao_id')
 			)
 		;
@@ -87,18 +88,19 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'data_compra'=>	'required'
-			,'data_vencimiento'=>	'required'
-			,'data_pagamento'=>	'required'
-			,'valor_subtotal'=>	'required'
-			,'valor_ajuste_tipo'=>	'required'
-			,'valor_ajuste_percentual'=>	'required'
-			,'valor_total'=>	'required'
-			,'observacao'=>	'required'
-			,'forma_pagamento'=>	'required'
-			,'status_pagamento'=>	'required'
-			,'pagarme'=>	'required'
-			,'NSFe'=>	'required'
+			'data_compra'			=>	'required'
+			,'data_vencimiento'		=>	'required'
+			,'data_pagamento'		=>	'required'
+			,'products'				=>	'required'
+			,'valor_subtotal'		=>	'required'
+			,'valor_ajuste_tipo'	=>	'required'
+			,'valor_ajuste_percentual'=>'required'
+			,'valor_total'			=>	'required'
+			//,'observacao'			=>	'required'
+			,'forma_pagamento'		=>	'required'
+			,'status_pagamento'		=>	'required'
+			,'pagarme'				=>	'required'
+			,'NSFe'					=>	'required'
 			//,'sessao_id'=>	'required'
 
 			)
@@ -163,7 +165,91 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 	 */
 	public function store($empresa_id,$convenio_id)
 	{
-		//
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fakeuser;
+
+		$d=new EmpresaConvenioProdutofaturaData;
+
+		$success= $d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),
+				$d->validationmssg()
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			$e=new Produtofatura;	
+			$e->convenio_id		=$convenio_id;
+
+			// $succes variable contains array name=>value
+			//from the form required in this controller
+			foreach ($success as $key => $value) {
+				//
+				//Skipping 'products' value
+				if ($key!='products') {
+					$e->$key = $value;
+				}
+			}
+
+			//$e->dthr_cadastro	=date('Y-m-d H:i:s');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
+			$e->save();
+
+			$success['id']=$e->id;
+
+			$produtocompra_array=explode(',', $success['products']);
+
+			foreach ($produtocompra_array as $key => $value) {
+				$value=explode(':', $value);
+				if ($value[1]>0) {
+					$p_compra=new Produtocompra;
+					$p_compra->produtofatura_id =$success['id'];
+					$p_compra->produto_id 		=$value[0];
+					$p_compra->amount 			=$value[1];
+					$p_compra->session_id 		=$fake->sessao_id();
+					//$p_compra->sessao_id		=$this->id_sessao;
+					$p_compra->save();
+				}
+					
+			}
+
+			$res = $d->responsedata(
+				'produtofatura',
+				true,
+				'store',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch (Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res = $d->responsedata(
+				'contabancaria',
+				false,
+				'store',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
+
 	}
 
 
@@ -175,12 +261,44 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 	 */
 	public function show($empresa_id,$convenio_id,$id)
 	{
-		//
+		$d=new EmpresaConvenioProdutofaturaData;
+		return $d->show($id);
 	}
 
 	public function showvisible($empresa_id,$convenio_id,$id)
 	{
-		//
+		$d=new EmpresaConvenioProdutofaturaData;
+
+		try {
+			if (Produtofatura::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'produtofatura',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+
+			$produtofatura=$d->show($id);
+			$header=$d->header();
+			return 
+			View::make('tempviews.EmpresaConvenioProdutofatura.show',
+				compact(
+					'produtofatura',
+					'header',
+					'empresa_id',
+					'convenio_id',
+					'id'
+					)
+				)
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 

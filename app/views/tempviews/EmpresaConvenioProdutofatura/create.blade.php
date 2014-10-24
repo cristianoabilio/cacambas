@@ -46,38 +46,40 @@
 						<div class="col-sm-1">
 							Amount
 							<br>
-							<input type="text" class="form-control">
+							<input type="text" id='amount{[$p->id]}' class="form-control" value='0'>
 							
 						</div>
 						<div class="col-sm-1">
 							price
 							<br>
-							{[$p->valor]}
+							<spam id="price{[$p->id]}">{[$p->valor]}</spam>
 							<hr>
 						</div>
 						<div class="col-sm-1">
 							custo_extra
 							<br>
-							{[$p->custo_extra]}
+							<spam id="extra{[$p->id]}">{[$p->custo_extra]}</spam>
 							<hr>
 						</div>
 						<div class="col-sm-3">
 							TOTAL
 							<br>
-							[pending to add jquery function]
+							<spam id="total{[$p->id]}">0</spam>
 							<hr>
 						</div>
 					</div>
 				</div>
 				
 			@endforeach
+			<input type="hidden" id="products" name='products'>
 			
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					valor_subtotal
+					valor_subtotal 
+					<spam id="valor_subtotal_text"></spam>
 					<br>
-					<input type="text" class='form-control' name="valor_subtotal" id="valor_subtotal">
+					<input type="hidden" class='form-control' name="valor_subtotal" id="valor_subtotal">
 				</div>
 			</div>
 			<br>
@@ -175,8 +177,51 @@
 					$('#produtofields'+id).show('fast');
 				} else {
 					$('#produtofields'+id).hide('fast');
+					$('#amount'+id).val('0');
+					$('#total'+id).html('0');
+					sumsubtotal();
 				}
+				addcheckedprodutoid();
+			});
+
+			$('#amount'+id).on('keyup',function(){
+				var amount=parseInt($(this).val(),10);
+				var price=parseInt($('#price'+id).html(),10);
+				var extra=parseInt($('#extra'+id).html(),10);
+				var total=(price+extra)*amount;
+				$('#total'+id).html(total);
+
+				sumsubtotal();
+
+				addcheckedprodutoid();
 			});
 		});
+
+		function sumsubtotal(){
+			var subtotal=0;
+			$('.produto').each(function(){
+				//
+				var id=$(this).attr('id');
+				id=id.replace('produto','');
+				subtotal=subtotal+parseInt($('#total'+id).html(),10);
+				$('#valor_subtotal').val(subtotal);
+				$('#valor_subtotal_text').html(subtotal);
+			});
+		}
+
+		function addcheckedprodutoid(){
+			var comma='';
+			var product_id='';
+			$('.produto').each(function(){
+				var id=$(this).attr('id');
+				//var amount=$('#amount'+id).val();
+				id=id.replace('produto','');
+				if ($(this).is(':checked')) {
+					product_id=product_id+comma+id+':'+$('#amount'+id).val();
+					comma=',';
+				}
+			});
+			$('#products').val(product_id);
+		}
 	});
 </script>
