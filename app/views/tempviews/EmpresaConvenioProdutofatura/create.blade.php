@@ -47,7 +47,6 @@
 							Amount
 							<br>
 							<input type="text" id='amount{[$p->id]}' class="form-control" value='0'>
-							
 						</div>
 						<div class="col-sm-1">
 							price
@@ -152,7 +151,7 @@
 		{[Form::close()  ]}
 		<br>
 		<br>
-		<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$convenio_id.'/visibleprodutofatura') ]}">Back to convenio index</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$convenio_id.'/visibleprodutofatura') ]}">Back to produtofatura index</a>
 		<br>
 		<br>
 		<br>
@@ -184,6 +183,7 @@
 				addcheckedprodutoid();
 			});
 
+			//item final price calculation
 			$('#amount'+id).on('keyup',function(){
 				var amount=parseInt($(this).val(),10);
 				var price=parseInt($('#price'+id).html(),10);

@@ -310,7 +310,37 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 	 */
 	public function edit($empresa_id,$convenio_id,$id)
 	{
-		//
+		$d=new EmpresaConvenioProdutofaturaData;
+		try {
+			if (Produtofatura::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'contabancaria',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			
+			$produtofatura=$d->show($id);
+			$header=$d->header();
+			return View::make(
+				'tempviews.EmpresaConvenioProdutofatura.edit',
+				compact(
+					'produtofatura',
+					'header',
+					'empresa_id',
+					'convenio_id',
+					'id'
+					)
+				)
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -322,7 +352,102 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 	 */
 	public function update($empresa_id,$convenio_id,$id)
 	{
-		//
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
+		$fake=new fakeuser;
+
+		$d=new EmpresaConvenioProdutofaturaData;
+
+		$success= $d->formatdata();
+
+		try{
+			$validator= Validator::make(			
+				Input::All(),
+				$d->validrules(),	
+				array(		
+					'required'=>'Required field'	
+					)	
+				)		
+			;
+
+			if ($validator->fails()){
+				throw new Exception(
+					json_encode(
+						array(
+							'validation_errors'=>$validator->messages()->all()
+							)
+						)
+					)
+				;
+			}
+
+			//update produtofatura
+			$e=Produtofatura::find($id);
+			// $succes variable contains array name=>value
+			//from the form required in this controller
+			foreach ($success as $k => $v) {
+				//
+				//Skipping 'products' value
+				if ($k!='products') {
+					$e->$k = $v;
+				}
+			}
+
+			//$e->dthr_cadastro	=date('Y-m-d H:i:s');
+			$e->sessao_id		=$fake->sessao_id();
+			//$e->sessao_id	=$this->id_sessao;
+			$e->save();
+
+			//update produtocompra
+			//1. Converting products field value as array
+			//  1:4,3:2  ---> array('1'=>'4','3'=>'2')
+			//where key:produto_id, value:amount
+			$preitems=explode(',', $success['products']);
+			$item=array();
+			foreach ($preitems as $i) {
+				$i=explode(':', $i);
+				$item[$i[0] ] = $i[1] ;
+			}
+
+			//2. Check each product on produtocompra items
+			//bug: iteration is deleting everything except last
+			//loop
+			//fast solution: delete all items and add new ones
+			Produtocompra::whereProdutofatura_id($id)->delete();
+
+			foreach ($item as $k => $v) {
+				if ($v>0) {
+					$p_c=new Produtocompra;
+					$p_c->produtofatura_id 	=$id;
+					$p_c->produto_id 		=$k;
+					$p_c->amount 			=$v;
+					$p_c->session_id 		=$fake->sessao_id();
+					//$p_c->sessao_id		=$this->id_sessao;
+					$p_c->save();
+				}
+			}
+
+			$res = $d->responsedata(
+				'produtofatura',
+				true,
+				'update',
+				$success
+				)
+			;
+			$code=200;
+		}
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res = $d->responsedata(
+				'produtofatura',
+				false,
+				'update',
+				$validator->messages()
+				)
+			;
+			$code=400;
+		}
+		return Response::json($res,$code);
 	}
 
 

@@ -18,7 +18,7 @@
 			</div>
 		@endforeach
 		<hr>
-		<a href="{[URL::to('empresa/'.$empresa_id.'/produtofatura/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$convenio_id.'/produtofatura/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
 		<br>
 		<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$convenio_id.'/visibleprodutofatura') ]}">Back to produtofatura index</a>
