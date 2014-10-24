@@ -36,12 +36,16 @@ Route::get('/', array('as' => 'app.view', function(){
 Route::get('/myproduction', function() use ($st_r)
 {
 	$allviews=$st_r->allviews();
-	$empresanested=$st_r->empresa_nested();
+	$empresanested=	$st_r->empresa_nested();
+	$convenionested=$st_r->empresaconvenio_nested();
+	$funcionarionested=$st_r->empresafuncionario_nested();
 	return View::make(
 		'viewindex',
 		compact(
 			'allviews',
-			'empresanested'
+			'empresanested',
+			'convenionested',
+			'funcionarionested'
 			)
 		)
 	;
@@ -95,20 +99,10 @@ foreach ($st_r->empresaconvenio_nested() as $k => $v) {
 	Route::get('empresa/{id_empresa}/convenio/{id_convenio}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
-//Nested fatura
-Route::resource('empresa.fatura', 'EmpresaFaturaController');
-Route::resource('funcionario.resumoatividade', 'FuncionarioResumoatividadeController');
-Route::resource('convenio.fatura', 'ConvenioFaturaController');
 
-
-
-
-//Nested resumoatividade (inside empresa.funcionario)
-Route::resource('empresa.funcionario.resumoatividade', 'EmpresaFuncionarioResumoatividadeController');
-Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visibleresumoatividade','EmpresaFuncionarioResumoatividadeController@visible');
-Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisibleresumoatividade/{id}','EmpresaFuncionarioResumoatividadeController@showvisible');
-
-
-
-
-
+//Nested controllers on empresa.funcionario
+foreach ($st_r->empresafuncionario_nested() as $k => $v) {
+	Route::resource('empresa.funcionario.'.$v, $k);
+	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}

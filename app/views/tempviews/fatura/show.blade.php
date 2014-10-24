@@ -1,24 +1,20 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-@foreach($header as $h)
-<div style='width:150px;float:left'>
-	{[$h[0] ]}
-</div>
-<div style='width:300px;float:left'>
-	<b>
-		{[$fatura->$h[0]   ]}
-	</b>
-</div>
-<div style='clear:both'></div>
-@endforeach
+<body>
+	<div class="container">
+		<h1>Fatura resource number {[$id]}</h1>
+		@foreach($header as $h)
+		<div class="row">
+			<div class="col-sm-2">{[$h[0] ]}</div>
+			<div class="col-sm-6">{[$fatura->$h[0]   ]}</div>
+		</div>
+		@endforeach
+		<a href="{[URL::to('fatura/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<br>
+		<br>
+		<a href="{[URL::to('visiblefatura')]}">Back to fatura</a>
+	</div>
+</body>
 
-<br>
-<br>
-<br>
-
-<a href="{[URL::to('fatura/'.$id.'/edit')]} "> ....  Edit .... </a>
-<br>
-
-	<br>
-<a href="{[URL::to('fatura')]}">Back to fatura</a>
+		

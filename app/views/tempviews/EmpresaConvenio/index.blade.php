@@ -23,7 +23,6 @@
 						</th>
 					@endif
 				@endforeach
-				<th>Invoices</th>
 			</tr>
 			@foreach($convenio as $e)
 				<tr>
@@ -46,9 +45,11 @@
 								</a>
 							</li>
 							<li>
-								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/fatura')]} ">
-									servico faturas
-									(total {[Fatura::whereConvenio_id($e->id)->count() ]}  )
+								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/visiblefatura')]} ">
+								HTML servico fatura {[$e->id]}
+								</a>
+								|
+								<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/fatura')]}">JSON servico fatura {[$e->id]}
 								</a>
 							</li>
 						</ul>
@@ -64,12 +65,6 @@
 							</td>
 						@endif
 					@endforeach
-					<td>
-						<a href="{[URL::to('empresa/'.$empresa_id.'/convenio/'.$e->id.'/fatura')]} ">
-							faturas
-							(total {[Fatura::whereConvenio_id($e->id)->count() ]}  )
-						</a>
-					</td>
 				</tr>
 			@endforeach
 		</table>

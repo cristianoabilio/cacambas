@@ -19,7 +19,6 @@
 					</th>
 				@endif
 			@endforeach
-				<th>ResumoAtividade</th>
 			</tr>
 			@foreach($funcionario as $e)
 
@@ -38,9 +37,6 @@
 								</td>
 							@endif
 						@endforeach
-						<td>
-							<a href="{[URL::to('funcionario/'.$e->id.'/resumoatividade')]}">See atividade</a>
-						</td>
 					</tr>
 				@endif
 					

@@ -134,12 +134,10 @@ class ConvenioController extends \BaseController {
 	public function visible()
 	{
 		$d=new ConvenioData;
-		$fake=new fakeuser;
 
 		$data=array(
 			'header' 	=> $d->header(),
-			'convenio'	=> $d->edata(),
-			'empresa'	=> $fake->empresa()
+			'convenio'	=> $d->edata()
 			)
 		;
 		return View::make('tempviews.convenio.index',$data);

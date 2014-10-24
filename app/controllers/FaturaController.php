@@ -166,70 +166,7 @@ class FaturaController extends \BaseController {
 	 */
 	/*public function store()
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
 		//
-
-		$d=new FaturaData;
-		$success=$d->formatdata();
-
-		try{
-			$validator= Validator::make(		
-				Input::All(),
-				$d->validrules(),
-				array(	
-					'required'=>'Required field'
-					)
-				)	
-			;
-
-			if ($validator->fails()){
-				throw new Exception(
-					json_encode(
-						array(
-							'validation_errors'=>$validator->messages()->all()
-							)
-						)
-					)
-				;
-			}
-
-			$e=new Fatura;	
-			$e->empresa_id			=$fake->empresa();
-			//
-			foreach ($success as $key => $value) {
-				$e->$key 	=$value;
-			}
-			//
-			$e->dthr_cadastro		=date('Y-m-d H:i:s');
-			$e->sessao_id			=$fake->sessao_id();
-			//$e->sessao_id	=$this->id_sessao;
-			$e->save();	
-
-
-			$res=$d->responsedata(
-				'Fatura',
-				true,
-				'store',
-				$success
-				)
-			;
-			$code=200;
-
-
-		} catch (Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'Fatura',
-				false,
-				'store',
-				$validator->messages()
-				)
-			;
-			$code=400;
-		}
-		return Response::json($res,$code);
 	}*/
 
 
@@ -239,7 +176,11 @@ class FaturaController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show ($id) {
+		$d=new FaturaData;
+		return $d->show($id);
+	}
+	public function showvisible($id)
 	{
 		$d=new FaturaData;
 		$data=array(
@@ -251,6 +192,8 @@ class FaturaController extends \BaseController {
 		return View::make('tempviews.fatura.show',$data);
 
 	}
+
+
 
 
 	/**

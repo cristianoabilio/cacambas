@@ -1,43 +1,166 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-Edit 
-{[$fatura->id]}
-<br>
-<h1>
-	Danger: you are about to edit a fatura.
-	Be careful about changes you are up to apply.
-</h1>
-<br>	
-<div style='margin-left:200px'>
-	
-	{[ Form::model($fatura, array('route' => array('fatura.update', $fatura->id), 'method' => 'PUT')) ]}
-
-
-		convenio_id <input type="text" name="convenio_id" id="convenio_id" value="{[$fatura->convenio_id]}">	<br>
-		mes_referencia <input type="text" name="mes_referencia" id="mes_referencia" value="{[$fatura->mes_referencia]}">	<br>
-		semestre_referencia <input type="text" name="semestre_referencia" id="semestre_referencia" value="{[$fatura->semestre_referencia]}">	<br>
-		ano_referencia <input type="text" name="ano_referencia" id="ano_referencia" value="{[$fatura->ano_referencia]}">	<br>
-		data_vencimento <input type="text" name="data_vencimento" id="data_vencimento" value="{[$fatura->data_vencimento]}">	<br>
-		data_pagamento <input type="text" name="data_pagamento" id="data_pagamento" value="{[$fatura->data_pagamento]}">	<br>
-		forma_pagamento <input type="text" name="forma_pagamento" id="forma_pagamento" value="{[$fatura->forma_pagamento]}">	<br>
-		status_pagamento <input type="text" name="status_pagamento" id="status_pagamento" value="{[$fatura->status_pagamento]}">	<br>
-		valor_plano <input type="text" name="valor_plano" id="valor_plano" value="{[$fatura->valor_plano]}">	<br>
-		valor_prod_compra <input type="text" name="valor_prod_compra" id="valor_prod_compra" value="{[$fatura->valor_prod_compra]}">	<br>
-		valor_prod_uso <input type="text" name="valor_prod_uso" id="valor_prod_uso" value="{[$fatura->valor_prod_uso]}">	<br>
-		valor_boleto <input type="text" name="valor_boleto" id="valor_boleto" value="{[$fatura->valor_boleto]}">	<br>
-		valor_total <input type="text" name="valor_total" id="valor_total" value="{[$fatura->valor_total]}">	<br>
-		ajuste_tipo <input type="text" name="ajuste_tipo" id="ajuste_tipo" value="{[$fatura->ajuste_tipo]}">	<br>
-		ajuste_valor <input type="text" name="ajuste_valor" id="ajuste_valor" value="{[$fatura->ajuste_valor]}">	<br>
-		ajuste_percentual <input type="text" name="ajuste_percentual" id="ajuste_percentual" value="{[$fatura->ajuste_percentual]}">	<br>
-		pagarme <input type="text" name="pagarme" id="pagarme" value="{[$fatura->pagarme]}">	<br>
-		NFSe <input type="text" name="NFSe" id="NFSe" value="{[$fatura->NFSe]}">	<br>
-		
-
+<body>
+	<div class="container">
+		<h1>
+			Edit fatura resource number {[$fatura->id]}
+		</h1>
+		<h3 class='text-danger'>
+			Danger: you are about to edit a fatura.
+			Be careful about changes you will apply.
+		</h3>
+		{[ Form::model($fatura, array('route' => array('fatura.update', $fatura->id), 'method' => 'PUT')) ]}
+		<div class="row">
+			<div class="col-sm-2">
+				convenio_id
+				<br>
+				<input type="text" class='form-control' name="convenio_id" id="convenio_id" value="{[$fatura->convenio_id]}">
+			</div>
+		</div>
 		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				mes_referencia
+				<br>
+				<input type="text" class='form-control' name="mes_referencia" id="mes_referencia" value="{[$fatura->mes_referencia]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				semestre_referencia
+				<br>
+				<input type="text" class='form-control' name="semestre_referencia" id="semestre_referencia" value="{[$fatura->semestre_referencia]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				ano_referencia
+				<br>
+				<input type="text" class='form-control' name="ano_referencia" id="ano_referencia" value="{[$fatura->ano_referencia]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				data_vencimento
+				<br>
+				<input type="text" class='form-control' name="data_vencimento" id="data_vencimento" value="{[$fatura->data_vencimento]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				data_pagamento
+				<br>
+				<input type="text" class='form-control' name="data_pagamento" id="data_pagamento" value="{[$fatura->data_pagamento]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				forma_pagamento
+				<br>
+				<input type="text" class='form-control' name="forma_pagamento" id="forma_pagamento" value="{[$fatura->forma_pagamento]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				status_pagamento
+				<br>
+				<input type="text" class='form-control' name="status_pagamento" id="status_pagamento" value="{[$fatura->status_pagamento]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_plano
+				<br>
+				<input type="text" class='form-control' name="valor_plano" id="valor_plano" value="{[$fatura->valor_plano]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_prod_compra
+				<br>
+				<input type="text" class='form-control' name="valor_prod_compra" id="valor_prod_compra" value="{[$fatura->valor_prod_compra]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_prod_uso
+				<br>
+				<input type="text" class='form-control' name="valor_prod_uso" id="valor_prod_uso" value="{[$fatura->valor_prod_uso]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_boleto
+				<br>
+				<input type="text" class='form-control' name="valor_boleto" id="valor_boleto" value="{[$fatura->valor_boleto]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_total
+				<br>
+				<input type="text" class='form-control' name="valor_total" id="valor_total" value="{[$fatura->valor_total]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				ajuste_tipo
+				<br>
+				<input type="text" class='form-control' name="ajuste_tipo" id="ajuste_tipo" value="{[$fatura->ajuste_tipo]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				ajuste_valor
+				<br>
+				<input type="text" class='form-control' name="ajuste_valor" id="ajuste_valor" value="{[$fatura->ajuste_valor]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				ajuste_percentual
+				<br>
+				<input type="text" class='form-control' name="ajuste_percentual" id="ajuste_percentual" value="{[$fatura->ajuste_percentual]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				pagarme
+				<br>
+				<input type="text" class='form-control' name="pagarme" id="pagarme" value="{[$fatura->pagarme]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				NFSe
+				<br>
+				<input type="text" class='form-control' name="NFSe" id="NFSe" value="{[$fatura->NFSe]}">
+			</div>
+		</div>
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
-	</form>
+		{[Form::close()]}
+		<a href="{[URL::to('visiblefatura')]}">Back to fatura</a>
+		<br>	
+		<br>
+	</div>
+</body>
 
-<a href="{[URL::to('fatura')]}">Back to fatura</a>
-</div>
+	

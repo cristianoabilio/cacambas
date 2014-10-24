@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>
-			Convenios for {[Empresa::find($empresa)->nome]}
+			Convenios for all empresas
 		</h1>
 		<a href="{[URL::to('convenio/create')]}">Add new "convenio"</a>
 		<br>

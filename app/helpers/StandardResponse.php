@@ -68,9 +68,18 @@ class StandardResponse {
 
 	public function empresaconvenio_nested() {
 		return array(
-			'EmpresaConvenioProdutofaturaController'	=>'produtofatura'
+			'EmpresaConvenioProdutofaturaController'	=>'produtofatura',
+			'EmpresaConvenioFaturaController'	=>'fatura'
 			)
 		;
+	}
+
+	public function empresafuncionario_nested () {
+		return array(
+			'EmpresaFuncionarioResumoatividadeController'	=>'resumoatividade'
+			)
+		;
+		
 	}
 
 }

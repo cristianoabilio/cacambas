@@ -9,6 +9,8 @@
 		<table class='table'>
 		 	<!-- $h var comes from controller fatura, containing
 		 	the header names on table fatura -->
+		 	<tr>
+		 		<th>resource</th>
 		 	@foreach($header as $h)
 				@if($h[1]==1)
 					<th>
@@ -16,18 +18,19 @@
 					</th>
 				@endif
 			@endforeach
+			</tr>
 
 			@foreach($fatura as $e)
 				<tr>
+					<td>
+						<a href="{[URL::to('showvisiblefatura/'.$e->id)]}">HTML resource {[$e->id]} </a>
+						|
+						<a href="{[URL::to('fatura/'.$e->id)]}">JSON resource {[$e->id]}</a>
+					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
 							<td>
-								@if($h[0]=='empresa_id')
-								<a href="{[URL::to('fatura/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								@else
 								{[$e->$h[0]  ]}
-								@endif
-								
 							</td>
 						@endif
 					@endforeach
