@@ -368,10 +368,21 @@ class EmpresaConvenioFaturaController extends BaseController{
 	}
 
 	public function edit ($empresa_id,$convenio_id,$id) {
-		$data=array(
+
+		$d=new EmpresaConvenioFaturaData;
+
+		$fatura=$d->show($id);
+
+		return View::make(
+			'tempviews.EmpresaConvenioFatura.edit',
+			compact(
+				'fatura',
+				'empresa_id',
+				'convenio_id',
+				'id'
+				)
 			)
 		;
-		return View::make('tempviews.EmpresaConvenioFatura.edit',$data);
 	}
 
 	public function update ($empresa_id,$convenio_id,$id) {

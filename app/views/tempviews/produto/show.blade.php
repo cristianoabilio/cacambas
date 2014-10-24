@@ -20,9 +20,6 @@
 			<input type="submit" value='DELETE'>
 			</form>
 			<br>
-		<a href="{[URL::to('limite')]}">Back to produto</a>
+		<a href="{[URL::to('visibleproduto')]}">Back to produto</a>
 	</div>
 </body>
-		
-
-		

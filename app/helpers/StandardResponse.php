@@ -38,6 +38,8 @@ class StandardResponse {
 			'endereco',
 			'enderecobase',
 			'fatura',
+			'produtofatura',
+			'produtocompra',
 			'limite',
 			'plano',
 			'produto',
