@@ -306,7 +306,7 @@ class LimiteController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 
@@ -350,7 +350,7 @@ class LimiteController extends \BaseController {
 
 		}
 
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
 
 

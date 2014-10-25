@@ -5,6 +5,14 @@
 @include('tempviews.EmpresaConvenioFatura.pseudocontroller')
 <body>
 	<div class="container" >
+		<h1>
+			//pending to add next conditions:
+			<ul>
+				<li>if plano with no services</li>
+				<li>if plano and canceled service with reimbursement</li>
+				<li>if plano and canceled service with no reimbursement</li>
+			</ul>
+		</h1>
 
 		<h1>
 			Add new fatura for {[Empresa::find($empresa_id)->nome]}

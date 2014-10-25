@@ -39,12 +39,13 @@ class EmpresaConvenioFaturaData extends StandardResponse{
 		1 (visible) or 0 (not shown)
 		*/
 		$header=array(	
-			array('convenio_id',1)
-			,array('empresa_id',0)
+			//array('convenio_id',1)
+			//,array('empresa_id',0)
 			//,array('mes_referencia',0)
 			//,array('semestre_referencia',0)
 			//,array('ano_referencia',0)
-			,array('plan_period_start_date',1)
+			//,
+			array('plan_period_start_date',1)
 			,array('plan_period_end_date',1)
 			,array('data_vencimento',1)
 			,array('data_pagamento',1)
@@ -309,7 +310,7 @@ class EmpresaConvenioFaturaController extends BaseController{
 			}
 			
 			$e=new Fatura;
-			$e->convenio_id			=$c_id;
+			$e->convenio_id			=$convenio_id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
