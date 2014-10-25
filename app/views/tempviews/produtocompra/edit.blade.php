@@ -17,7 +17,7 @@
 			<div class="col-sm-2">
 				amount
 				<br>
-				<input type="text" class='form-control' name="amount" id="amount" value="{[$produtocompra->amount]}">	
+				<input type="text" class='form-control' name="amount" id="amount" value="{[$produtocompra->quantidade]}">	
 			</div>
 		</div>
 		<br>

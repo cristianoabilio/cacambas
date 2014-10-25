@@ -220,7 +220,7 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 					$p_compra=new Produtocompra;
 					$p_compra->produtofatura_id =$success['id'];
 					$p_compra->produto_id 		=$value[0];
-					$p_compra->amount 			=$value[1];
+					$p_compra->quantidade 		=$value[1];
 					$p_compra->session_id 		=$fake->sessao_id();
 					//$p_compra->sessao_id		=$this->id_sessao;
 					$p_compra->save();
@@ -416,7 +416,7 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 					$p_c=new Produtocompra;
 					$p_c->produtofatura_id 	=$id;
 					$p_c->produto_id 		=$k;
-					$p_c->amount 			=$v;
+					$p_c->quantidade 		=$v;
 					$p_c->session_id 		=$fake->sessao_id();
 					//$p_c->sessao_id		=$this->id_sessao;
 					$p_c->save();

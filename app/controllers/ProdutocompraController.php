@@ -4,7 +4,7 @@ class ProdutocompraData extends StandardResponse{
 	public function header(){
 		$header=array(	
 			array('produtofatura_id',1)
-			,array('amount',1)
+			,array('quantidade',1)
 			,array('produto_id',1)
 			//,array('session_id',0)
 			)
@@ -26,7 +26,7 @@ class ProdutocompraData extends StandardResponse{
 	public function formatdata(){
 		$formdata=array(
 			'produtofatura_id'	=>Input::get('produtofatura_id'),
-			'amount'			=>Input::get('amount'),
+			'quantidade'			=>Input::get('quantidade'),
 			'produto_id'		=>Input::get('produto_id')
 			)
 		;
@@ -36,7 +36,7 @@ class ProdutocompraData extends StandardResponse{
 	public function validrules() {
 		return array(
 			'produtofatura_id' 	=>	'required'
-			,'amount' 			=>	'required'
+			,'quantidade' 			=>	'required'
 			,'produto_id' 		=>	'required'
 			)
 		;

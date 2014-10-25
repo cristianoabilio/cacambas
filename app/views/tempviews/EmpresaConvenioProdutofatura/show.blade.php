@@ -14,7 +14,7 @@
 		@foreach($produtofatura->produtocompra as $p)
 			<div class="row">
 				<div class="col-sm-2">{[$p->produto->nome]}</div>
-				<div class="col-sm-6">{[$p->amount]} units</div>
+				<div class="col-sm-6">{[$p->quantidade]} units</div>
 			</div>
 		@endforeach
 		<hr>

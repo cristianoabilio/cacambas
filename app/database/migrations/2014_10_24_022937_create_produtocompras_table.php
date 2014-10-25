@@ -16,7 +16,7 @@ class CreateProdutocomprasTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('produtofatura_id');
-			$table->integer('amount');
+			$table->integer('quantidade');
 			$table->integer('produto_id');
 			$table->integer('session_id');
 			$table->timestamps();

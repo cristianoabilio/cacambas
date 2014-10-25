@@ -46,7 +46,7 @@
 
 			//Empty variables.
 			$checked='';
-			$amount=0;
+			$quantidade=0;
 			$classpurchased='text-muted';
 			
 
@@ -54,11 +54,11 @@
 			if ( $pcompra->count()>0 ) {
 				$p_c=$pcompra->first();
 				$checked='checked';
-				$amount=$p_c->amount;
+				$quantidade=$p_c->quantidade;
 				$classpurchased='';
 				//$pairedproductamount=$pairedproductamount+.','.+
 				//$pairedproductamount=$pairedproductamount.$comma.strval($p_c->id).':'.strval($amount);
-				$pairedproductamount=$pairedproductamount.$comma.$p_c->produto_id.':'.$amount;
+				$pairedproductamount=$pairedproductamount.$comma.$p_c->produto_id.':'.$quantidade;
 				$comma=',';
 			}
 			?>
@@ -75,7 +75,7 @@
 					<div class="col-sm-1">
 						Amount
 						<br>
-						<input type="text" id='amount{[$p->id]}' class="form-control" value='{[$amount]}'>
+						<input type="text" id='amount{[$p->id]}' class="form-control" value='{[$quantidade]}'>
 					</div>
 					<div class="col-sm-1">
 						price
@@ -92,7 +92,7 @@
 					<div class="col-sm-3">
 						TOTAL
 						<br>
-						<spam id="total{[$p->id]}">{[($p->valor+$p->custo_extra)*$amount]}</spam>
+						<spam id="total{[$p->id]}">{[($p->valor+$p->custo_extra)*$quantidade]}</spam>
 						<hr>
 					</div>
 				</div>
