@@ -3,8 +3,8 @@
 </head>
 <body>
 	<div class="container">
-		 <h1>Classe </h1>
-		 <a href="{[URL::to('classe/create')]}">
+		 <h1>Subclasse </h1>
+		 <a href="{[URL::to('classe/'.$id.'/subclasse/create')]}">
 			Add new "classe"
 		</a>
 		<br>
@@ -23,19 +23,13 @@
 				@endif
 			@endforeach
 			</tr>
-			@foreach($classe as $e)
+			@foreach($subclasse as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisibleclasse/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						<a href="{[URL::to('classe/'.$id.'/showvisiblesubclasse/'.$e->id)]}">HTML resource {[$e->id]}</a>
 						|
-						<a href="{[URL::to('classe/'.$e->id)]}">JSON resource {[$e->id]}</a>
-						<ul>
-							<li>
-								<a href="{[URL::to('classe/'.$e->id).'/subclasse']}">subclasse HTML resource {[$e->id]}</a>
-								|
-								<a href="{[URL::to('classe/'.$e->id).'/visiblesubclasse']}">subclasse JSON resource {[$e->id]}</a>
-							</li>
-						</ul>
+						<a href="{[URL::to('classe/'.$id.'/subclasse/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)

@@ -28,6 +28,7 @@
 		{[Form::close()]}
 		<br>
 		{[ Form::model($classe, array('route' => array('classe.destroy', $id), 'method' => 'DELETE')) ]}
+		Pending to delete children subclasses of current classe (not set yet)
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 		<br>

@@ -3,8 +3,13 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Add a new "classe"</h1>
-		{[Form::open(array('url'=>URL::to('classe') ))]}
+		<h1>Add a new "subclasse" for classe resource {[$id]}</h1>
+		pending to add restriction:
+		<ul>
+			<li>if classe id = 1 block user unless profile= admin_cacambas</li>
+		</ul>
+		
+		{[Form::open(array('url'=>URL::to('classe/'.$id.'/subclasse') ))]}
 		<div class="row">
 			<div class="col-sm-2">
 				nome
@@ -14,16 +19,16 @@
 		</div>
 		<br><div class="row">
 			<div class="col-sm-2">
-				descricao
+				detalhe
 				<br>
-				<input type="text" class='form-control' name="descricao" id="descricao">
+				<input type="text" class='form-control' name="detalhe" id="detalhe">
 			</div>
 		</div>
 		<br>
 		<input type="submit" value='create'>
 		<br>
 		{[Form::close()]}
-		<a href="{[URL::to('visibleclasse')]}">Back to classe index</a>
+		<a href="{[URL::to('classe/'.$id.'/visiblesubclasse')]}">Back to subclasse index</a>
 		<br>
 		<br>
 		<br>

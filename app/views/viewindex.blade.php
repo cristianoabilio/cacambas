@@ -120,6 +120,32 @@
 			</tr>
 		@endforeach
 		</table>
+		<br>
+		<h4>nested on classe</h4>
+		<small class="text-muted">
+			In order to see resources you must choose an classe first:  
+			<spam class="text-info">classe/{classe_id}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($classenested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'classe/{classe_id}/{[$n]}'  
+				</td>
+				<td>
+					'classe/{classe_id}//{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
 		<hr>
 		<h3><a href="{[URL::to('jsontest') ]}">JSON checker</a></h3>
 		<hr>

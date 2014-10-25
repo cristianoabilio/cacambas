@@ -13,7 +13,10 @@
 		@endforeach
 		<a href="{[URL::to('classe/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
+		<br>
+		<br>
 		{[ Form::model($classe, array('route' => array('classe.destroy', $id), 'method' => 'DELETE')) ]}
+		Pending to delete children subclasses of current classe (not set yet)
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 

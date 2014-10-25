@@ -86,4 +86,11 @@ class StandardResponse {
 		
 	}
 
+	public function classe_nested() {
+		return array(
+			'ClasseSubclasseController'	=>'subclasse'
+			)
+		;
+	}
+
 }

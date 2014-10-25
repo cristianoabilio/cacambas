@@ -35,17 +35,19 @@ Route::get('/', array('as' => 'app.view', function(){
 */
 Route::get('/myproduction', function() use ($st_r)
 {
-	$allviews=$st_r->allviews();
-	$empresanested=	$st_r->empresa_nested();
-	$convenionested=$st_r->empresaconvenio_nested();
-	$funcionarionested=$st_r->empresafuncionario_nested();
+	$allviews			=$st_r->allviews();
+	$empresanested		=$st_r->empresa_nested();
+	$convenionested		=$st_r->empresaconvenio_nested();
+	$funcionarionested	=$st_r->empresafuncionario_nested();
+	$classenested		=$st_r->classe_nested();
 	return View::make(
 		'viewindex',
 		compact(
 			'allviews',
 			'empresanested',
 			'convenionested',
-			'funcionarionested'
+			'funcionarionested',
+			'classenested'
 			)
 		)
 	;
@@ -105,4 +107,12 @@ foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 	Route::resource('empresa.funcionario.'.$v, $k);
 	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visible'.$v, $k.'@visible');
 	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}
+
+
+//Nested controllers on classe
+foreach ($st_r->classe_nested() as $k=>$v) {
+	Route::resource('classe.'.$v, $k);
+	Route::get('classe/{id_classe}/visible'.$v, $k.'@visible');
+	Route::get('classe/{id_classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
