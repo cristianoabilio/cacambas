@@ -3,7 +3,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Edit {[$classe->nome]}</h1>
+		<h1>Edit {[$classe->nome]} classe</h1>
 		{[ Form::model($classe, array('route' => array('classe.update', $id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
@@ -31,7 +31,7 @@
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('visibleclasse')]}">Back to classe</a>
+		<a href="{[URL::to('visibleclasse')]}">Back to classe index</a>
 		<br>
 		<br>
 		<br>

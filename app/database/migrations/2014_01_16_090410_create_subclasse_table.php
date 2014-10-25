@@ -15,9 +15,11 @@ class CreateSubclasseTable extends Migration {
 		Schema::create('subclasse', function(Blueprint $table) {
 			$table->increments('id');//Parent key for custo
 			$table->integer('classe_id');//Classe FK
+			$table->string('nome');
+			$table->text('detalhe');
 			$table->tinyInteger('status');
 			$table->datetime('dthr_cadastro');
-			$table->integer('sessao_id');
+			$table->integer('sessao_id')->nullable();
 			$table->timestamps();
 		});
 	}

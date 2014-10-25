@@ -3,22 +3,22 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Classe {[$classe->id]} resource</h1>
+		<h1>Subclasse {[$subclasse->id]} resource</h1>
 		@foreach($header as $h)
 			<div class="row">
 				<div class="col-sm-2">{[$h[0] ]}</div>
-				<div class="col-sm-6">{[$classe->$h[0] ]}</div>
+				<div class="col-sm-6">{[$subclasse->$h[0] ]}</div>
 			</div>
 			
 		@endforeach
-		<a href="{[URL::to('classe/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('subclasse/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
-		{[ Form::model($classe, array('route' => array('classe.destroy', $id), 'method' => 'DELETE')) ]}
+		{[ Form::model($subclasse, array('route' => array('subclasse.destroy', $id), 'method' => 'DELETE')) ]}
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 
 		<br><br>
-		<a href="{[URL::to('visibleclasse')]}">Back to classe index</a>
+		<a href="{[URL::to('visiblesubclasse')]}">Back to subclasse index</a>
 		<br>
 		<br>
 		<br>

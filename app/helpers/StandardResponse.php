@@ -31,6 +31,7 @@ class StandardResponse {
 	public function allviews(){
 		return array(
 			'classe',
+			'subclasse',
 			'compras',
 			'contabancaria',
 			'convenio',
