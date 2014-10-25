@@ -31,9 +31,9 @@
 						<a href="{[URL::to('classe/'.$e->id)]}">JSON resource {[$e->id]}</a>
 						<ul>
 							<li>
-								<a href="{[URL::to('classe/'.$e->id).'/subclasse']}">subclasse HTML resource {[$e->id]}</a>
+								<a href="{[URL::to('classe/'.$e->id).'/visiblesubclasse']}">subclasse HTML resource {[$e->id]}</a>
 								|
-								<a href="{[URL::to('classe/'.$e->id).'/visiblesubclasse']}">subclasse JSON resource {[$e->id]}</a>
+								<a href="{[URL::to('classe/'.$e->id).'/subclasse']}">subclasse JSON resource {[$e->id]}</a>
 							</li>
 						</ul>
 					</td>

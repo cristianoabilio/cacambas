@@ -116,3 +116,22 @@ foreach ($st_r->classe_nested() as $k=>$v) {
 	Route::get('classe/{id_classe}/visible'.$v, $k.'@visible');
 	Route::get('classe/{id_classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
+
+/**
+* ---------------------------------------------------------------------------------
+* "Lonely" routes
+* ---------------------------------------------------------------------------------
+* Next routes are not associated with any resource controller.
+* They might retrieve already existing methods on resource 
+* controllers, but their naming conventions are not related them.
+*
+*/
+Route::get('categorias','Classesubclassecontroller@categorias');
+
+Route::get('categorias/create', function()
+{
+	$c=new ClassesubclasseController;
+    return $c->create(2);
+	
+});
+

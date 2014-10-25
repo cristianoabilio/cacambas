@@ -364,4 +364,39 @@ class ClassesubclasseController extends \BaseController {
 		return Response::json($res,$code);
 	}
 
+	/**
+	*-------------------------------------------------
+	* actions for subcategorias route
+	*-------------------------------------------------
+	* "Categorias" route is intended for two purposes
+	* 1. Retrieving a JSON object containing data related
+	*    to classe and subclasse tables
+	* 2. Posting new categorias, this is, subclasse 
+	*    features (data) related to the classe 'manutenção'
+	*    (classe_id=2)
+	*
+	* Route '/categorias' uses three methods
+	* @categorias : JSON object with all 'manutenção'
+	*				subclasses (where Classe_id==2).
+	* @categorias/create : 
+	*				form for adding a new subclass
+	*				with class_id = 2
+	*
+	* @store : 		same store action inside
+	*				Classesubclassecontroller.
+	*
+	*/
+
+	public function categorias () {
+		$d=new ClassesubclasseData;
+		$subclasse=$d->edata(2);
+		$categorias=array();
+		foreach ($subclasse as $key => $v) {
+			$categorias[$v->id]=$v.'-'.
+			$v->classe;
+		}
+		
+		return Response::json($categorias);
+	}
+
 }

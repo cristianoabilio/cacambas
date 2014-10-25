@@ -147,6 +147,11 @@
 		@endforeach
 		</table>
 		<hr>
+		<br>
+		<a href="{[URL::to('categorias') ]}">Categoria as JSON</a>
+		<br>
+		<a href="{[URL::to('categorias/create') ]}">Create new categoria</a>
+		<br>
 		<h3><a href="{[URL::to('jsontest') ]}">JSON checker</a></h3>
 		<hr>
 		<br>
