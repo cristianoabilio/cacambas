@@ -357,8 +357,5 @@ class SubclasseController extends \BaseController {
 		return Response::json($res,$code);
 	}
 
-	
-
-	
 
 }

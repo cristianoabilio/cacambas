@@ -10,17 +10,19 @@
 		{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/convenio/'.$convenio_id.'/produtofatura')  ) )]}
 			<div class="row">
 				<div class="col-sm-2">
-					data_compra {[date('Y-m-d')]}
+					data_compra 
 					<br>
+					{[$today]}
 					<input type="hidden" class='form-control' name="data_compra" id="data_compra" value="{[date('Y-m-d')]}">
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					data_vencimiento
+					data_vencimiento 
 					<br>
-					<input type="text" class='form-control' name="data_vencimiento" id="data_vencimiento" >
+					{[$expire]}
+					<input type="hidden" class='form-control' name="data_vencimiento" id="data_vencimiento"  value="{[date('Y-m-d')]}">
 				</div>
 			</div>
 			<br>
@@ -93,6 +95,7 @@
 			<div class="row">
 				<div class="col-sm-2">
 					valor_ajuste_percentual
+					<spam class="text-muted">discount in percent - enter number between 1 and 100</spam>
 					<br>
 					<input type="text" class='form-control' name="valor_ajuste_percentual" id="valor_ajuste_percentual">
 				</div>
@@ -101,8 +104,9 @@
 			<div class="row">
 				<div class="col-sm-2">
 					valor_total
+					<spam id="valor_total_text"></spam>
 					<br>
-					<input type="text" class='form-control' name="valor_total" id="valor_total">
+					<input type="hidden" class='form-control' name="valor_total" id="valor_total">
 				</div>
 			</div>
 			<br>
@@ -192,9 +196,18 @@
 				$('#total'+id).html(total);
 
 				sumsubtotal();
-
+				sumtotal();
 				addcheckedprodutoid();
 			});
+		});
+
+		hmdfloatnumb($('#valor_ajuste_percentual'));
+
+		validrangenumber(0,100,'valor_ajuste_percentual');
+
+		$('#valor_ajuste_percentual').keyup(function(){
+			//
+			sumtotal();
 		});
 
 		function sumsubtotal(){
@@ -204,9 +217,23 @@
 				var id=$(this).attr('id');
 				id=id.replace('produto','');
 				subtotal=subtotal+parseInt($('#total'+id).html(),10);
-				$('#valor_subtotal').val(subtotal);
-				$('#valor_subtotal_text').html(subtotal);
+				if (subtotal>0) {
+					$('#valor_subtotal').val(subtotal);
+					$('#valor_subtotal_text').html(subtotal);
+				} else {
+					$('#valor_subtotal').val('');
+					$('#valor_subtotal_text').html('');
+				}
+				
 			});
+		}
+
+		function sumtotal() {
+			var subtotal=$('#valor_subtotal').val();
+			var percent=$('#valor_ajuste_percentual').val();
+			var total=subtotal*(1-percent/100);
+			$('#valor_total_text').html(total);
+			$('#valor_total').val(total);
 		}
 
 		function addcheckedprodutoid(){
@@ -223,5 +250,62 @@
 			});
 			$('#products').val(product_id);
 		}
+
+		function hmdoccurrences(string, subString, allowOverlapping){
+
+			string+=""; subString+="";
+			if(subString.length<=0) return string.length+1;
+
+			var n=0, pos=0;
+			var step=(allowOverlapping)?(1):(subString.length);
+
+			while(true){
+				pos=string.indexOf(subString,pos);
+				if(pos>=0){ n++; pos+=step; } else break;
+			}
+				return(n);
+		}
+
+		function hmdfloatnumb(id) {
+	        $(id).keydown(function(event) {
+		        var value = $(this).val();
+		            
+		            // Allow: backspace, delete, tab, escape, enter, minus (-) and .
+		        if ( $.inArray(event.keyCode,[46,8,9,27,13,56,190,173,189,109,110]) !== -1 ||
+		             // Allow: Ctrl+A
+		            (event.keyCode == 65 && event.ctrlKey === true) || 
+		             // Allow: home, end, left, right
+		            (event.keyCode >= 35 && event.keyCode <= 39)) {
+		                 // let it happen, don't do anything
+		                 return;
+		        }
+		        else {
+		            // Ensure that it is a number and stop the keypress
+		            if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+		                event.preventDefault(); 
+		            }   
+		        }
+		    });
+		    $(id).keyup(function(e){
+		        var value=$(this).val();
+		        var minus=value.indexOf("-");
+		        var minusduplicated=hmdoccurrences(value, "-");
+		        var period=hmdoccurrences(value, ".");
+		        if (minus>0||period>1||minusduplicated>1) {
+		            $(this).val(value.substring(0,value.length - 1));
+		        }
+		    });
+	    }
+
+	    function validrangenumber(min,max,id) {
+	    	$('#'+id).keyup(function(e){
+	    		//e.preventDefault();
+	    		if ( $(this).val().trim()<min ) {
+	    			$(this).val('');
+	    		} else if ($(this).val().trim()>max) {
+	    			$(this).val('');
+	    		}
+	    	});
+	    }
 	});
 </script>

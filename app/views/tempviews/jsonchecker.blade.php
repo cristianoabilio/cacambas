@@ -54,6 +54,19 @@
 			</div>
 			<hr>
 		@endforeach
+		<div class="row">
+			<div class="col-sm-2">
+				test classe empty create post
+				<button id="test_classe" class="btn btn-default">check it!</button>
+			</div>
+			<div class="col-sm-6">
+				<div id="classe_response"></div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
 	</div>
 </body>
 <!-- 
@@ -102,10 +115,13 @@ $(function(){
 		});
 	}
 
-	
-
+	$('#test_classe').click(function(){
+		var base=$('#base').html();
+		$.post(base+'/classe',{},function(d){
+			$('#classe_response').html(JSON.stringify(d));
+		});
 		
-
+	});
 	
 });
 </script>
