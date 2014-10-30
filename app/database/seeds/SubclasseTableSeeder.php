@@ -7,17 +7,22 @@ class SubclasseTableSeeder extends Seeder {
 		DB::table('subclasse')->truncate();
 
 		$seed1=array(
-			'Fixas'		=>'Aluguel, Telefone, Água, Internet',
-			'Variáveis'	=>'Compras eventuais, reuniões, almoços',
-			'Pessoal'	=>'Pagamentos de funcionários',
-			'Impostos'	=>'Custos com impostos'
+			array('Fixas','Aluguel'),
+			array('Fixas','Telefone'),
+			array('Fixas','Água'),
+			array('Fixas','Internet'),
+			array('Variáveis','Compras eventuais'),
+			array('Variáveis','reuniões'),
+			array('Variáveis','almoços'),
+			array('Pessoal','Pagamentos de funcionários'),
+			array('Impostos','Custos com impostos')
 			)
 		;
 
 		$seed2=array(
-			'Mecânica'		=>'Gastos com mecânica',
-			'Pintura'		=>'Gastos com pintura de caçambas ou caminhão',
-			'Troca de Óleo'	=>'Custos com a troca de óleo de veículos'
+			array('Mecânica','Gastos com mecânica'),
+			array('Pintura','Gastos com pintura de caçambas ou caminhão'),
+			array('Troca de Óleo','Custos com a troca de óleo de veículos')
 			)
 		;
 
@@ -28,12 +33,12 @@ class SubclasseTableSeeder extends Seeder {
 		;
 
 		foreach ($seeder as $key => $value) {
-			foreach ($seed1 as $k => $v) {
+			foreach ($value as  $v) {
 				DB::table('subclasse')->insert(
 					array(
 						'classe_id'=>$key,
-						'nome'=>$k,
-						'detalhe'=>$v,
+						'nome'=>$v[0],
+						'detalhe'=>$v[1],
 						'status'=>1,
 						'dthr_cadastro'=>date('Y-m-d'),
 						'sessao_id'=>null,

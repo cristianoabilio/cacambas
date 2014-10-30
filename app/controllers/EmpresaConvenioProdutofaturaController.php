@@ -65,6 +65,7 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 			'data_vencimiento'	=>Input::get('data_vencimiento'),
 			'products'			=>Input::get('products'),
 			'valor_subtotal'	=>Input::get('valor_subtotal'),
+			//'valor_ajuste_percentual'=>Input::get('valor_ajuste_percentual'),
 			'valor_total'		=>Input::get('valor_total'),
 			'observacao'		=>Input::get('observacao'),
 			'forma_pagamento'	=>Input::get('forma_pagamento'),
@@ -85,6 +86,8 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
@@ -98,7 +101,7 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 			,'products'				=>	'required'
 			,'valor_subtotal'		=>	'required'
 			,'valor_total'			=>	'required'
-			,'forma_pagamento'	=>	'required'
+			,'forma_pagamento'	=>	'required|integer'
 			)
 		;
 	}

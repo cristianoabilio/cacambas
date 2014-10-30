@@ -137,7 +137,7 @@ class LimiteController extends \BaseController {
 	 */
 	public function store()
 	{
-		//instantiate fake user (for empresa and sessao)
+		/*//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
@@ -198,7 +198,7 @@ class LimiteController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);
+		return Response::json($res,$code);*/
 	}
 
 

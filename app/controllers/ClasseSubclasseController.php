@@ -391,12 +391,25 @@ class ClassesubclasseController extends \BaseController {
 		$d=new ClassesubclasseData;
 		$subclasse=$d->edata(2);
 		$categorias=array();
-		foreach ($subclasse as $key => $v) {
-			$categorias[$v->id]=$v.'-'.
-			$v->classe;
+		foreach ($subclasse as $k => $v) {
+			$subclassearray=array();
+			/*foreach ($v as $key => $value) {
+				$subclassearray[$key]=$value;
+			}*/
+			$classearray=array();
+			/*
+			foreach ($v->classe as $key => $value) {
+				$classearray[$key]=$value;
+			}*/
+			$categorias[$v->id]=
+			array_merge($subclassearray,$classearray)
+			//$v
+			//.'-'
+			//.$v->classe
+			;
 		}
 		
-		return Response::json($categorias);
+		return Response::json($subclasse);
 	}
 
 }

@@ -104,7 +104,7 @@ class SubclasseController extends \BaseController {
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
+		/*$fake=new fakeuser;
 
 		$d=new SubclasseData;
 
@@ -164,7 +164,7 @@ class SubclasseController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);
+		return Response::json($res,$code);*/
 	}
 
 
