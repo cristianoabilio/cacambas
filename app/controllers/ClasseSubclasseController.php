@@ -390,26 +390,35 @@ class ClassesubclasseController extends \BaseController {
 	public function categorias () {
 		$d=new ClassesubclasseData;
 		$subclasse=$d->edata(2);
+		$classe_header=array(
+			'id',
+			'nome',
+			'descricao',
+			'status'
+			)
+		;
+		$subclasse_header=array(
+			'id',
+			'nome',
+			'detalhe',
+			'status'
+			)
+		;
 		$categorias=array();
-		foreach ($subclasse as $k => $v) {
-			$subclassearray=array();
-			/*foreach ($v as $key => $value) {
-				$subclassearray[$key]=$value;
-			}*/
-			$classearray=array();
-			/*
-			foreach ($v->classe as $key => $value) {
-				$classearray[$key]=$value;
-			}*/
-			$categorias[$v->id]=
-			array_merge($subclassearray,$classearray)
-			//$v
-			//.'-'
-			//.$v->classe
-			;
+		foreach ($subclasse as $key => $value) {
+			foreach ($classe_header as $v) {
+				$categorias[$value->id]['classe_'.$v]=$value->Classe->$v;
+			}
+			foreach ($subclasse_header as $v) {
+				$categorias[$value->id]['subclasse_'.$v]=$value->$v;
+			}
+			
 		}
-		
-		return Response::json($subclasse);
+		/*foreach ($subclasse as $k => $v) {
+			//
+			;
+		}*/
+		return $categorias;
 	}
 
 }
