@@ -3,7 +3,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Data for endereco record {[$id]} </h1>
+		<h1>Data for enderecobase record {[$id]} </h1>
 		@foreach($header as $h)
 			<div class="row">
 				<div class="col-sm-2">{[$h[0] ]}</div>

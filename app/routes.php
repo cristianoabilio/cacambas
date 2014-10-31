@@ -40,6 +40,8 @@ Route::get('/myproduction', function() use ($st_r)
 	$convenionested		=$st_r->empresaconvenio_nested();
 	$funcionarionested	=$st_r->empresafuncionario_nested();
 	$classenested		=$st_r->classe_nested();
+	$estadonested		=$st_r->estado_nested();
+	$estadocidadenested	=$st_r->estadocidade_nested();
 	return View::make(
 		'viewindex',
 		compact(
@@ -47,7 +49,9 @@ Route::get('/myproduction', function() use ($st_r)
 			'empresanested',
 			'convenionested',
 			'funcionarionested',
-			'classenested'
+			'classenested',
+			'estadonested',
+			'estadocidadenested'
 			)
 		)
 	;
@@ -115,6 +119,21 @@ foreach ($st_r->classe_nested() as $k=>$v) {
 	Route::resource('classe.'.$v, $k);
 	Route::get('classe/{id_classe}/visible'.$v, $k.'@visible');
 	Route::get('classe/{id_classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}
+
+
+//Nested controllers on estado
+foreach ($st_r->estado_nested() as $k=>$v) {
+	Route::resource('estado.'.$v, $k);
+	Route::get('estado/{id_estado}/visible'.$v, $k.'@visible');
+	Route::get('estado/{id_estado}/showvisible'.$v.'/{id}',$k.'@showvisible');
+}
+
+//Nested controllers on estado.cidade
+foreach ($st_r->estadocidade_nested() as $k=>$v) {
+	Route::resource('estado.cidade.'.$v, $k);
+	Route::get('estado/{id_estado}/cidade/{cidade_id}/visible'.$v, $k.'@visible');
+	Route::get('estado/{id_estado}/cidade/{cidade_id}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 /**

@@ -5,7 +5,7 @@
 <body>
 	<div class="container">
 		<h1>
-			All registered Endereco
+			All registered Enderecobase
 		</h1>
 		<a href="{[URL::to('enderecobase/create')]}" class='hide'>Add new "endereco"</a>
 		<br>

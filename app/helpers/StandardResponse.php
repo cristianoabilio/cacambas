@@ -93,4 +93,18 @@ class StandardResponse {
 		;
 	}
 
+	public function estado_nested () {
+		return array(
+			'EstadoCidadeController'	=>'cidade'
+			)
+		;
+	}
+
+	public function estadocidade_nested(){
+		return array(
+			'EstadoCidadeBairroController'	=>'bairro'
+			)
+		;
+	}
+
 }

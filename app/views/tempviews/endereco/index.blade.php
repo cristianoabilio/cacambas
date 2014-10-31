@@ -6,7 +6,7 @@
 		<h1>
 			All registered Endereco
 		</h1>
-		<a href="{[URL::to('endereco/create')]}" class=''>Add new "endereco"</a>
+		<a href="{[URL::to('endereco/create')]}" class='hide'>Add new "endereco"</a>
 		<br>
 		<table class='table'>
 			<tr>

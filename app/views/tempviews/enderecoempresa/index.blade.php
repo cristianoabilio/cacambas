@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>
-			All registered Endereco
+			All registered Enderecoempresa
 		</h1>
 		<a href="{[URL::to('enderecoempresa/create')]}" class='hide'>Add new "endereco"</a>
 		<br>

@@ -19,4 +19,16 @@ class Bairro extends Eloquent {
 	public function Enderecobase() {
 		return $this->hasMany('Enderecobase');
 	}
+
+	/**
+	* ------------------------------------------------
+	* SCOPES ON MODEL
+	* ------------------------------------------------
+	* 
+	* 
+	* 
+	* 
+	*/
+	
+	
 }

@@ -3,8 +3,9 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Bairro resource  </h1>
-		<a href="{[URL::to('bairro/create')]}">
+		
+		<h1>Bairro index for cidade {[$cidade->nome]} in estado {[$cidade->Estado->nome]}</h1>
+		<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/create')]}">
 			Add new "bairro"
 		</a>
 		<table class='table'>
@@ -25,9 +26,10 @@
 			@foreach($bairro as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisiblebairro/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/showvisiblebairro/'.$e->id)]}">HTML resource {[$e->nome]}</a>
 						|
-						<a href="{[URL::to('bairro/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$e->id)]}">JSON resource {[ $e->nome  ]}</a>
+						
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)

@@ -146,8 +146,61 @@
 			</tr>
 		@endforeach
 		</table>
+		<br>
+		<h4>nested on Estado</h4>
+		<small class="text-muted">
+			In order to see resources you must choose an classe first:  
+			<spam class="text-info">estado/{estado_id}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($estadonested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'estado/{estado_id}/{[$n]}'  
+				</td>
+				<td>
+					'estado/{estado_id}//{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
+		<br>
+		<h4>nested on Estado / Cidade</h4>
+		<small class="text-muted">
+			In order to see resources you must choose an classe first:  
+			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($estadocidadenested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'estado/{estado_id}/cidade/{cidade_id}/{[$n]}'  
+				</td>
+				<td>
+					'estado/{estado_id}/cidade/{cidade_id}/{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
 		<hr>
 		<br>
+		<h4>Lonely (not restfully made) routes</h4>
 		<a href="{[URL::to('categorias') ]}">Categoria as JSON</a>
 		<br>
 		<a href="{[URL::to('categorias/create') ]}">Create new categoria</a>

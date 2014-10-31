@@ -4,7 +4,7 @@
  * [Table]Data class only contains data related to
  * the table 
  */
-class BairroData extends StandardResponse{
+class EstadoCidadeBairroData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -16,9 +16,7 @@ class BairroData extends StandardResponse{
 		1 (visible) or 2 (not shown)
 		*/
 		$header=array(	
-			array('cidade_id',1)
-			,array('estado_id',1)
-			,array('zona',1)
+			array('zona',1)
 			,array('nome',1)
 		);	
 		return $header;
@@ -27,12 +25,47 @@ class BairroData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
-	public function edata () {
-		return Bairro::all();
+	public function edata ($estado_id,$cidade_id) {
+		$exist=0;
+		//Checking if estado exist
+		if (Estado::whereId($estado_id)->count()>0  ) {
+			
+			//checking if cidade on estado exists
+			if (Cidade::whereId($cidade_id)->whereEstado_id($estado_id)->count()>0 ) {
+				
+				$exist= Cidade::find($cidade_id)->bairro;
+			}
+		}
+		return $exist;
 	}
 
-	public function show($id){
-		return Bairro::find($id);
+	public function noresource($action){
+		return Response::json(
+			$this->responsedata(
+				'bairro',
+				false,
+				$action,
+				'wrong resource access'
+				)
+			,
+			400
+			)
+		;
+	}
+
+	public function show($estado_id,$cidade_id,$id){
+		$exist=0;
+		//Checking if estado exist
+		if (Estado::whereId($estado_id)->count()>0  ){
+			//checking if cidade on estado exists
+			if (Cidade::whereId($cidade_id)->whereEstado_id($estado_id)->count()>0 ) {
+				//checking if bairro exists on cidade
+				if (Bairro::whereId($id)->whereCidade_id($cidade_id)->count()>0 ) {
+					$exist=Bairro::find($id);
+				}
+			}
+		}
+		return $exist;
 	}
 
 	/**
@@ -41,8 +74,6 @@ class BairroData extends StandardResponse{
 	public function formatdata(){
 
 		return array(
-				'cidade_id'			=>Input::get('cidade_id'),
-				'estado_id'			=>Input::get('estado_id'),
 				'zona'				=>Input::get('zona'),
 				'nome'				=>Input::get('nome')
 				)
@@ -51,26 +82,31 @@ class BairroData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'cidade_id'		=>	'required|integer'
-			,'estado_id'	=>	'required|integer'
 			//,'zona'		=>	'required'
-			,'nome'		=>	'required'
+			'nome'		=>	'required'
 			)
 		;
 	}
 
 }
 
-class BairroController extends \BaseController {
+class EstadoCidadeBairroController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		$d=new BairroData;
-		return Response::json($d->edata());
+	public function index ($estado_id,$cidade_id) {
+		$d=new EstadoCidadeBairroData;
+		$exist=$d->edata($estado_id,$cidade_id);
+		if ($exist=='0') {
+			
+			return $d->noresource('index');
+			# code...
+		} else {
+			return $exist;
+		}
 	}
 
 
@@ -83,16 +119,29 @@ class BairroController extends \BaseController {
 	* index resource will throw a JSON object
 	* and no view at all.
 	*/
-	public function visible()
+	public function visible($estado_id,$cidade_id)
 	{
-		$d=new BairroData;
-		$data=array(
-			//all bairro
-			'bairro'=>$d->edata(),
-			'header'=>$d->header()
-			)
-		;
-		return View::make('tempviews.bairro.index',$data);
+		$d=new EstadoCidadeBairroData;
+		$bairro=$d->edata($estado_id,$cidade_id);
+		$header=$d->header();
+		$cidade=Cidade::find($cidade_id);
+
+		if ($bairro!='0') {
+			return View::make(
+				'tempviews.EstadoCidadeBairro.index',
+				compact(
+					'bairro',
+					'header',
+					'estado_id',
+					'cidade_id',
+					'cidade'
+					)
+				)
+			;
+		} else return $d->noresource('index');
+		
+		#
+			
 	}
 
 
@@ -101,10 +150,17 @@ class BairroController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($estado_id,$cidade_id)
 	{
-		$data=array();
-		return View::make('tempviews.bairro.create',$data);
+		$cidade=Cidade::find($cidade_id);
+		return View::make('tempviews.EstadoCidadeBairro.create',
+			compact(
+				'estado_id',
+				'cidade_id',
+				'cidade'
+				)
+			)
+		;
 	}
 
 
@@ -113,14 +169,14 @@ class BairroController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($estado_id,$cidade_id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
 
-		$d=new BairroData;
+		$d=new EstadoCidadeBairroData;
 		$success=$d->formatdata();
 
 		try{
@@ -148,9 +204,11 @@ class BairroController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->cidade_id=$cidade_id;
 			$e->save();
 
 			$success['id']=$e->id;
+			$success['cidade_id']=$e->cidade_id;
 
 			$res=$d->responsedata(
 				'bairro',
@@ -182,36 +240,55 @@ class BairroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
-		$d=new BairroData;
-		return $d->show($id);
+	public function show ($estado_id,$cidade_id,$id) {
+		$d=new EstadoCidadeBairroData;
+
+		if ($d->show($estado_id,$cidade_id,$id)=='0'  ) {
+			return $d->noresource('show');
+		} else {
+			return $d->show($estado_id,$cidade_id,$id);
+		}
+		
 	}
-	public function showvisible($id)
+	public function showvisible($estado_id,$cidade_id,$id)
 	{
-		$d=new BairroData;
-		try {
-			if (Bairro::whereId($id)->count()==0) {
-				$res=$d->responsedata(
-					'bairro',
-					false,
-					'show',
-					$d->noexist
+		$d=new EstadoCidadeBairroData;
+		$show=$d->show($estado_id,$cidade_id,$id);
+
+		if ($show=='0'  ) {
+			return $d->noresource('show');
+		} else {
+			try {
+				if (Bairro::whereId($id)->count()==0) {
+					$res=$d->responsedata(
+						'bairro',
+						false,
+						'show',
+						$d->noexist
+						)
+					;
+					$res=json_encode($res);
+					throw new Exception($res);
+				}
+				
+				$bairro	=$show;
+				$header	=$d->header();
+				return View::make('tempviews.EstadoCidadeBairro.show',
+					compact(
+						'bairro',
+						'header',
+						'estado_id',
+						'cidade_id',
+						'id'
+						)
 					)
 				;
-				$res=json_encode($res);
-				throw new Exception($res);
+				
+			} catch (Exception $e) {
+				return $e->getMessage();
 			}
-			$data=array(
-				'bairro'	=>$d->show($id),
-				'header'	=>$d->header(),
-				'id'		=>$id
-				)
-			;
-			return View::make('tempviews.bairro.show',$data);
-			
-		} catch (Exception $e) {
-			return $e->getMessage();
 		}
+			
 	}
 
 
@@ -221,9 +298,14 @@ class BairroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($estado_id,$cidade_id,$id)
 	{
-		$d=new BairroData;
+		$d=new EstadoCidadeBairroData;
+		$edit=$d->show($estado_id,$cidade_id,$id);
+
+		if ($edit=='0'  ) {
+			return $d->noresource('edit');
+		}
 		try {
 			if (Bairro::whereId($id)->count()==0) {
 				$res=$d->responsedata(
@@ -236,13 +318,18 @@ class BairroController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'bairro'	=>$d->show($id),
-				'header'	=>$d->header(),
-				'id'		=>$id
+			$bairro	=$edit;
+			$header	=$d->header();
+			return View::make('tempviews.EstadoCidadeBairro.edit',
+				compact(
+					'bairro',
+					'header',
+					'estado_id',
+					'cidade_id',
+					'id'
+					)
 				)
 			;
-			return View::make('tempviews.bairro.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -256,13 +343,13 @@ class BairroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($estado_id,$cidade_id,$id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new BairroData;
+		$d=new EstadoCidadeBairroData;
 		$success=$d->formatdata();
 
 		try{
@@ -323,7 +410,7 @@ class BairroController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	// public function destroy($id)
+	// public function destroy($estado_id,$cidade_id,$id)
 	// {
 	// 	//
 	// }

@@ -1,16 +1,9 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<div style='margin-left:200px'>
-	Add a new "bairro"
-
-	<form action="{[URL::to('bairro')]}" method="post">
-		cidade_id <input type="text" name="cidade_id" id="cidade_id"><br>
-		estado_id <input type="text" name="estado_id" id="estado_id"><br>
-		zona <input type="text" name="zona" id="zona"><br>
-		nome <input type="text" name="nome" id="nome"><br>
-
-		<br>
-		<input type="submit" value='create'>
-	</form>
-</div>
+<body>
+	<div class="container">
+		<h1>Sorry, you must choose a estado and then a cidade first if wishing to add a new bairro</h1>
+		<a href="{[URL::to('visiblebairro')]}">go back to bairro index</a>
+	</div>
+</body>

@@ -368,7 +368,7 @@ class ClassesubclasseController extends \BaseController {
 	*-------------------------------------------------
 	* actions for subcategorias route
 	*-------------------------------------------------
-	* "Categorias" route is intended for two purposes
+	* "Categorias" route is required for two purposes
 	* 1. Retrieving a JSON object containing data related
 	*    to classe and subclasse tables
 	* 2. Posting new categorias, this is, subclasse 

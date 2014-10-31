@@ -1,22 +1,43 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-Edit 
-{[$bairro->produto_id]}
-<br>
-BR	
-<div style='margin-left:200px'>
-	
-	{[ Form::model($bairro, array('route' => array('bairro.update', $bairro->id), 'method' => 'PUT')) ]}
-
-
-		
-		cidade_id <input type="text" name="cidade_id" id="cidade_id" value="{[$bairro->cidade_id]}">	<br>
-		estado_id <input type="text" name="estado_id" id="estado_id" value="{[$bairro->estado_id]}">	<br>
-		zona <input type="text" name="zona" id="zona" value="{[$bairro->zona]}">	<br>
-		nome <input type="text" name="nome" id="nome" value="{[$bairro->nome]}">	<br>
+<body>
+	<div class="container">
+		<h1>Edit resource number {[$id]}</h1>
+		{[ Form::model($bairro, array('route' => array('bairro.update', $bairro->id), 'method' => 'PUT')) ]}
+		<div class="row">
+			<div class="col-sm-2">
+				cidade_id
+				<br>
+				<input type="text" class='form-control' name="cidade_id" id="cidade_id" value="{[$bairro->cidade_id]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				estado_id
+				<br>
+				<input type="text" class='form-control' name="estado_id" id="estado_id" value="{[$bairro->estado_id]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				zona
+				<br>
+				<input type="text" class='form-control' name="zona" id="zona" value="{[$bairro->zona]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				nome
+				<br>
+				<input type="text" class='form-control' name="nome" id="nome" value="{[$bairro->nome]}">
+			</div>
+		</div>
 		<br>
 		<input type="submit" value='SAVE CHANGES'>
-	</form>
-
-</div>
+		{[Form::close()]}
+	</div>
+</body>

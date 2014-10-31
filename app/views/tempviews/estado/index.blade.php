@@ -16,7 +16,7 @@ $fake=new fakeuser;
 			the header names on table  -->
 			<tr>
 				<th>
-					Register
+					Resource
 				</th>
 			@foreach($header as $h)
 				@if($h[1]==1)
@@ -29,8 +29,16 @@ $fake=new fakeuser;
 			@foreach($estado as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('estado/'.$e->id)]}">Number {[$e->id]}</a>
-						
+						<a href="{[URL::to('showvisibleestado/'.$e->id)]}">HTML {[$e->nome]}</a>
+						|
+						<a href="{[URL::to('estado/'.$e->id)]}">JSON {[$e->nome]}</a>
+						<ul>
+							<li>
+								<a href="{[URL::to('estado/'.$e->id).'/visiblecidade']}">HTML Cidade index on {[$e->nome]}</a>
+								|
+								<a href="{[URL::to('estado/'.$e->id).'/cidade']}">JSON Cidade index on {[$e->nome]}</a>
+							</li>
+						</ul>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)

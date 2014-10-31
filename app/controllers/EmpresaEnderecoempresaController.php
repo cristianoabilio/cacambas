@@ -53,6 +53,16 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 		return Empresa::find($empresa)->Enderecoempresa;
 	}
 
+	public function wholeenderecodata($empresa_id){
+		$enderecoempresa=Empresa::find($empresa_id)->Enderecoempresa;
+
+		$wholeenderecodata=array();
+		foreach ($enderecoempresa as $key => $value) {
+			# code...
+		}
+		return $wholeenderecodata;
+	}
+
 	public function show($id){
 		return Enderecoempresa::find($id);
 	}
@@ -149,7 +159,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 	 */
 	public function index ($empresa_id) {
 		$d=new EmpresaEnderecoempresaData;
-		return $d->edata($empresa_id);
+		return $d->wholeenderecodata($empresa_id);
 	}
 	public function visible($empresa_id)
 	{

@@ -5,7 +5,7 @@ class Cidade extends Eloquent {
 	protected $table = 'cidade';
 
 	//Override default PK 'id' from Eloquent
-	protected $primaryKey = 'id';
+	//protected $primaryKey = 'id';
 
 	protected $guarded = array();
 	public static $rules = array();
