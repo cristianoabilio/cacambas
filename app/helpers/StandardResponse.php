@@ -107,4 +107,11 @@ class StandardResponse {
 		;
 	}
 
+	public function estadocidadebairro_nested(){
+		return array(
+			'EstadoCidadeBairroEnderecobaseController'	=>'enderecobase'
+			)
+		;
+	}
+
 }

@@ -69,8 +69,7 @@
 		<br>
 		<h4>nested on convenio</h4>
 		<small class="text-muted">
-			In order to see resources you must choose an empresa and 
-			convenio resource first:  
+			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">empresa/{empresa_id}/convenio/{convenio_id}/[table name]</spam>
 		</small>
 		<table class="table">
@@ -96,8 +95,7 @@
 		<br>
 		<h4>nested on funcionario</h4>
 		<small class="text-muted">
-			In order to see resources you must choose an empresa and 
-			a funcionario resource first:  
+			In order to see resources you must choose all parent resources  first:  
 			<spam class="text-info">empresa/{empresa_id}/funcionario/{funcionario_id}/[table name]</spam>
 		</small>
 		<table class="table">
@@ -123,7 +121,7 @@
 		<br>
 		<h4>nested on classe</h4>
 		<small class="text-muted">
-			In order to see resources you must choose an classe first:  
+			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">classe/{classe_id}/[table name]</spam>
 		</small>
 		<table class="table">
@@ -149,7 +147,7 @@
 		<br>
 		<h4>nested on Estado</h4>
 		<small class="text-muted">
-			In order to see resources you must choose an classe first:  
+			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/[table name]</spam>
 		</small>
 		<table class="table">
@@ -175,7 +173,7 @@
 		<br>
 		<h4>nested on Estado / Cidade</h4>
 		<small class="text-muted">
-			In order to see resources you must choose an classe first:  
+			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/[table name]</spam>
 		</small>
 		<table class="table">
@@ -194,6 +192,32 @@
 				</td>
 				<td>
 					'estado/{estado_id}/cidade/{cidade_id}/{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
+		<br>
+		<h4>nested on Estado / Cidade / Bairro</h4>
+		<small class="text-muted">
+			In order to see resources you must choose all parent resources first:  
+			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($estadocidadebairronested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'estado/{estado}/cidade/{cidade}/bairro/{bairro}/{[$n]}'  
+				</td>
+				<td>
+					'estado/{estado}/cidade/{cidade}/bairro/{bairro}/{[$n]}/{id}'
 				</td>
 			</tr>
 		@endforeach

@@ -29,7 +29,12 @@
 						<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/showvisiblebairro/'.$e->id)]}">HTML resource {[$e->nome]}</a>
 						|
 						<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$e->id)]}">JSON resource {[ $e->nome  ]}</a>
-						
+						<ul>
+							<li>
+								<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$e->id.'/visibleenderecobase')]}">HTML enderecobase for bairro resource {[$e->id]}</a>
+								|
+								<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$e->id.'/enderecobase')]}">JSON enderecobase for bairro resource {[$e->id]}</a></li>
+						</ul>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
