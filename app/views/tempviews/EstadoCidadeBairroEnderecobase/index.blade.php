@@ -7,7 +7,19 @@
 		<h1>
 			All registered Enderecobase
 		</h1>
-		<a href="{[URL::to('enderecobase/create')]}" class='hide'>Add new "endereco"</a>
+		Data valid for:
+		<ul>
+			<li>
+				Bairro: {[$bairro->nome]}
+			</li>
+			<li>
+				Cidade: {[$bairro->cidade->nome]}
+			</li>
+			<li>
+				Estado: {[$bairro->cidade->estado->nome]}
+			</li>
+		</ul>
+		<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/create')]}" class=''>Add a new "enderecobase"</a>
 		<br>
 		<table class='table'>
 			<tr>
@@ -18,8 +30,6 @@
 				@if($h[1]==1)
 				<td> {[$h[0] ]}  </td>
 				@endif
-					
-				
 			@endforeach
 			</tr>
 			@foreach($enderecobase as $e)

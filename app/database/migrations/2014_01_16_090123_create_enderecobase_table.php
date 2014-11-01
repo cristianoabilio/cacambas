@@ -15,8 +15,8 @@ class CreateEnderecobaseTable extends Migration {
 		Schema::create('enderecobase', function(Blueprint $table) {
 			$table->increments('id');//Parent key for Endereco
 			$table->integer('bairro_id');//Bairro foreing key
-			$table->integer('cidade_id');
-			$table->integer('estado_id');
+			//$table->integer('cidade_id');
+			//$table->integer('estado_id');
 			$table->string('cep_base', 9)->nullable();
 			$table->string('logradouro', 255);
 			$table->string('regiao', 20);
