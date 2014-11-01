@@ -80,6 +80,10 @@ class EmpresaFuncionarioData extends StandardResponse{
 
 class EmpresaFuncionarioController extends \BaseController {
 
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on' => 'post'));
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

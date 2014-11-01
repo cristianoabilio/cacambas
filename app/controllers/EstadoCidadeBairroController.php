@@ -32,20 +32,6 @@ class EstadoCidadeBairroData extends StandardResponse{
 		return $exist= Cidade::find($cidade_id)->bairro;
 	}
 
-	public function noresource($action){
-		return Response::json(
-			$this->responsedata(
-				'bairro',
-				false,
-				$action,
-				'wrong resource access'
-				)
-			,
-			400
-			)
-		;
-	}
-
 	public function show($estado_id,$cidade_id,$id){
 		return Bairro::find($id);
 	}
@@ -73,6 +59,11 @@ class EstadoCidadeBairroData extends StandardResponse{
 }
 
 class EstadoCidadeBairroController extends \BaseController {
+	/*
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on' => 'post'));
+	}
+	*/
 
 	
 	public function __construct()  {
@@ -222,12 +213,7 @@ class EstadoCidadeBairroController extends \BaseController {
 	 */
 	public function show ($estado_id,$cidade_id,$id) {
 		$d=new EstadoCidadeBairroData;
-
-		if ($d->show($estado_id,$cidade_id,$id)=='0'  ) {
-			return $d->noresource('show');
-		} else {
-			return $d->show($estado_id,$cidade_id,$id);
-		}
+		return $d->show($estado_id,$cidade_id,$id);
 		
 	}
 	public function showvisible($estado_id,$cidade_id,$id)
@@ -235,38 +221,34 @@ class EstadoCidadeBairroController extends \BaseController {
 		$d=new EstadoCidadeBairroData;
 		$show=$d->show($estado_id,$cidade_id,$id);
 
-		if ($show=='0'  ) {
-			return $d->noresource('show');
-		} else {
-			try {
-				if (Bairro::whereId($id)->count()==0) {
-					$res=$d->responsedata(
-						'bairro',
-						false,
-						'show',
-						$d->noexist
-						)
-					;
-					$res=json_encode($res);
-					throw new Exception($res);
-				}
-				
-				$bairro	=$show;
-				$header	=$d->header();
-				return View::make('tempviews.EstadoCidadeBairro.show',
-					compact(
-						'bairro',
-						'header',
-						'estado_id',
-						'cidade_id',
-						'id'
-						)
+		try {
+			if (Bairro::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'bairro',
+					false,
+					'show',
+					$d->noexist
 					)
 				;
-				
-			} catch (Exception $e) {
-				return $e->getMessage();
+				$res=json_encode($res);
+				throw new Exception($res);
 			}
+			
+			$bairro	=$show;
+			$header	=$d->header();
+			return View::make('tempviews.EstadoCidadeBairro.show',
+				compact(
+					'bairro',
+					'header',
+					'estado_id',
+					'cidade_id',
+					'id'
+					)
+				)
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
 		}
 			
 	}
@@ -283,9 +265,6 @@ class EstadoCidadeBairroController extends \BaseController {
 		$d=new EstadoCidadeBairroData;
 		$edit=$d->show($estado_id,$cidade_id,$id);
 
-		if ($edit=='0'  ) {
-			return $d->noresource('edit');
-		}
 		try {
 			if (Bairro::whereId($id)->count()==0) {
 				$res=$d->responsedata(

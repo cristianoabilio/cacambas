@@ -73,6 +73,10 @@ class ResumoempresaclienteData extends StandardResponse{
 
 class ResumoempresaclienteController extends \BaseController {
 
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on' => 'post'));
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

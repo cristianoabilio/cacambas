@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application & Route Filters
-|--------------------------------------------------------------------------
-|
-| Below you will find the "before" and "after" events for the application
-| which may be used to do any work before or after a request into your
-| application. Here you may also register your custom route filters.
-|
-*/
 
 /**
 * 
@@ -47,6 +37,23 @@ Route::filter('checkestadocidadebairro',function($route,$request){
 		$case=3;//Cidade does not belongs to Estado
 	}
 
+	//4. Check if there is a bairro parameter
+	else if (!null==$route->getParameter('bairro')  ) {
+		$bairro_id=$route->getParameter('bairro');
+		$cidade_id=$route->getParameter('cidade');
+		$checkbairro=Bairro::find($bairro_id);
+
+		//4.1. Check if bairro exists
+		if ($checkbairro==null) {
+			$case=4;//Bairro resource does not exist
+		} 
+
+		//4.2. Check if bairro belongs to cidade
+		else if ($checkbairro->cidade_id!=$cidade_id) {
+			$case=5;//Bairro do not belong to cidade
+		}
+	}
+
 	if ($case>0) {
 		//switch options for case
 		switch ($case) {
@@ -55,6 +62,10 @@ Route::filter('checkestadocidadebairro',function($route,$request){
 			case '2':$case='Cidade no exist';
 			break;
 			case '3':$case='Cidade does not belong to Estado';
+			break;
+			case '4':$case='Bairro no exist';
+			break;
+			case '5':$case='Bairro does not belong to Cidade';
 			break;
 		}
 
@@ -67,39 +78,6 @@ Route::filter('checkestadocidadebairro',function($route,$request){
 			)
 		;
 		$response=Response::json($mssg,400);
-	}
-
-	if (!null==$route->getParameter('bairro')  )
-	{
-		$bairro_id=$route->getParameter('bairro');
-		$cidade_id=$route->getParameter('cidade');
-		//4. Check that bairro exists
-		if (Bairro::find($bairro_id)==null) {
-			$case=4;//Bairro does not exist
-		} 
-		//5. Check that bairro belongs to cidade
-		else if (Bairro::find($bairro_id)->cidade_id==$cidade_id) {
-			$case=5;//Bairro does not belong to cidade
-		}
-		if ($case>0) {
-			//switch options for case
-			switch ($case) {
-				case '4':$case='Bairro no exist';
-				break;
-				case '5':$case='Bairro does not belong to Cidade';
-				break;
-			}
-
-			$d=new StandardResponse;
-			$mssg=$d->responsedata(
-				'bairro',
-				false,
-				'resource',
-				$case
-				)
-			;
-			$response=Response::json($mssg,400);
-		}
 	}
 
 	return $response;

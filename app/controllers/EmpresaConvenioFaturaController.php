@@ -118,6 +118,10 @@ class EmpresaConvenioFaturaData extends StandardResponse{
 
 class EmpresaConvenioFaturaController extends BaseController{
 
+	public function __construct(){
+		$this->beforeFilter('csrf', array('on' => 'post'));
+	}
+
 	public function index ($empresa_id,$convenio_id) {
 		$d=new EmpresaConvenioFaturaData;
 		return $d->edata($convenio_id);

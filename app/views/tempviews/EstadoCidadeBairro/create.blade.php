@@ -22,6 +22,7 @@
 		</div>
 		<br>
 		<input type="submit" value='create'>
+		
 		{[Form::close()]}
 		<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/visiblebairro')]}">Back to bairro index</a>
 	</div>
