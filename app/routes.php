@@ -69,7 +69,7 @@ Route::get('/jsontest',function(){
 
 /*Fake routes: no auth set yet*/
 
-Route::get('/login',  array('as' => 'login.index',         'uses' => 'LoginController@index'));
+Route::get('/login',  array('as' => 'login.index', 'uses' => 'LoginController@index'));
 //Route::get('fatura/empresa');
 
 
@@ -94,46 +94,46 @@ foreach ($st_r->allviews() as  $v) {
 //Nested controllers on empresa
 foreach ($st_r->empresa_nested() as $k=>$v) {
 	Route::resource('empresa.'.$v, $k);
-	Route::get('empresa/{id_empresa}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{id_empresa}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{empresa}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 //Nested controllers on empresa.convenio
 foreach ($st_r->empresaconvenio_nested() as $k => $v) {
 	Route::resource('empresa.convenio.'.$v, $k);
-	Route::get('empresa/{id_empresa}/convenio/{id_convenio}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{id_empresa}/convenio/{id_convenio}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/convenio/{convenio}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{empresa}/convenio/{convenio}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 
 //Nested controllers on empresa.funcionario
 foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 	Route::resource('empresa.funcionario.'.$v, $k);
-	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{id_empresa}/funcionario/{funcionario_id}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/funcionario/{funcionario}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{empresa}/funcionario/{funcionario}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 
 //Nested controllers on classe
 foreach ($st_r->classe_nested() as $k=>$v) {
 	Route::resource('classe.'.$v, $k);
-	Route::get('classe/{id_classe}/visible'.$v, $k.'@visible');
-	Route::get('classe/{id_classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('classe/{classe}/visible'.$v, $k.'@visible');
+	Route::get('classe/{classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 
 //Nested controllers on estado
 foreach ($st_r->estado_nested() as $k=>$v) {
 	Route::resource('estado.'.$v, $k);
-	Route::get('estado/{id_estado}/visible'.$v, $k.'@visible');
-	Route::get('estado/{id_estado}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('estado/{estado}/visible'.$v, $k.'@visible');
+	Route::get('estado/{estado}/showvisible'.$v.'/{id}',$k.'@showvisible');
 }
 
 //Nested controllers on estado.cidade
 foreach ($st_r->estadocidade_nested() as $k=>$v) {
 	Route::resource('estado.cidade.'.$v, $k);
-	Route::get('estado/{id_estado}/cidade/{cidade_id}/visible'.$v, $k.'@visible');
-	Route::get('estado/{id_estado}/cidade/{cidade_id}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('estado/{estado}/cidade/{cidade}/visible'.$v, $k.'@visible');
+	Route::get('estado/{estado}/cidade/{cidade}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 /**

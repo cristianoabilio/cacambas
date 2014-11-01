@@ -5,6 +5,8 @@
  * the table 
  */
 class EstadoCidadeBairroData extends StandardResponse{
+
+
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -25,18 +27,9 @@ class EstadoCidadeBairroData extends StandardResponse{
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
-	public function edata ($estado_id,$cidade_id) {
-		$exist=0;
-		//Checking if estado exist
-		if (Estado::whereId($estado_id)->count()>0  ) {
-			
-			//checking if cidade on estado exists
-			if (Cidade::whereId($cidade_id)->whereEstado_id($estado_id)->count()>0 ) {
-				
-				$exist= Cidade::find($cidade_id)->bairro;
-			}
-		}
-		return $exist;
+	public function edata ($cidade_id) {
+		
+		return $exist= Cidade::find($cidade_id)->bairro;
 	}
 
 	public function noresource($action){
@@ -54,18 +47,7 @@ class EstadoCidadeBairroData extends StandardResponse{
 	}
 
 	public function show($estado_id,$cidade_id,$id){
-		$exist=0;
-		//Checking if estado exist
-		if (Estado::whereId($estado_id)->count()>0  ){
-			//checking if cidade on estado exists
-			if (Cidade::whereId($cidade_id)->whereEstado_id($estado_id)->count()>0 ) {
-				//checking if bairro exists on cidade
-				if (Bairro::whereId($id)->whereCidade_id($cidade_id)->count()>0 ) {
-					$exist=Bairro::find($id);
-				}
-			}
-		}
-		return $exist;
+		return Bairro::find($id);
 	}
 
 	/**
@@ -92,21 +74,23 @@ class EstadoCidadeBairroData extends StandardResponse{
 
 class EstadoCidadeBairroController extends \BaseController {
 
+	
+	public function __construct()  {
+		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('checkestadocidadebairro');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index ($estado_id,$cidade_id) {
+		//For unknown reason 'checkestadocidadebairro'
+		//filter is not working here.
+		//Next code is a pseudofilter.
 		$d=new EstadoCidadeBairroData;
-		$exist=$d->edata($estado_id,$cidade_id);
-		if ($exist=='0') {
-			
-			return $d->noresource('index');
-			# code...
-		} else {
-			return $exist;
-		}
+		return $d->edata($cidade_id);
 	}
 
 
@@ -122,25 +106,21 @@ class EstadoCidadeBairroController extends \BaseController {
 	public function visible($estado_id,$cidade_id)
 	{
 		$d=new EstadoCidadeBairroData;
-		$bairro=$d->edata($estado_id,$cidade_id);
+		$bairro=$d->edata($cidade_id);
 		$header=$d->header();
 		$cidade=Cidade::find($cidade_id);
 
-		if ($bairro!='0') {
-			return View::make(
-				'tempviews.EstadoCidadeBairro.index',
-				compact(
-					'bairro',
-					'header',
-					'estado_id',
-					'cidade_id',
-					'cidade'
-					)
+		return View::make(
+			'tempviews.EstadoCidadeBairro.index',
+			compact(
+				'bairro',
+				'header',
+				'estado_id',
+				'cidade_id',
+				'cidade'
 				)
-			;
-		} else return $d->noresource('index');
-		
-		#
+			)
+		;
 			
 	}
 
