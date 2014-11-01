@@ -6,7 +6,7 @@
 		<h1>
 			Add a new enderecobase
 		</h1>
-		Data valid for enderecobase on
+		Data for enderecobase located at
 		<ul>
 			<li>
 				Bairro: {[$bairro->nome]}

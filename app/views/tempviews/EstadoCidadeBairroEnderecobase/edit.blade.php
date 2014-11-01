@@ -4,31 +4,19 @@
 <body>
 	<div class="container">
 		<h1>Edit enderecobase record number {[$enderecobase->id]}</h1>
-		{[ Form::model($enderecobase, array('route' => array('enderecobase.update', $enderecobase->id), 'method' => 'PUT')) ]}
-		<div class="row">
-			<div class="col-sm-2">
-				bairro_id 
-				<br>
-				<input type="text" class='form-control' name="bairro_id" id="bairro_id" value="{[$enderecobase->bairro_id]}">
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				cidade_id
-				<br>
-				<input type="text" class='form-control' name="cidade_id" id="cidade_id" value="{[$enderecobase->cidade_id]}">
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				estado_id
-				<br>
-				<input type="text" class='form-control' name="estado_id" id="estado_id" value="{[$enderecobase->estado_id]}">
-			</div>
-		</div>
-		<br>
+		Data for enderecobase located at
+		<ul>
+			<li>
+				Bairro: {[$bairro->nome]}
+			</li>
+			<li>
+				Cidade: {[$bairro->cidade->nome]}
+			</li>
+			<li>
+				Estado: {[$bairro->cidade->estado->nome]}
+			</li>
+		</ul>
+		{[ Form::model($enderecobase, array('route' => array('estado.cidade.bairro.enderecobase.update', $estado_id,$cidade_id,$bairro_id,$id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
 				cep_base
@@ -85,19 +73,10 @@
 			</div>
 		</div>
 		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				dthr_cadastro
-				<br>
-				<input type="text" class='form-control' name="dthr_cadastro" id="dthr_cadastro" value="{[$enderecobase->dthr_cadastro]}">
-			</div>
-		</div>
-		<br>
-		<br>
 		<input type="submit" value='SAVE CHANGES'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('visibleenderecobase')]}">Back to endereco</a>
+		<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/visibleenderecobase')]}">Back to enderecobase</a>
 		<br>
 		<br>
 		<br>

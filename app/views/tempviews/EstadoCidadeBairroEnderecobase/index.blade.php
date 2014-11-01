@@ -7,7 +7,7 @@
 		<h1>
 			All registered Enderecobase
 		</h1>
-		Data valid for:
+		DData for enderecobases located at
 		<ul>
 			<li>
 				Bairro: {[$bairro->nome]}
@@ -35,8 +35,8 @@
 			@foreach($enderecobase as $e)
 			<tr>
 				<td>
-					<a href="{[URL::to('showvisibleenderecobase/'.$e->id)]}">HTLM enderecobase {[$e->id]}</a> |
-					<a href="{[URL::to('enderecobase/'.$e->id)]}">JSON enderecobase {[$e->id]}</a>
+					<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/showvisibleenderecobase/'.$e->id)]}">HTLM enderecobase {[$e->id]}</a> |
+					<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id)]}">JSON enderecobase {[$e->id]}</a>
 				</td>
 				@foreach($header as $h)
 					@if($h[1]==1)

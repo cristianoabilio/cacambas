@@ -20,8 +20,6 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 			,array('restricao_hr_fim',0)
 			,array('numero_inicio',0)
 			,array('numero_fim',0)
-			,array('dthr_cadastro',0)
-			,array('sessao_id',0)
 		);	
 		return $header;
 	}
@@ -43,10 +41,10 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 	public function formatdata(){
 		$formatdata=array(
 			'cep_base'					=>Input::get( 'cep_base'),
-			'restricao_hr_inicio_base'	=>Input::get( 'restricao_hr_inicio_base'),
-			'restricao_hr_fim_base'		=>Input::get( 'restricao_hr_fim_base'),
 			'logradouro'				=>Input::get( 'logradouro'),
 			'regiao'					=>Input::get( 'regiao'),
+			'restricao_hr_inicio_base'	=>Input::get( 'restricao_hr_inicio_base'),
+			'restricao_hr_fim_base'		=>Input::get( 'restricao_hr_fim_base'),
 			'numero_inicio'				=>Input::get( 'numero_inicio'),
 			'numero_fim'				=>Input::get( 'numero_fim')
 			)
@@ -145,6 +143,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 */
 	public function store($estado_id,$cidade_id,$bairro_id)
 	{
+		$fake=new fakeuser;
 		$d=new EstadoCidadeBairroEnderecobaseData;
 
 		$success=$d->formatdata();
@@ -157,6 +156,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 					)
 				)	
 			;
+			
 
 			if ($validator->fails()){
 				throw new Exception(
@@ -174,21 +174,20 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key=$value;
 			}
-			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
-			$ebase->sessao_id		=$fake->sessao_id();
+			$e->dthr_cadastro	=date('Y-m-d H:i:s');
+			$e->sessao_id		=$fake->sessao_id();
 			$e->save();
 			$success['id']=$e->id;
-
 			$res=$d->responsedata(
 				'enderecobase',
 				true,
 				'store',
-				$succesresponse
+				$success
 				)
 			;
 			$code=200;
 		}
-		catch(Exception $e) {
+		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
 				'endereco',
@@ -200,6 +199,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 			$code=400;
 		}
 		return Response::json($res,$code);
+		
 	}
 
 
@@ -229,13 +229,23 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'enderecobase' 	=>$d->show($id),
-				'header' 	=>$d->header(),
-				'id' 		=>$id
+			//
+			$header =$d->header();
+			$enderecobase 	=$d->show($id);
+			$bairro=Bairro::find($bairro_id);
+			return View::make(
+				'tempviews.EstadoCidadeBairroEnderecobase.show',
+				compact(
+					'header',
+					'enderecobase',
+					'estado_id',
+					'cidade_id',
+					'bairro_id',
+					'bairro',
+					'id'
+					)
 				)
 			;
-			return View::make('tempviews.EstadoCidadeBairroEnderecobase.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -253,7 +263,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	{
 		$d=new EstadoCidadeBairroEnderecobaseData;
 		try {
-			if (Enderecoempresa::whereId($id)->count()==0) {
+			if (Enderecobase::whereId($id)->count()==0) {
 				$res=$d->responsedata(
 					'enderecoempresa',
 					false,
@@ -264,13 +274,24 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'enderecobase' 	=>$d->show($id),
-				'header' 		=>$d->header(),
-				'id' 			=>$id
+			$enderecobase 	=$d->show($id);
+			$header 		=$d->header();
+			$bairro=Bairro::find($bairro_id);
+			//
+			return View::make(
+				'tempviews.EstadoCidadeBairroEnderecobase.edit',
+				compact(
+					'enderecobase',
+					'header',
+					'estado_id',
+					'cidade_id',
+					'bairro_id',
+					'id',
+					'bairro'
+					#
+					)
 				)
 			;
-			return View::make('tempviews.EstadoCidadeBairroEnderecobase.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
