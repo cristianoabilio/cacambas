@@ -40,7 +40,7 @@ class EmpresaResumoempresaclienteData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'cliente_id'		=>Input::get('cliente_id'),
@@ -134,7 +134,7 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	public function store($empresa_id)
 	{
 		$d=new EmpresaResumoempresaclienteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		
 		try{
 			$validator= Validator::make(			
@@ -275,7 +275,7 @@ class EmpresaResumoempresaclienteController extends \BaseController {
 	public function update($empresaid,$id)
 	{
 		$d=new EmpresaResumoempresaclienteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

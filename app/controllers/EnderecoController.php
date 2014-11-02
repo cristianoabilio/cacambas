@@ -42,8 +42,8 @@ class EnderecoData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
-		$formatdata=array(
+	public function form_data(){
+		$formdata=array(
 			//'enderecobase_id'	=>array( Input::get( 'enderecobase_id'),'endereco'),
 			'numero'				=>Input::get( 'numero'),
 			'cep'					=>Input::get( 'cep'),
@@ -62,10 +62,12 @@ class EnderecoData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value[0])!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -214,7 +216,7 @@ class EnderecoController extends \BaseController {
 	{
 		$fake=new fakeuser;
 		$d=new EnderecoData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

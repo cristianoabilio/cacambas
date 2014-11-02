@@ -54,7 +54,7 @@ class EmpresaResumofinanceiroData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'mes_referencia'			=>Input::get('mes_referencia'),
@@ -173,7 +173,7 @@ class EmpresaResumofinanceiroController extends \BaseController {
 	public function store($empresa_id)
 	{
 		$d=new EmpresaResumofinanceiroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -319,7 +319,7 @@ class EmpresaResumofinanceiroController extends \BaseController {
 	public function update($empresa_id,$id)
 	{
 		$d=new EmpresaResumofinanceiroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

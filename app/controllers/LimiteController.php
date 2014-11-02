@@ -44,7 +44,7 @@ class LimiteData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'motoristas'			=>Input::get('motoristas'),
@@ -147,7 +147,7 @@ class LimiteController extends \BaseController {
 		//
 
 		$d=new LimiteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -258,7 +258,7 @@ class LimiteController extends \BaseController {
 		//
 
 		$d=new LimiteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

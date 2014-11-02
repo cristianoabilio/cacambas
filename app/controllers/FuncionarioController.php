@@ -43,9 +43,9 @@ class FuncionarioData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
-		$formatdata= array(
+		$formdata= array(
 			'nome'		=>Input::get('nome'),
 			'funcao'	=>Input::get('funcao'),
 			'telefone'	=>Input::get('telefone')
@@ -59,11 +59,13 @@ class FuncionarioData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -146,7 +148,7 @@ class FuncionarioController extends \BaseController {
 		//
 
 		$d=new FuncionarioData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -300,7 +302,7 @@ class FuncionarioController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new FuncionarioData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

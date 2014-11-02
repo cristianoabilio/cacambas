@@ -23,7 +23,7 @@ class ProdutocompraData extends StandardResponse{
 		return Produtocompra::find($id);
 	}
 
-	public function formatdata(){
+	public function form_data(){
 		$formdata=array(
 			'produtofatura_id'	=>Input::get('produtofatura_id'),
 			'quantidade'			=>Input::get('quantidade'),
@@ -167,7 +167,7 @@ class ProdutocompraController extends \BaseController {
 
 		$d=new ProdutocompraData;
 
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try {
 			$validator= Validator::make(			

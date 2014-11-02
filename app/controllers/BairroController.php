@@ -38,7 +38,7 @@ class BairroData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 				'cidade_id'			=>Input::get('cidade_id'),
@@ -125,7 +125,7 @@ class BairroController extends \BaseController {
 		//
 
 		$d=new BairroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -267,7 +267,7 @@ class BairroController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new BairroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

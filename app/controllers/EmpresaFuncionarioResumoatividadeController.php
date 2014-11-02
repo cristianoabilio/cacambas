@@ -43,9 +43,9 @@ class EmpresaFuncionarioResumoatividadeData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
-		$formatdata= array(
+		$formdata= array(
 			'mes_referencia'	=>Input::get('mes_referencia'),
 			'ano_referencia'	=>Input::get('ano_referencia'),
 			'total_os_colocada'	=>Input::get('total_os_colocada'),
@@ -61,11 +61,13 @@ class EmpresaFuncionarioResumoatividadeData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -132,7 +134,7 @@ class EmpresaFuncionarioResumoatividadeController extends \BaseController {
 	public function store($empresa_id,$funcionario_id)
 	{
 		$d=new resumoatividadedata;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -245,7 +247,7 @@ class EmpresaFuncionarioResumoatividadeController extends \BaseController {
 	public function update($empresa_id,$funcionario_id,$id)
 	{
 		$d=new EmpresaFuncionarioResumoatividadeData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

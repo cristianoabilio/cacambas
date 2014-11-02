@@ -42,9 +42,9 @@ class EmpresaFuncionarioData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
-		$formatdata= array(
+		$formdata= array(
 			'nome'		=>Input::get('nome'),
 			'funcao'	=>Input::get('funcao'),
 			'telefone'	=>Input::get('telefone')
@@ -58,11 +58,13 @@ class EmpresaFuncionarioData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -137,7 +139,7 @@ class EmpresaFuncionarioController extends \BaseController {
 	public function store($empresa_id)
 	{
 		$d=new EmpresaFuncionarioData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		$fake=new fakeuser;
 
 		try{
@@ -292,7 +294,7 @@ class EmpresaFuncionarioController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new EmpresaFuncionarioData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

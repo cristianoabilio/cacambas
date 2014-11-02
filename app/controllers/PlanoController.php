@@ -76,7 +76,7 @@ class PlanoData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		$formdata=array(
 			'nome'					=>Input::get('nome'),
@@ -98,6 +98,8 @@ class PlanoData extends StandardResponse{
 			if ( trim($v)!='')
 			{
 				$formdata[$k]=$v;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
@@ -219,7 +221,7 @@ class PlanoController extends \BaseController {
 		//
 
 		$d=new PlanoData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		$success_limite=$d->formatDataFromLimite();
 
@@ -379,7 +381,7 @@ class PlanoController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new PlanoData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		$success_limite=$d->formatDataFromLimite();
 		//
 		try{

@@ -36,9 +36,9 @@ class ResumoatividadeData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
-		$formatdata= array(
+		$formdata= array(
 			'funcionario_id'	=>Input::get('funcionario_id'),
 			'mes_referencia'	=>Input::get('mes_referencia'),
 			'ano_referencia'	=>Input::get('ano_referencia'),
@@ -56,11 +56,13 @@ class ResumoatividadeData extends StandardResponse{
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -141,7 +143,7 @@ class ResumoatividadeController extends \BaseController {
 		//
 
 		$d=new resumoatividadedata;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -254,7 +256,7 @@ class ResumoatividadeController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new resumoatividadedata;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

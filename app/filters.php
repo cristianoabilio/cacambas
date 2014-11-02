@@ -14,13 +14,13 @@
 */
 
 
-Route::filter('checkestadocidadebairro',function($route,$request){
-	//Retrieving resource ids for estadocidadebairro restful URI
-	$estado_id=$route->getParameter('estado');
-	$checkcidade=Cidade::find($route->getParameter('cidade'));
-
+Route::filter('geoendereco',function($route,$request){
 	$response=null;
 	$case=0;
+	//Retrieving resource ids for estadocidadebairro restful URI
+	$estado_id=$route->getParameter('estado');
+	
+
 
 	//1. Check if estado exists
 	if (Estado::find($estado_id)==null) {
@@ -28,44 +28,64 @@ Route::filter('checkestadocidadebairro',function($route,$request){
 	}
 
 	//2. Check if cidade exists
-	else if ($checkcidade==null) {
-		$case=2;//Cidade does not exist
-	}
-
-	//3. Check if cidade belongs to estado
-	else if($checkcidade->estado_id!=$estado_id){
-		$case=3;//Cidade does not belongs to Estado
-	}
-
-	//4. Check if there is a bairro parameter
-	else if (!null==$route->getParameter('bairro')  ) {
-		$bairro_id=$route->getParameter('bairro');
+	else if (!null==$route->getParameter('cidade')) {
 		$cidade_id=$route->getParameter('cidade');
-		$checkbairro=Bairro::find($bairro_id);
-
-		//4.1. Check if bairro exists
-		if ($checkbairro==null) {
-			$case=4;//Bairro resource does not exist
+		$checkcidade=Cidade::find($cidade_id);
+		if ($checkcidade==null) 
+		{
+			$case=2;//Cidade does not exist
 		} 
+		//3. Check if cidade belongs to estado
+		else if ($checkcidade->estado_id!=$estado_id) {
+			$case=3;//Cidade does not belongs to Estado
+		}
+		//4. Check if there is a bairro parameter
+		else if(!null==$route->getParameter('bairro') ) {
+			$bairro_id=$route->getParameter('bairro');
+			$checkbairro=Bairro::find($bairro_id);
 
-		//4.2. Check if bairro belongs to cidade
-		else if ($checkbairro->cidade_id!=$cidade_id) {
-			$case=5;//Bairro do not belong to cidade
+			//4.1. Check if bairro exists
+			if ($checkbairro==null) {
+				$case=4;//Bairro resource does not exist
+			} 
+
+			//4.2. Check if bairro belongs to cidade
+			else if ($checkbairro->cidade_id!=$cidade_id) {
+				$case=5;//Bairro do not belong to cidade
+			}
+
+			//5. Check if there is a enderecobase parameter
+			else if (!null==$route->getParameter('enderecobase')){
+				$enderecobase_id=$route->getParameter('enderecobase');
+				$checkenderecobase=Enderecobase::find($enderecobase_id);
+
+				//5.1 Check if enderecobase exists
+				if ($checkenderecobase==null) {
+					$case=6;//enderecobase does not exist
+				}
+				else if ($checkenderecobase->bairro_id!=$bairro_id) {
+					$case=7;//enderecobase does not belong to bairro
+				}
+			}
 		}
 	}
 
 	if ($case>0) {
 		//switch options for case
 		switch ($case) {
-			case '1':$case='Estado no exist';
+			case '1':$case='Estado no exists';
 			break;
-			case '2':$case='Cidade no exist';
+			case '2':$case='Cidade no exists';
 			break;
 			case '3':$case='Cidade does not belong to Estado';
 			break;
-			case '4':$case='Bairro no exist';
+			case '4':$case='Bairro no exists';
 			break;
 			case '5':$case='Bairro does not belong to Cidade';
+			break;
+			case '6':$case='Enderecobase no exists';
+			break;
+			case '7':$case='Enderecobase does not belong to Bairro';
 			break;
 		}
 

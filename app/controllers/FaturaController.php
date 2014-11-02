@@ -54,7 +54,7 @@ class FaturaData  extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'convenio_id'			=>Input::get('convenio_id'),
@@ -232,7 +232,7 @@ class FaturaController extends \BaseController {
 		$fake=new fakeuser;
 		//
 		$d=new FaturaData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		try{
 			$validator= Validator::make(			
 				Input::All(),	

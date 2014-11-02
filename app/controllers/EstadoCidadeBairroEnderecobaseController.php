@@ -16,8 +16,8 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 			,array('cep_base',0)
 			,array('logradouro',1)
 			,array('regiao',1)
-			,array('restricao_hr_inicio',0)
-			,array('restricao_hr_fim',0)
+			,array('restricao_hr_inicio_base',0)
+			,array('restricao_hr_fim_base',0)
 			,array('numero_inicio',0)
 			,array('numero_fim',0)
 		);	
@@ -38,31 +38,34 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
-		$formatdata=array(
+	public function form_data(){
+		$formdata=array(
 			'cep_base'					=>Input::get( 'cep_base'),
 			'logradouro'				=>Input::get( 'logradouro'),
 			'regiao'					=>Input::get( 'regiao'),
-			'restricao_hr_inicio_base'	=>Input::get( 'restricao_hr_inicio_base'),
-			'restricao_hr_fim_base'		=>Input::get( 'restricao_hr_fim_base'),
+			//'restricao_hr_inicio_base'=>Input::get( 'restricao_hr_inicio_base'),
+			//'restricao_hr_fim_base'	=>Input::get( 'restricao_hr_fim_base'),
 			'numero_inicio'				=>Input::get( 'numero_inicio'),
 			'numero_fim'				=>Input::get( 'numero_fim')
 			)
 		;
 
 		$nullable=array(
-			'restricao_hr_inicio_base'	=>Input::get( 'restricao_hr_inicio'),
-			'restricao_hr_fim_base'		=>Input::get( 'restricao_hr_fim')
+			//'regiao'					=>Input::get( 'regiao')
+			'restricao_hr_inicio_base'	=>Input::get( 'restricao_hr_inicio_base'),
+			'restricao_hr_fim_base'		=>Input::get( 'restricao_hr_fim_base')
 			)
 		;
 
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -80,6 +83,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('geoendereco');
 	}
 
 	/**
@@ -146,7 +150,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 		$fake=new fakeuser;
 		$d=new EstadoCidadeBairroEnderecobaseData;
 
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		try{
 			$validator= Validator::make(		
 				Input::All(),	
@@ -309,7 +313,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	{
 		$fake=new fakeuser;
 		$d=new EstadoCidadeBairroEnderecobaseData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

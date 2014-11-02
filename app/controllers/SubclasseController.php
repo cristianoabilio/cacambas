@@ -37,7 +37,7 @@ class SubclasseData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 				'nome'			=>Input::get('nome')
@@ -112,7 +112,7 @@ class SubclasseController extends \BaseController {
 
 		$d=new SubclasseData;
 
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -263,7 +263,7 @@ class SubclasseController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new SubclasseData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

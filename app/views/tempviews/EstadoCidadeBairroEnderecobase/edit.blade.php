@@ -45,7 +45,7 @@
 			<div class="col-sm-2">
 				restricao_hr_inicio
 				<br>
-				<input type="text" class='form-control' name="restricao_hr_inicio" id="restricao_hr_inicio" value="{[$enderecobase->restricao_hr_inicio]}">
+				<input type="text" class='form-control' name="restricao_hr_inicio_base" id="restricao_hr_inicio_base" value="{[$enderecobase->restricao_hr_inicio_base]}">
 			</div>
 		</div>
 		<br>
@@ -53,7 +53,7 @@
 			<div class="col-sm-2">
 				restricao_hr_fim
 				<br>
-				<input type="text" class='form-control' name="restricao_hr_fim" id="restricao_hr_fim" value="{[$enderecobase->restricao_hr_fim]}">
+				<input type="text" class='form-control' name="restricao_hr_fim_base" id="restricao_hr_fim_base" value="{[$enderecobase->restricao_hr_fim_base]}">
 			</div>
 		</div>
 		<br>

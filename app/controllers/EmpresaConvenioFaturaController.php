@@ -79,7 +79,7 @@ class EmpresaConvenioFaturaData extends StandardResponse{
 		return Fatura::find($id);
 	}
 
-	public function formatdata(){
+	public function form_data(){
 		$formdata=array(
 			'plan_period_start_date'=>Input::get('plan_period_start_date'),
 			'plan_period_end_date'	=>Input::get('plan_period_end_date'),
@@ -292,7 +292,7 @@ class EmpresaConvenioFaturaController extends BaseController{
 
 		$d=new EmpresaConvenioFaturaData;
 
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		try {
 			$validator= Validator::make(
 				Input::All(),

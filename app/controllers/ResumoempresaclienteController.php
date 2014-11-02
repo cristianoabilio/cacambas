@@ -41,7 +41,7 @@ class ResumoempresaclienteData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'cliente_id'		=>Input::get('cliente_id'),
@@ -138,7 +138,7 @@ class ResumoempresaclienteController extends \BaseController {
 		//
 
 		$d=new ResumoempresaclienteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -285,7 +285,7 @@ class ResumoempresaclienteController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new ResumoempresaclienteData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

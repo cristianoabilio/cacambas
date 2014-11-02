@@ -32,7 +32,7 @@ class EstadoCidadeData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 				'nome'			=>Input::get('nome'),
@@ -55,6 +55,7 @@ class EstadoCidadeController extends \BaseController {
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('geoendereco');
 	}
 
 	/**
@@ -114,7 +115,7 @@ class EstadoCidadeController extends \BaseController {
 		//
 
 		$d=new EstadoCidadeData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -270,7 +271,7 @@ class EstadoCidadeController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new EstadoCidadeData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

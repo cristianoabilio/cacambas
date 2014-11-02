@@ -55,7 +55,7 @@ class EmpresaConvenioData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		$form_data=array(
 			'plano_id'		=>Input::get('plano_id'),
@@ -207,7 +207,7 @@ class EmpresaConvenioController extends \BaseController {
 
 		$d=new EmpresaConvenioData;
 
-		$success= $d->formatdata();
+		$success= $d->form_data();
 
 		$success_convenio=$success;
 
@@ -416,7 +416,7 @@ class EmpresaConvenioController extends \BaseController {
 		$d=new EmpresaConvenioData;
 
 		//data from convenio form fields
-		$success=			$d->formatdata();
+		$success=			$d->form_data();
 
 		//data from limite form fields
 		$success_limite=	$d->formatDataFromLimite();

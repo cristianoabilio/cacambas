@@ -56,7 +56,7 @@ class ConvenioData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 			'plano_id'			=>Input::get('plano_id'),
@@ -183,7 +183,7 @@ class ConvenioController extends \BaseController {
 
 		$d=new ConvenioData;
 
-		$success= $d->formatdata();
+		$success= $d->form_data();
 
 		$success_convenio=$success;
 
@@ -378,7 +378,7 @@ class ConvenioController extends \BaseController {
 		//
 		$d=new ConvenioData;
 
-		$success=			$d->formatdata();
+		$success=			$d->form_data();
 
 		$success_limite=	$d->formatDataFromLimite();
 

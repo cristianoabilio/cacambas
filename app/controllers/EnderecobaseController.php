@@ -43,8 +43,8 @@ class EnderecobaseData extends StandardResponse {
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
-		$formatdata=array(
+	public function form_data(){
+		$formdata=array(
 			'bairro_id'					=>Input::get( 'bairro_id'),
 			'cidade_id'					=>Input::get( 'cidade_id'),
 			'estado_id'					=>Input::get( 'estado_id'),
@@ -67,10 +67,12 @@ class EnderecobaseData extends StandardResponse {
 		foreach ($nullable as $key => $value) {
 			if ( trim($value)!="" ) {
 				$formdata[$key]=$value;
+			} else {
+				$formdata[$key]=null;
 			}
 		}
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -222,7 +224,7 @@ class EnderecobaseController extends \BaseController {
 	{
 		$fake=new fakeuser;
 		$d=new EnderecobaseData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

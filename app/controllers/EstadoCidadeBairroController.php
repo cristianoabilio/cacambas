@@ -39,7 +39,7 @@ class EstadoCidadeBairroData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		return array(
 				'zona'				=>Input::get('zona'),
@@ -55,20 +55,12 @@ class EstadoCidadeBairroData extends StandardResponse{
 			)
 		;
 	}
-
 }
 
 class EstadoCidadeBairroController extends \BaseController {
-	/*
-	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
-	}
-	*/
-
-	
 	public function __construct()  {
 		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('checkestadocidadebairro');
+		$this->beforeFilter('geoendereco');
 	}
 
 	/**
@@ -148,7 +140,7 @@ class EstadoCidadeBairroController extends \BaseController {
 		//
 
 		$d=new EstadoCidadeBairroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -309,7 +301,7 @@ class EstadoCidadeBairroController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new EstadoCidadeBairroData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

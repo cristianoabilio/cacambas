@@ -70,8 +70,8 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
-		$formatdata=array(
+	public function form_data(){
+		$formdata=array(
 			//'enderecobase_id'	=>array( Input::get( 'enderecobase_id'),'endereco'),
 			'numero'				=>array( Input::get( 'numero'),'endereco'),
 			'cep'					=>array( Input::get( 'cep'),'endereco'),
@@ -113,7 +113,7 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 			}
 		}
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -208,7 +208,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		//
 
 		$d=new EmpresaEnderecoempresaData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		$succesresponse=array();
 
 		$data_from_enderecobase=array();
@@ -411,7 +411,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		//
 
 		$d=new EmpresaEnderecoempresaData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 		$succesresponse=array();
 
 		$data_from_enderecobase=array();

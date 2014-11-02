@@ -43,7 +43,7 @@ class ComprasData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		$formdata=array(
 			'produto_id'			=>Input::get('produto_id'),
@@ -152,7 +152,7 @@ class ComprasController extends \BaseController {
 		//
 
 		$d=new ComprasData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(
@@ -299,7 +299,7 @@ class ComprasController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new ComprasData;
-		$success=$d->formatdata();
+		$success=$d->form_data();
 
 		try{
 			$validator= Validator::make(			

@@ -50,7 +50,7 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 	/**
 	* @param formdata returns array with form values
 	*/
-	public function formatdata(){
+	public function form_data(){
 
 		if (trim(Input::get('status_pagamento'))=='') {
 			$status_pagamento=1;//default value if empty
@@ -58,7 +58,7 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 			$status_pagamento=Input::get('status_pagamento');
 		}
 
-		$formatdata= array(
+		$formdata= array(
 			//'convenio_id'	=>Input::get('convenio_id'),
 			//'closed'	=>Input::get('closed'),
 			'data_compra'		=>Input::get('data_compra'),
@@ -91,7 +91,7 @@ class EmpresaConvenioProdutofaturaData extends StandardResponse{
 			}
 		}
 
-		return $formatdata;
+		return $formdata;
 	}
 
 	public function validrules(){
@@ -179,7 +179,7 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 
 		$d=new EmpresaConvenioProdutofaturaData;
 
-		$success= $d->formatdata();
+		$success= $d->form_data();
 
 		try{
 			$validator= Validator::make(			
@@ -366,7 +366,7 @@ class EmpresaConvenioProdutofaturaController extends \BaseController {
 
 		$d=new EmpresaConvenioProdutofaturaData;
 
-		$success= $d->formatdata();
+		$success= $d->form_data();
 
 		try{
 			$validator= Validator::make(			
