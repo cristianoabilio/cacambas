@@ -1,4 +1,3 @@
-
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -7,7 +6,7 @@
 		<h1>
 			All registered Enderecobase
 		</h1>
-		DData for enderecobases located at
+		Data for enderecobases located at
 		<ul>
 			<li>
 				Bairro: {[$bairro->nome]}
@@ -37,6 +36,13 @@
 				<td>
 					<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/showvisibleenderecobase/'.$e->id)]}">HTLM enderecobase {[$e->id]}</a> |
 					<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id)]}">JSON enderecobase {[$e->id]}</a>
+					<ul>
+						<li>
+							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/visibleendereco')]}">HTML enderecobase for bairro resource {[$e->id]}</a>
+							|
+							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/endereco')]}">JSON enderecobase for bairro resource {[$e->id]}</a></li>
+						</li>
+					</ul>
 				</td>
 				@foreach($header as $h)
 					@if($h[1]==1)

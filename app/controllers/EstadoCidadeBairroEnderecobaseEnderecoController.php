@@ -1,40 +1,38 @@
 <?php
 
-class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
-	
-	
+class EstadoCidadeBairroEnderecobaseEnderecoData extends StandardResponse{
 	/** 
 	* function name: header.
-	* @param header with headers of empresa table
+	* @param header with headers of endereco table
 	*/
 	public function header(){
 		/*
-		$header= headers on table empresas
+		$enderecoheader= headers on table enderecos
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$header=array(	
-			array('id',0)
-			,array('cep_base',0)
-			,array('logradouro',1)
-			,array('regiao',1)
-			,array('restricao_hr_inicio_base',0)
-			,array('restricao_hr_fim_base',0)
-			,array('numero_inicio',0)
-			,array('numero_fim',0)
-		);	
+		$header=
+		array(	
+			array('numero',0),
+			array('cep',1),
+			array('latitude',0),
+			array('longitude',0),
+			array('restricao_hr_inicio',0),
+			array('restricao_hr_fim',0)
+			)
+		;	
 		return $header;
 	}
-
+	
 	/**
 	* @param edata retrieves all data from table "endereco"
 	*/
-	public function edata ($bairro_id) {
-		return Bairro::find($bairro_id)->enderecobase;
+	public function edata ($enderecobase) {
+		return Enderecobase::find($enderecobase)->endereco;
 	}
 
 	public function show($id){
-		return Enderecobase::find($id);
+		return Endereco::find($id);
 	}
 
 	/**
@@ -42,19 +40,16 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 	*/
 
 	public $fillable=array(
-		'cep_base',
-		'logradouro',
-		'regiao',
-		'numero_inicio',
-		'numero_fim'
+		'numero',
+		'cep',
+		'latitude',
+		'longitude',
+		'restricao_hr_inicio',
+		'restricao_hr_fim'
 		)
 	;
 
-	public $nullable=array(
-		'restricao_hr_inicio_base',
-		'restricao_hr_fim_base'
-		)
-	;
+	public $nullable=array();
 
 	public function form_data(){
 		return $this->formCapture($this->fillable,$this->nullable);
@@ -62,16 +57,14 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 
 	public function validrules(){
 		return array(
-			'cep_base'=>	'required',
-			'logradouro'=>	'required'
+			'numero'	=>	'required'
+			,'cep'		=>	'required|integer'
 			)
 		;
 	}
-
-
 }
 
-class EstadoCidadeBairroEnderecobaseController extends \BaseController {
+class EstadoCidadeBairroEnderecobaseEnderecoController extends \BaseController {
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on' => 'post'));
@@ -83,28 +76,29 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index($estado_id,$cidade_id,$bairro_id)
+	public function index($estado_id,$cidade_id,$bairro_id,$endebase_id)
 	{
-		$d=new EstadoCidadeBairroEnderecobaseData;
-		return Response::json($d->edata($bairro_id));
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
+		return $d->edata($endebase_id);
 	}
 
-	public function visible ($estado_id,$cidade_id,$bairro_id) {
-		$d=new EstadoCidadeBairroEnderecobaseData;
+	public function visible ($estado_id,$cidade_id,$bairro_id,$endebase_id) {
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		
-		//
-		$enderecobase=$d->edata($bairro_id);
 		$header=$d->header();
-		$bairro=Bairro::find($bairro_id);
+		$endereco=$d->edata($endebase_id);
+		$enderecobase=Enderecobase::find($endebase_id);
+
 		return View::make(
-			'tempviews.EstadoCidadeBairroEnderecobase.index',
+			'tempviews.EstadoCidadeBairroEnderecobaseEndereco.index',
 			compact(
 				'header',
-				'enderecobase',
 				'estado_id',
 				'cidade_id',
 				'bairro_id',
-				'bairro'
+				'endebase_id',
+				'enderecobase',
+				'endereco'
 				)
 			)
 		;
@@ -116,35 +110,36 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create($estado_id,$cidade_id,$bairro_id)
+	public function create($estado_id,$cidade_id,$bairro_id,$endebase_id)
 	{
-		$bairro=Bairro::find($bairro_id);
+		$enderecobase=Enderecobase::find($endebase_id);
 		return View::make(
-			'tempviews.EstadoCidadeBairroEnderecobase.create',
+			'tempviews.EstadoCidadeBairroEnderecobaseEndereco.create',
 			compact(
 				'estado_id',
 				'cidade_id',
 				'bairro_id',
-				'bairro'
+				'endebase_id',
+				'endereco',
+				'enderecobase'
 				)
 			)
 		;
 	}
-
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store($estado_id,$cidade_id,$bairro_id)
+	public function store($estado_id,$cidade_id,$bairro_id,$endebase_id)
 	{
 		$fake=new fakeuser;
-		$d=new EstadoCidadeBairroEnderecobaseData;
-
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		$success=$d->form_data();
+
 		try{
-			$validator= Validator::make(		
+			$validator= Validator::make(
 				Input::All(),	
 				$d->validrules(),
 				array(	
@@ -152,7 +147,6 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 					)
 				)	
 			;
-			
 
 			if ($validator->fails()){
 				throw new Exception(
@@ -165,8 +159,8 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				;
 			}
 
-			$e=new Enderecobase;
-			$e->bairro_id=$bairro_id;
+			$e=new Endereco;
+			$e->enderecobase_id=$endebase_id;
 			foreach ($success as $key => $value) {
 				$e->$key=$value;
 			}
@@ -175,7 +169,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 			$e->save();
 			$success['id']=$e->id;
 			$res=$d->responsedata(
-				'enderecobase',
+				'endereco',
 				true,
 				'store',
 				$success
@@ -183,7 +177,6 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 			;
 			$code=200;
 		}
-		//
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
@@ -196,7 +189,6 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 			$code=400;
 		}
 		return Response::json($res,$code);
-		
 	}
 
 
@@ -206,16 +198,17 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($estado_id,$cidade_id,$bairro_id,$id)
+	public function show($estado_id,$cidade_id,$bairro_id,$endebase_id,$id)
 	{
-		$d=new EstadoCidadeBairroEnderecobaseData;
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		return $d->show($id);
 	}
 
-	public function showvisible ($estado_id,$cidade_id,$bairro_id,$id) {
-		$d=new EstadoCidadeBairroEnderecobaseData;
+	public function showvisible($estado_id,$cidade_id,$bairro_id,$endebase_id,$id)
+	{
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		try {
-			if (Enderecobase::whereId($id)->count()==0) {
+			if (Endereco::whereId($id)->count()==0) {
 				$res=$d->responsedata(
 					'enderecoempresa',
 					false,
@@ -226,19 +219,19 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			//
-			$header =$d->header();
-			$enderecobase 	=$d->show($id);
-			$bairro=Bairro::find($bairro_id);
+
+			$header=$d->header();
+			$endereco=$d->show($id);
+
 			return View::make(
-				'tempviews.EstadoCidadeBairroEnderecobase.show',
+				'tempviews.EstadoCidadeBairroEnderecobaseEndereco.show',
 				compact(
-					'header',
-					'enderecobase',
 					'estado_id',
 					'cidade_id',
 					'bairro_id',
-					'bairro',
+					'endebase_id',
+					'endereco',
+					'header',
 					'id'
 					)
 				)
@@ -256,14 +249,13 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($estado_id,$cidade_id,$bairro_id,$id)
+	public function edit($estado_id,$cidade_id,$bairro_id,$endebase_id,$id)
 	{
-		$d=new EstadoCidadeBairroEnderecobaseData;
-		//return $d->test();
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		try {
-			if (Enderecobase::whereId($id)->count()==0) {
+			if (Endereco::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'enderecoempresa',
+					'endereco',
 					false,
 					'edit',
 					$d->noexist
@@ -272,21 +264,26 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$enderecobase 	=$d->show($id);
-			$header 		=$d->header();
-			$bairro=Bairro::find($bairro_id);
-			//
+
+			$header=$d->header();
+			$endereco=$d->show($id);
+			#
+			$data=array(
+				'endereco' 	=>$d->show($id),
+				'header' 		=>$d->header(),
+				'id' 			=>$id
+				)
+			;
 			return View::make(
-				'tempviews.EstadoCidadeBairroEnderecobase.edit',
+				'tempviews.EstadoCidadeBairroEnderecobaseEndereco.edit',
 				compact(
-					'enderecobase',
-					'header',
 					'estado_id',
 					'cidade_id',
 					'bairro_id',
-					'id',
-					'bairro'
-					#
+					'endebase_id',
+					'endereco',
+					'header',
+					'id'
 					)
 				)
 			;
@@ -303,10 +300,10 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($estado_id,$cidade_id,$bairro_id,$id)
+	public function update($estado_id,$cidade_id,$bairro_id,$endebase_id,$id)
 	{
 		$fake=new fakeuser;
-		$d=new EstadoCidadeBairroEnderecobaseData;
+		$d=new EstadoCidadeBairroEnderecobaseEnderecoData;
 		$success=$d->form_data();
 
 		try{
@@ -330,7 +327,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 				;
 			}
 
-			$e=Enderecobase::find($id);
+			$e=Endereco::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -340,7 +337,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'enderecobase',
+				'endereco',
 				true,
 				'update',
 				$success
@@ -351,7 +348,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'enderecobase',
+				'endereco',
 				false,
 				'update',
 				$validator->messages()
@@ -369,7 +366,7 @@ class EstadoCidadeBairroEnderecobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($estado_id,$cidade_id,$bairro_id,$id)
+	public function destroy($estado_id,$cidade_id,$bairro_id,$endebase_id,$id)
 	{
 		//
 	}

@@ -1,5 +1,5 @@
 <?php 
-class StandardResponse {
+class StandardResponse extends FormDataCapturer{
 	public function responsedata( 
 		$module,
 		$success,
@@ -110,6 +110,20 @@ class StandardResponse {
 	public function estadocidadebairro_nested(){
 		return array(
 			'EstadoCidadeBairroEnderecobaseController'	=>'enderecobase'
+			)
+		;
+	}
+
+	public function estadocidadebairroenderecobase_nested() {
+		return array(
+			'EstadoCidadeBairroEnderecobaseEnderecoController'	=>'endereco'
+			)
+		;
+	}
+
+	public function estadocidadebairroenderecobaseendereco_nested() {
+		return array(
+			'EstadoCidadeBairroEnderecobaseEnderecoEnderecoempresaController'	=>'enderecoempresa'
 			)
 		;
 	}

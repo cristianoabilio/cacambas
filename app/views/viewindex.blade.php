@@ -222,6 +222,58 @@
 			</tr>
 		@endforeach
 		</table>
+		<br>
+		<h4>nested on Estado / Cidade / Bairro / Enderecobase</h4>
+		<small class="text-muted">
+			In order to see resources you must choose all parent resources first:  
+			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/enderecobase/{enderecobase}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($estadocidadebairroenderecobasenested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/{[$n]}'  
+				</td>
+				<td>
+					'estado/{estado}/cidade/{cidade}/bairro/{bairro}/{[$n]}/enderecobase/{enderecobase}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
+		<br>
+		<h4>nested on Estado / Cidade / Bairro / Enderecobase / Endereco</h4>
+		<small class="text-muted">
+			In order to see resources you must choose all parent resources first:  
+			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/enderecobase/{enderecobase}/endereco/{endereco}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($estadocidadebairroenderecobaseendereconested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/endereco/{endereco}/{[$n]}'  
+				</td>
+				<td>
+					'estado/{estado}/cidade/{cidade}/bairro/{bairro}/{[$n]}/enderecobase/{enderecobase}/endereco/{endereco}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
 		<hr>
 		<br>
 		<h4>Lonely (not restfully made) routes</h4>

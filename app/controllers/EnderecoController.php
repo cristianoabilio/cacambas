@@ -1,9 +1,5 @@
 <?php
 
-/**
- * empresaheader class only contains data related to
- * the table Empresa
- */
 class EnderecoData extends StandardResponse{
 	/** 
 	* function name: header.

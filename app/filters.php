@@ -66,6 +66,22 @@ Route::filter('geoendereco',function($route,$request){
 				else if ($checkenderecobase->bairro_id!=$bairro_id) {
 					$case=7;//enderecobase does not belong to bairro
 				}
+
+				//6. Check endereco parameter
+				else if (!null==$route->getParameter('endereco')) {
+					$endereco_id=$route->getParameter('endereco');
+					$checkendereco=Endereco::find($endereco_id);
+
+					//6.1 Check if endereco exists
+					if ($checkendereco==null) {
+						$case=8;//endereco does not exist
+					}
+
+					//6.2 Check if endereco belongs to enderecobase
+					else if ($checkendereco->enderecobase_id!=$enderecobase_id) {
+						$case=9;//endereco does not belong to enderecobase
+					}
+				}
 			}
 		}
 	}
@@ -86,6 +102,10 @@ Route::filter('geoendereco',function($route,$request){
 			case '6':$case='Enderecobase no exists';
 			break;
 			case '7':$case='Enderecobase does not belong to Bairro';
+			break;
+			case '8':$case='Endereco no exists';
+			break;
+			case '9':$case='Endereco does not belong to Enderecobase';
 			break;
 		}
 

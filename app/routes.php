@@ -43,6 +43,8 @@ Route::get('/myproduction', function() use ($st_r)
 	$estadonested		=$st_r->estado_nested();
 	$estadocidadenested	=$st_r->estadocidade_nested();
 	$estadocidadebairronested=$st_r->estadocidadebairro_nested();
+	$estadocidadebairroenderecobasenested=$st_r->estadocidadebairroenderecobase_nested();
+	$estadocidadebairroenderecobaseendereconested=$st_r->estadocidadebairroenderecobaseendereco_nested();
 	return View::make(
 		'viewindex',
 		compact(
@@ -53,7 +55,9 @@ Route::get('/myproduction', function() use ($st_r)
 			'classenested',
 			'estadonested',
 			'estadocidadenested',
-			'estadocidadebairronested'
+			'estadocidadebairronested',
+			'estadocidadebairroenderecobasenested',
+			'estadocidadebairroenderecobaseendereconested'
 			)
 		)
 	;
@@ -143,6 +147,20 @@ foreach ($st_r->estadocidadebairro_nested() as $k=>$v) {
 	Route::resource('estado.cidade.bairro.'.$v, $k);
 	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/visible'.$v, $k.'@visible');
 	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+}
+
+//Nested controllers on estado.cidade.bairro.enderecobase
+foreach ($st_r->estadocidadebairroenderecobase_nested() as $k=>$v) {
+	Route::resource('estado.cidade.bairro.enderecobase.'.$v, $k);
+	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/visible'.$v, $k.'@visible');
+	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+}
+
+//Nested controllers on estado.cidade.bairro.enderecobase.endereco
+foreach ($st_r->estadocidadebairroenderecobaseendereco_nested() as $k=>$v) {
+	Route::resource('estado.cidade.bairro.enderecobase.endereco.'.$v, $k);
+	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/endereco/{endereco}/visible'.$v, $k.'@visible');
+	Route::get('estado/{estado}/cidade/{cidade}/bairro/{bairro}/enderecobase/{enderecobase}/endereco/{endereco}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 /**
