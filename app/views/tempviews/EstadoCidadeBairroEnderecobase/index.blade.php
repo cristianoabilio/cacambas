@@ -38,9 +38,9 @@
 					<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id)]}">JSON enderecobase {[$e->id]}</a>
 					<ul>
 						<li>
-							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/visibleendereco')]}">HTML enderecobase for bairro resource {[$e->id]}</a>
+							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/visibleendereco')]}">HTML endereco for base resource {[$e->id]}</a>
 							|
-							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/endereco')]}">JSON enderecobase for bairro resource {[$e->id]}</a></li>
+							<a href="{[URL::to('estado/'.$estado_id.'/cidade/'.$cidade_id.'/bairro/'.$bairro_id.'/enderecobase/'.$e->id.'/endereco')]}">JSON endereco for base resource {[$e->id]}</a></li>
 						</li>
 					</ul>
 				</td>

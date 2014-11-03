@@ -16,9 +16,19 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 		1 (visible) or 2 (not shown)
 		*/
 		$header=
-		array(	
+		array(
+			array('empresa_id',0),
+			//array('enderecoempresa','enderecobase_id',0),
+			array('endereco_id',0),
+			array('tipo',1),
+			array('complemento',1),
+			array('observacao',0),
+			array('status',0)
+			)
+		;
+		//array(	
 			//array('endereco','enderecobase_id',1),
-			array('endereco','numero',0),
+			/*array('endereco','numero',0),
 			array('endereco','cep',1),
 			array('endereco','latitude',0),
 			array('endereco','longitude',0),
@@ -33,15 +43,15 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 			array('enderecobase','restricao_hr_inicio_base',0),
 			array('enderecobase','restricao_hr_fim_base',0),
 			array('enderecobase','numero_inicio',0),
-			array('enderecobase','numero_fim',0),
-			array('enderecoempresa','empresa_id',0),
-			array('enderecoempresa','enderecobase_id',0),
-			array('enderecoempresa','endereco_id',0),
-			array('enderecoempresa','tipo',0),
-			array('enderecoempresa','complemento',0),
+			array('enderecobase','numero_fim',0),*/
+			//array('enderecoempresa','empresa_id',0),
+			//array('enderecoempresa','enderecobase_id',0),
+			/*array('enderecoempresa','endereco_id',0),
+			array('enderecoempresa','tipo',1),
+			array('enderecoempresa','complemento',1),
 			array('enderecoempresa','observacao',0),
-			array('enderecoempresa','status',0)
-			)
+			array('enderecoempresa','status',0)*/
+			//)
 		;	
 		return $header;
 	}
@@ -51,6 +61,265 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 	*/
 	public function edata ($empresa) {
 		return Empresa::find($empresa)->Enderecoempresa;
+	}
+
+	/**
+	* mergedparentdata 
+	* In order to merge all enderecoempresa "parent" data
+	* (reversing nested relationships) data must be converted
+	* as an array.  This function converts Eloquent object
+	* in an array for correct data merging
+	*/
+	public function mergedparentdata($empresa_id) {
+		//1. Retrieving data for current choosen empresa
+		$empresa=Empresa::find($empresa_id);
+
+		//2. Retrieving all enderecoempresa records for current empresa
+		$enderecoempresa=$empresa->Enderecoempresa;
+
+		//3. All table fields from tables to be merged must be enunciated
+		//3.1 enderecoempresa table fields
+		$enderecoempresafields=array(
+			'id',
+			'empresa_id',
+			'endereco_id',
+			'tipo',
+			'complemento',
+			'observacao'//,
+			//'status',
+			//'dthr_cadastro',
+			//'sessao_id'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.2 endereco table fields
+		$enderecofields=array(
+			//'id',
+			'enderecobase_id',
+			'numero',
+			'cep',
+			'latitude',
+			'longitude',
+			'restricao_hr_inicio',
+			'restricao_hr_fim'//,
+			//'dthr_cadastro',
+			//'sessao_id'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.3 enderecobase table fields
+		$enderecobasefields=array(
+			//'id',
+			'bairro_id',
+			'cep',
+			'logradouro',
+			'regiao',
+			'restricao_hr_inicio',
+			'restricao_hr_fim',
+			'numero_inicio',
+			'numero_fim'//,
+			//'dthr_cadastro',
+			//'sessao_id',
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.4 bairro table fields
+		$bairrofields=array(
+			//'id',
+			'cidade_id',
+			//'estado_id',
+			'zona',
+			'nome'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.5 cidade table fields
+		$cidadefields=array(
+			//'id',
+			'estado_id',
+			'nome',
+			'capital'//,
+			//'created_at',
+			//'updated_at'
+
+			)
+		;
+
+		//3.6 estado table fields
+		$estadofields=array(
+			//'id',
+			'nome',
+			'regiao'//,
+			//'created_at',
+			//'updated_at'
+
+			)
+		;
+		$index=array(); 
+		foreach($enderecoempresa as $key=>$value){
+
+			foreach ($enderecoempresafields as $v) {
+				$index[$key][$v]=$value->$v;
+			}
+
+			$index[$key]['empresanome']=$value->empresa->nome;
+
+			foreach ($enderecofields as  $v) {
+				$index[$key]['endereco_'.$v]=$value->endereco->$v;
+			}
+
+			foreach ($enderecobasefields as  $v) {
+				$index[$key]['enderecobase_'.$v]=$value->endereco->enderecobase->$v;
+			}
+
+			foreach ($bairrofields as  $v) {
+				$index[$key]['bairro_'.$v]=$value->endereco->enderecobase->bairro->$v;
+			}
+
+			foreach ($cidadefields as  $v) {
+				$index[$key]['cidade_'.$v]=$value->endereco->enderecobase->bairro->cidade->$v;
+			}
+
+			foreach ($estadofields as  $v) {
+				$index[$key]['estado_'.$v]=$value->endereco->enderecobase->bairro->cidade->estado->$v;
+			}
+
+			return $index;
+
+		}
+	}
+
+	public function showmergedparentdata($empresa_id,$id) {
+		//1. Retrieving data for current choosen empresa
+		$empresa=Empresa::find($empresa_id);
+
+		//2. Retrieving all enderecoempresa records for current empresa
+		$enderecoempresa=Enderecoempresa::find($id);
+
+		//3. All table fields from tables to be merged must be enunciated
+		//3.1 enderecoempresa table fields
+		$enderecoempresafields=array(
+			'id',
+			'empresa_id',
+			'endereco_id',
+			'tipo',
+			'complemento',
+			'observacao'//,
+			//'status',
+			//'dthr_cadastro',
+			//'sessao_id'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.2 endereco table fields
+		$enderecofields=array(
+			//'id',
+			'enderecobase_id',
+			'numero',
+			'cep',
+			'latitude',
+			'longitude',
+			'restricao_hr_inicio',
+			'restricao_hr_fim'//,
+			//'dthr_cadastro',
+			//'sessao_id'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.3 enderecobase table fields
+		$enderecobasefields=array(
+			//'id',
+			'bairro_id',
+			'cep',
+			'logradouro',
+			'regiao',
+			'restricao_hr_inicio',
+			'restricao_hr_fim',
+			'numero_inicio',
+			'numero_fim'//,
+			//'dthr_cadastro',
+			//'sessao_id',
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.4 bairro table fields
+		$bairrofields=array(
+			//'id',
+			'cidade_id',
+			//'estado_id',
+			'zona',
+			'nome'//,
+			//'created_at',
+			//'updated_at'
+			)
+		;
+
+		//3.5 cidade table fields
+		$cidadefields=array(
+			//'id',
+			'estado_id',
+			'nome',
+			'capital'//,
+			//'created_at',
+			//'updated_at'
+
+			)
+		;
+
+		//3.6 estado table fields
+		$estadofields=array(
+			//'id',
+			'nome',
+			'regiao'//,
+			//'created_at',
+			//'updated_at'
+
+			)
+		;
+		$index=array(); 
+		
+
+		foreach ($enderecoempresafields as $v) {
+			$index[$v]=$enderecoempresa->$v;
+		}
+
+		$index['empresanome']=$enderecoempresa->empresa->nome;
+
+		foreach ($enderecofields as  $v) {
+			$index['endereco_'.$v]=$enderecoempresa->endereco->$v;
+		}
+
+		foreach ($enderecobasefields as  $v) {
+			$index['enderecobase_'.$v]=$enderecoempresa->endereco->enderecobase->$v;
+		}
+
+		foreach ($bairrofields as  $v) {
+			$index['bairro_'.$v]=$enderecoempresa->endereco->enderecobase->bairro->$v;
+		}
+
+		foreach ($cidadefields as  $v) {
+			$index['cidade_'.$v]=$enderecoempresa->endereco->enderecobase->bairro->cidade->$v;
+		}
+
+		foreach ($estadofields as  $v) {
+			$index['estado_'.$v]=$enderecoempresa->endereco->enderecobase->bairro->cidade->estado->$v;
+		}
+
+		return $index;
 	}
 
 	public function wholeenderecodata($empresa_id){
@@ -163,15 +432,18 @@ class EmpresaEnderecoempresaController extends \BaseController {
 	 */
 	public function index ($empresa_id) {
 		$d=new EmpresaEnderecoempresaData;
-		return $d->wholeenderecodata($empresa_id);
+		return $d->mergedparentdata($empresa_id);
 	}
+	
+
 	public function visible($empresa_id)
 	{
 		$d=new EmpresaEnderecoempresaData;
 		$data=array(
 			'enderecoempresa'	=>$d->edata($empresa_id),
 			'header'			=>$d->header(),
-			'empresa_id'				=>$empresa_id
+			'empresa_id'		=>$empresa_id,
+			'empresa'			=>Empresa::find($empresa_id)
 			)
 		;
 		return View::make('tempviews.EmpresaEnderecoempresa.index',$data);
@@ -327,7 +599,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 	 */
 	public function show ($empresa_id,$id) {
 		$d=new EmpresaEnderecoempresaData;
-		return $d->show($id);
+		return $d->showmergedparentdata($empresa_id,$id);
 	}
 	public function showvisible($empresa_id,$id)
 	{
