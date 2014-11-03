@@ -4,8 +4,29 @@
 <body>
 	<div class="container">
 		<h1>
-			Add a new enderecoempresa
+			Add a new enderecoempresa to empresa {[Empresa::find($id)->nome]}
 		</h1>
+		In order to properly add a new enderecoempresa, next order must be followed
+		as each enderecoempresa belongs, in the mentioned hierachy, to
+		<br>estado > cidade > bairro > enderecobase > endereco > enderecoempresa
+		<br>
+		<div class="row">
+			<div class="col-sm-3">
+				Estado
+				<br>
+				<select name="estado" id="estado" class='form-control'>
+					<option value=""></option>
+					@foreach(Estado::all() as $e)
+					<option value="{[$e->id]}">{[$e->nome]} ({[$e->regiao]})</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
+		<div id="cidade_tag">
+			//
+		</div>
+				
+
 		{[Form::open(array('url'=>URL::to('empresa/'.$id.'/enderecoempresa')  )  )]}
 		<h3 class="muted">Endereco base</h3>
 		<div class="row">

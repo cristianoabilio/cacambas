@@ -32,7 +32,6 @@ class EstadoTableSeeder extends Seeder {
 			'São Paulo|Sudeste',
 			'Sergipe|Nordeste',
 			'Tocantins|Norte'
-
 			)	
 		;
 

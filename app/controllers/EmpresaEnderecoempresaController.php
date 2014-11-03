@@ -617,7 +617,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'endereco' 	=>$d->show($id),
+				'enderecoempresa' 	=>$d->show($id),
 				'header' 	=>$d->header(),
 				'empresa_id'=>$empresa_id,
 				'id' 		=>$id
