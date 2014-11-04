@@ -4,20 +4,30 @@ class BairroTableSeeder extends Seeder {
 
 	public function run()
 	{
+		DB::table('bairro')->truncate();
 
-    $total = 15;
+		//
+		for ($i=1; $i <82 ; $i++) { 
 
-    DB::table('bairro')->truncate();
 
-    for ($i=1;$i <= $total; $i++){
+			for ($j=1; $j <3 ; $j++) { 
 
-      DB::table('bairro')->insert(array(
-                                   'cidade_id' => $i,
-                                   'estado_id' => $i,
-                                   'zona' => 'X '.$i,
-                                   'nome' => 'Xyz '.$i
-                                   ));
-    }
-  }
+
+				DB::table('bairro')->insert(
+					array(
+						'cidade_id'=>$i,
+						'zona'=>'zona '.$j,
+						'nome'=>'bairro '.$j
+						)
+					)
+				;
+
+
+			}
+
+
+		}
+		
+	}
 
 }

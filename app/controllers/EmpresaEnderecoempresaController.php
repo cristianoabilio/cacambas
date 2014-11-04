@@ -341,14 +341,14 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 	*/
 	public function form_data(){
 		$formdata=array(
-			//'enderecobase_id'	=>array( Input::get( 'enderecobase_id'),'endereco'),
+			'enderecobase_id'		=>array( Input::get( 'enderecobase_id'),'endereco'),
 			'numero'				=>array( Input::get( 'numero'),'endereco'),
 			'cep'					=>array( Input::get( 'cep'),'endereco'),
 			'latitude'				=>array( Input::get( 'latitude'),'endereco'),
 			'longitude'				=>array( Input::get( 'longitude'),'endereco'),
 			'restricao_hr_inicio'	=>array( Input::get( 'restricao_hr_inicio'),'endereco'),
 			'restricao_hr_fim'		=>array( Input::get( 'restricao_hr_fim'),'endereco'),
-			'bairro_id'				=>array( Input::get( 'bairro_id'),'enderecobase'),
+			/*'bairro_id'				=>array( Input::get( 'bairro_id'),'enderecobase'),
 			'cidade_id'				=>array( Input::get( 'cidade_id'),'enderecobase'),
 			'estado_id'				=>array( Input::get( 'estado_id'),'enderecobase'),
 			'cep_base'				=>array( Input::get( 'cep_base'),'enderecobase'),
@@ -357,17 +357,17 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 			'logradouro'			=>array( Input::get( 'logradouro'),'enderecobase'),
 			'regiao'				=>array( Input::get( 'regiao'),'enderecobase'),
 			'numero_inicio'			=>array( Input::get( 'numero_inicio'),'enderecobase'),
-			'numero_fim'			=>array( Input::get( 'numero_fim'),'enderecobase'),
+			'numero_fim'			=>array( Input::get( 'numero_fim'),'enderecobase'),*/
 			//'endereco_id'	=>array( Input::get( 'endereco_id'),'enderecoempresa'),
-			'tipo'					=>array( Input::get( 'tipo'),'enderecoempresa'),
-			'status'				=>array( Input::get( 'status'),'enderecoempresa')
+			'tipo'					=>array( Input::get( 'tipo'),'enderecoempresa')//,
+			//'status'				=>array( Input::get( 'status'),'enderecoempresa')
 			)
 		;
 
 		$nullable=array(
 			//restricao_hr_inicio,restricao_hr_fim,complemento,observacao
-			'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
-			'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
+			//'restricao_hr_inicio_base'	=>array( Input::get( 'restricao_hr_inicio'),'enderecobase'),
+			//'restricao_hr_fim_base'		=>array( Input::get( 'restricao_hr_fim'),'enderecobase'),
 			'complemento'			=>array( Input::get( 'complemento'),'enderecoempresa'),
 			'observacao'			=>array( Input::get( 'observacao'),'enderecoempresa')
 			)
@@ -387,18 +387,19 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'numero'=>	'required'
-			,'cep'=>	'required|integer'
+			'enderecobase_id'	=>'required|integer'
+			,'numero'			=>'required'
+			,'cep'				=>'required|integer'
 			/*
 			,'latitude'=>	'required'
 			,'longitude'=>	'required'
 			,'restricao_hr_inicio'=>	'required'
 			,'restricao_hr_fim'=>	'required'*/
-			,'bairro_id'=>	'required|integer'
+			/*,'bairro_id'=>	'required|integer'
 			,'cidade_id'=>	'Required|integer'
-			,'estado_id'=>	'Required|integer'
-			,'cep_base'=>	'required'
-			,'logradouro'=>	'required'
+			,'estado_id'=>	'Required|integer'*/
+			/*,'cep_base'=>	'required'
+			,'logradouro'=>	'required'*/
 			//,'regiao'=>	'required'
 			//,'restricao_hr_inicio'=>	'required'
 			//,'restricao_hr_fim'=>	'required'
@@ -479,40 +480,52 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		$fake=new fakeuser;
 		//
 
+		//Instantiating class
 		$d=new EmpresaEnderecoempresaData;
+
+		//form_data retrieving all fields with content, as bidimentional array
 		$success=$d->form_data();
+
+		//Array required for gathering JSON response as unidimentional array
 		$succesresponse=array();
 
-		$data_from_enderecobase=array();
-
+		//only endereco data array, filled later with "foreach"
 		$data_from_endereco=array();
 
+		//only enderecoempresa data array, filled later with "foreach"
 		$data_from_enderecoempresa=array();
 
 		foreach ($success as $key => $value) {
 			$succesresponse[$key]=$value[0];
 
-			if ($value[1]=='enderecobase') {
+			/*if ($value[1]=='enderecobase') {
 				$data_from_enderecobase[$key]=$value[0];
 			}
-			else if ($value[1]=='endereco') {
+			else*/ 
+
+			//filling endereco array
+			if ($value[1]=='endereco') {
 				$data_from_endereco[$key]=$value[0];
 			}
+
+			//filling enderecoempresa array
 			else if ($value[1]=='enderecoempresa') {
 				$data_from_enderecoempresa[$key]=$value[0];
 			}
 		}
 
 		try{
+			//validation methods
 			$validator= Validator::make(		
 				Input::All(),	
 				$d->validrules(),
 				array(	
 					'required'=>'Required field'
 					)
-				)	
+				)
 			;
 
+			//validation methods
 			if ($validator->fails()){
 				throw new Exception(
 					json_encode(
@@ -524,22 +537,23 @@ class EmpresaEnderecoempresaController extends \BaseController {
 				;
 			}
 
-			$ebase=new Enderecobase;
+			/*$ebase=new Enderecobase;
 			foreach ($data_from_enderecobase as $key => $value) {
 				$ebase->$key=$value;
 			}
 			$ebase->dthr_cadastro	=date('Y-m-d H:i:s');
 			$ebase->sessao_id		=$fake->sessao_id();
 
-			$ebase->save();
+			$ebase->save();*/
 
-			$enderecobaseid=$ebase->id;
+			//$enderecobaseid=$ebase->id;
 
 			//adding id to success array
-			$succesresponse['enderecobase_id']=$enderecobaseid;
+			//$succesresponse['enderecobase_id']=$enderecobaseid;
 
+			//saving data related to endereco
 			$e=new Endereco;
-			$e->enderecobase_id=	$enderecobaseid;
+
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}
@@ -552,8 +566,11 @@ class EmpresaEnderecoempresaController extends \BaseController {
 			$succesresponse['endereco_id']=$e->id;
 
 			$e_empresa=new Enderecoempresa;
-			$e_empresa->$id;
-			$e_empresa->enderecobase_id=	$enderecobaseid;
+
+			//Filling data that does not come from form
+			$e_empresa->empresa_id=$id;
+			$e_empresa->endereco_id=	$succesresponse['endereco_id'];
+			$e_empresa->status=1;
 			foreach ($data_from_enderecoempresa as $key => $value) {
 				$e_empresa->$key=$value;
 			}
@@ -567,7 +584,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 
 
 			$res=$d->responsedata(
-				'endereco',
+				'enderecoempresa',
 				true,
 				'store',
 				$succesresponse
@@ -579,7 +596,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		} catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'endereco',
+				'enderecoempresa',
 				false,
 				'store',
 				$validator->messages()

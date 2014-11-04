@@ -2,6 +2,7 @@
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<div id="base" class="hide">{[URL::to('/')]}</div>
 	<div class="container">
 		<h1>
 			Add a new enderecoempresa to empresa {[Empresa::find($id)->nome]}
@@ -22,94 +23,42 @@
 				</select>
 			</div>
 		</div>
+		<br>
 		<div id="cidade_tag">
-			//
+			<div class="row">
+				<div class="col-sm-3">
+					Cidade
+					<br>
+					<select name="cidade" id="cidade" class='form-control'>
+					</select>
+					<a href="">Add cidade to list</a>
+				</div>
+			</div>
 		</div>
-				
-
+		<br>
+		<div id="bairro_tag">
+			<div class="row">
+				<div class="col-sm-3">
+					bairro
+					<br>
+					<select name="bairro" id="bairro" class='form-control'></select>
+					<a href="">Add bairro to list</a>
+				</div>
+			</div>
+		</div>
 		{[Form::open(array('url'=>URL::to('empresa/'.$id.'/enderecoempresa')  )  )]}
-		<h3 class="muted">Endereco base</h3>
-		<div class="row">
-			<div class="col-sm-2">
-				bairro_id
-				<br>
-				<input type="text" name="bairro_id" id="bairro_id" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				cidade_id
-				<br>
-				<input type="text" name="cidade_id" id="cidade_id" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				estado_id
-				<br>
-				<input type="text" name="estado_id" id="estado_id" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				cep_base
-				<br>
-				<input type="text" name="cep_base" id="cep_base" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				logradouro
-				<br>
-				<input type="text" name="logradouro" id="logradouro" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				regiao
-				<br>
-				<input type="text" name="regiao" id="regiao" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				restricao_hr_inicio_base
-				<br>
-				<input type="text" name="restricao_hr_inicio_base" id="restricao_hr_inicio_base" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				restricao_hr_fim_base
-				<br>
-				<input type="text" name="restricao_hr_fim_base" id="restricao_hr_fim_base" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				numero_inicio
-				<br>
-				<input type="text" name="numero_inicio" id="numero_inicio" class='form-control'>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				numero_fim
-				<br>
-				<input type="text" name="numero_fim" id="numero_fim" class='form-control'>
-			</div>
-		</div>
-		<hr>
 		<h3 class="muted">Endereco</h3>
+		<div id="enderecobase_tag">
+			<div class="row">
+				<div class="col-sm-3">
+					enderecobase
+					<br>
+					<select name="enderecobase_id" id="enderecobase_id" class='form-control'></select>
+					<a href="">Add enderecobase to list</a>
+				</div>
+			</div>
+		</div>
+		<br>
 		<div class="row">
 			<div class="col-sm-2">
 				numero
@@ -199,4 +148,113 @@
 		<br>
 		<br>
 	</div>
+	<!-- 
+	TEMPORARY JQUERY METHODS FOR DAY/SEMESTER/YEAR INVOICE OPTIONS
+	DIA / SEMESTER / ANO
+	-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </body>
+<script type="text/javascript">
+$(function(){
+	$('#cidade_tag').hide();
+
+	$('#estado').change(function(e){
+		var estado=$(this).val();
+		if ( estado!='' ) {
+			$('#cidade').html('');
+			$('#cidade_tag').show('fast');
+			var base=$('#base').html();
+			$.get(base+'/estado/'+estado+'/cidade',{},function(d){
+				var options='<option></option>';
+				$.each(d,function(k,v){
+					options=options+'<option value="'+v.id+'">'+v.nome+'</option>';
+				});
+				$('#cidade').append(options);
+			});
+		} else {
+			$('#cidade_tag').hide('fast');
+			$('#cidade').html('');
+		}
+		
+	});
+
+
+	$('#bairro_tag').hide();
+
+	$('#cidade').change(function(e){
+		var estado=$('#estado').val();
+		var cidade=$(this).val();
+		if ( cidade!='' ) {
+			$('#bairro').html('');
+			$('#bairro_tag').show('fast');
+			var base=$('#base').html();
+			$.get(base+'/estado/'+estado+'/cidade/'+cidade+'/bairro',{},function(d){
+				var options='<option></option>';
+				$.each(d,function(k,v){
+					options=options+'<option value="'+v.id+'">'+v.nome+'</option>';
+				});
+				$('#bairro').append(options);
+			});
+		} else {
+			$('#bairro_tag').hide('fast');
+			$('#bairro').html('');
+		}
+		
+	});
+
+
+
+	$('#enderecobase_tag').hide();
+
+	$('#bairro').change(function(e){
+		var estado=$('#estado').val();
+		var cidade=$('#cidade').val();
+		var bairro=$(this).val();
+		if ( bairro!='' ) {
+			$('#enderecobase_id').html('');
+			$('#enderecobase_tag').show('fast');
+			var base=$('#base').html();
+			$.get(
+				base+'/estado/'+estado+'/cidade/'+cidade+
+				'/bairro/'+bairro+'/enderecobase/',
+				{},
+				function(d){
+					var options='<option></option>';
+					$.each(d,function(k,v){
+						options=options+'<option value="'+v.id+'">'+v.cep_base+'</option>';
+					});
+					$('#enderecobase_id').append(options);
+				}
+				)
+			;
+		} else {
+			$('#enderecobase_tag').hide('fast');
+			$('#enderecobase_id').html('');
+		}
+	});
+
+	/*$('#bairro').change(function(e){
+		var estado=$('#estado').val();
+		var cidade=$('#cidade').val();
+		var bairro=$(this).val();
+		if ( bairro!='' ) {
+			$('#enderecobase').html('');
+			$('#enderecobase_tag').show('fast');
+			var base=$('#base').html();
+			$.get(base+'/estado/'+estado+'/cidade/'+cidade+'/bairro/'+bairro+'/enderecobase/',{},function(d){
+				var options='<option></option>';
+				$.each(d,function(k,v){
+					options=options+'<option value="'+v.id+'">'+v.nome+'</option>';
+				});
+				$('#enderecobase').append(options);
+			});
+		} else {
+			$('#enderecobase_tag').hide('fast');
+			$('#enderecobase').html('');
+		}
+		
+	});*/
+
+});
+
+</script>
