@@ -823,7 +823,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 			
 			//Deleting associated records to enderecoempresa
 			Endereco::whereId($enderecoid)->delete();
-			Enderecobase::whereId($enderecobaseid)->delete();
+			//Enderecobase::whereId($enderecobaseid)->delete();
 			Enderecoempresa::whereId($id)->delete();
 
 			//Response
