@@ -13,7 +13,7 @@ class EnderecoEmpresaTableSeeder extends Seeder {
 
       DB::table('enderecoempresa')->insert(array(
                                    'empresa_id' => $i,
-                                   'enderecobase_id' => $i,
+                                   //'enderecobase_id' => $i,
                                    'endereco_id' => $i,
                                    'tipo' => 'cobranca '.$i,
                                    'complemento' => 'nenhum',
