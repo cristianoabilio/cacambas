@@ -24,7 +24,7 @@ class CreateEnderecoempresaTable extends Migration {
 			$table->integer('sessao_id');
 			$table->timestamps();
 
-			$table->unique(array('empresa_id', 'enderecobase_id', 'endereco_id'));
+			$table->unique(array('empresa_id', 'endereco_id'));
 		});
 	}
 

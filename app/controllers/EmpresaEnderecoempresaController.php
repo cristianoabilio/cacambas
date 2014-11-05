@@ -13,7 +13,7 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 		/*
 		$enderecoheader= headers on table enderecos
 		In order to display or hide on HTML table, set as
-		1 (visible) or 2 (not shown)
+		1 (visible) or 0 (not shown)
 		*/
 		$header=
 		array(
@@ -25,33 +25,6 @@ class EmpresaEnderecoempresaData extends StandardResponse{
 			array('observacao',0),
 			array('status',0)
 			)
-		;
-		//array(	
-			//array('endereco','enderecobase_id',1),
-			/*array('endereco','numero',0),
-			array('endereco','cep',1),
-			array('endereco','latitude',0),
-			array('endereco','longitude',0),
-			array('endereco','restricao_hr_inicio',0),
-			array('endereco','restricao_hr_fim',0),
-			array('enderecobase','bairro_id',0),
-			array('enderecobase','cidade_id',0),
-			array('enderecobase','estado_id',0),
-			array('enderecobase','cep_base',0),
-			array('enderecobase','logradouro',0),
-			array('enderecobase','regiao',1),
-			array('enderecobase','restricao_hr_inicio_base',0),
-			array('enderecobase','restricao_hr_fim_base',0),
-			array('enderecobase','numero_inicio',0),
-			array('enderecobase','numero_fim',0),*/
-			//array('enderecoempresa','empresa_id',0),
-			//array('enderecoempresa','enderecobase_id',0),
-			/*array('enderecoempresa','endereco_id',0),
-			array('enderecoempresa','tipo',1),
-			array('enderecoempresa','complemento',1),
-			array('enderecoempresa','observacao',0),
-			array('enderecoempresa','status',0)*/
-			//)
 		;	
 		return $header;
 	}
