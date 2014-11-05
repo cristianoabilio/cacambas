@@ -15,7 +15,6 @@ class CreateBairroTable extends Migration {
 		Schema::create('bairro', function(Blueprint $table) {
 			$table->increments('id');//Parent id for enderecobase
 			$table->integer('cidade_id');//Cidade foreing key
-			$table->integer('estado_id');
 			$table->string('zona', 45)->nullable();
 			$table->string('nome', 45);
 			$table->timestamps();

@@ -15,7 +15,6 @@ class CreateEnderecoempresaTable extends Migration {
 		Schema::create('enderecoempresa', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('empresa_id');//
-			$table->integer('enderecobase_id');
 			$table->integer('endereco_id');//Endereco foreing key
 			$table->string('tipo', 45);
 			$table->string('complemento', 255)->nullable();

@@ -74,7 +74,10 @@ class EmpresaFuncionarioResumoatividadeData extends StandardResponse{
 		return array(
 			//'funcionario_id'		=>	'required'
 			//,'mes_referencia'	=>	'required'
-			//,'ano_referencia'	=>	'required'
+			'ano_referencia'	=>	'required',
+			'total_os_colocada'	=>	'required',
+			'total_os_troca'	=>	'required',
+			'total_os_retirada'	=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
 			)
@@ -133,7 +136,7 @@ class EmpresaFuncionarioResumoatividadeController extends \BaseController {
 	 */
 	public function store($empresa_id,$funcionario_id)
 	{
-		$d=new resumoatividadedata;
+		$d=new EmpresaFuncionarioResumoatividadeData;
 		$success=$d->form_data();
 
 		try{
@@ -163,7 +166,7 @@ class EmpresaFuncionarioResumoatividadeController extends \BaseController {
 			}
 			$e->empresa_id= $empresa_id;
 			$e->funcionario_id= $funcionario_id;
-			$e->save();	
+			$e->save();
 
 			$res=$d->responsedata(
 				'resumoatividade',

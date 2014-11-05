@@ -703,7 +703,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		$success=$d->form_data();
 		$succesresponse=array();
 
-		$data_from_enderecobase=array();
+		//$data_from_enderecobase=array();
 
 		$data_from_endereco=array();
 
@@ -712,10 +712,10 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		foreach ($success as $key => $value) {
 			$succesresponse[$key]=$value[0];
 
-			if ($value[1]=='enderecobase') {
+			/*if ($value[1]=='enderecobase') {
 				$data_from_enderecobase[$key]=$value[0];
 			}
-			else if ($value[1]=='endereco') {
+			else*/ if ($value[1]=='endereco') {
 				$data_from_endereco[$key]=$value[0];
 			}
 			else if ($value[1]=='enderecoempresa') {
@@ -725,7 +725,7 @@ class EmpresaEnderecoempresaController extends \BaseController {
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				$d->validrules(),	
+				$d->validrules(),
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -754,9 +754,9 @@ class EmpresaEnderecoempresaController extends \BaseController {
 			//$e_empresa->sessao_id	=$this->id_sessao;
 			$e_empresa->save();
 
-			$ebase_id=$e_empresa->enderecobase_id;
+			//$ebase_id=$e_empresa->enderecobase_id;
 
-			$ebase=Enderecobase::find($ebase_id);
+			/*$ebase=Enderecobase::find($ebase_id);
 			foreach ($data_from_enderecobase as $key => $value) {
 				$ebase->$key=$value;
 			}
@@ -765,10 +765,10 @@ class EmpresaEnderecoempresaController extends \BaseController {
 
 			$ebase->save();
 
-			$enderecoid=$ebase->endereco->first()->id;
+			$enderecoid=$ebase->endereco->first()->id;*/
 
-			$e=Endereco::find($enderecoid);
-			$e->enderecobase_id=	$ebase_id;
+			$e=Endereco::find($e_empresa->endereco_id);
+			//$e->enderecobase_id=	$ebase_id;
 			foreach ($data_from_endereco as $key => $value) {
 				$e->$key=$value;
 			}

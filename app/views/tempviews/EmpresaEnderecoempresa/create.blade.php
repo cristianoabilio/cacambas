@@ -233,28 +233,6 @@ $(function(){
 		}
 	});
 
-	/*$('#bairro').change(function(e){
-		var estado=$('#estado').val();
-		var cidade=$('#cidade').val();
-		var bairro=$(this).val();
-		if ( bairro!='' ) {
-			$('#enderecobase').html('');
-			$('#enderecobase_tag').show('fast');
-			var base=$('#base').html();
-			$.get(base+'/estado/'+estado+'/cidade/'+cidade+'/bairro/'+bairro+'/enderecobase/',{},function(d){
-				var options='<option></option>';
-				$.each(d,function(k,v){
-					options=options+'<option value="'+v.id+'">'+v.nome+'</option>';
-				});
-				$('#enderecobase').append(options);
-			});
-		} else {
-			$('#enderecobase_tag').hide('fast');
-			$('#enderecobase').html('');
-		}
-		
-	});*/
-
 });
 
 </script>

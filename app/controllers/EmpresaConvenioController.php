@@ -91,7 +91,24 @@ class EmpresaConvenioData extends StandardResponse{
 			if (trim($v)!='') {
 				$form_data[$k]=$v;
 			} else {
-				$form_data[$k]=5;
+				$dayinicio=Input::get('dt_inicio');
+				$dayinicio=substr($dayinicio, -2);
+				switch (true) {
+					case $dayinicio<6:
+						$dia_f=5;
+						break;
+					case $dayinicio<16:
+						$dia_f=15;
+						break;
+					case $dayinicio<26:
+						$dia_f=25;
+						break;
+					case $dayinicio<32:
+						$dia_f=5;
+						break;
+				}
+				//if dt inicio day <5
+				$form_data[$k]=$dia_f;
 			}
 		}
 
@@ -121,6 +138,7 @@ class EmpresaConvenioData extends StandardResponse{
 			'plano_id'			=>'required|integer'
 			,'tipo_pagamento'	=>'required|integer'
 			,'dt_inicio'		=>'required|date'
+			,'dt_fim'			=>'date'
 			//
 			//required for saving default or custom plano
 			,'plano_custom'		=>'required'
