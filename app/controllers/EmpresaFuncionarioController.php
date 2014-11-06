@@ -84,6 +84,7 @@ class EmpresaFuncionarioController extends \BaseController {
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('empresa');
 	}
 
 	/**

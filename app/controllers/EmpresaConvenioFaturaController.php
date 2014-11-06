@@ -120,6 +120,7 @@ class EmpresaConvenioFaturaController extends BaseController{
 
 	public function __construct(){
 		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('empresa');
 	}
 
 	public function index ($empresa_id,$convenio_id) {
@@ -323,7 +324,7 @@ class EmpresaConvenioFaturaController extends BaseController{
 			$e->dthr_cadastro		=date('Y-m-d');
 
 			$e->sessao_id			=$fake->sessao_id();
-			//$e->save();
+			$e->save();
 
 			$success['id']=$e->id;
 

@@ -123,6 +123,203 @@ Route::filter('geoendereco',function($route,$request){
 	return $response;
 });
 
+Route::filter('empresa',function($route,$request){
+	$response=null;
+	$case=0;
+	//Retrieving resource ids for empresa restful URI
+	$empresa_id=$route->getParameter('empresa');
+
+	$empresa=Empresa::whereId($empresa_id);
+
+	if (Empresa::find($empresa_id)==null) {
+		$case=1;//empresa does not exist
+	} else {
+
+		if (!null==$route->getParameter('enderecoempresa')) {
+			$enderecoempresa_id=$route->getParameter('enderecoempresa');
+			$enderecoempresa=Enderecoempresa::find($enderecoempresa_id);
+			if ($enderecoempresa==null) {
+				$case=2;//enderecoempresa does not exist
+			} else if ($enderecoempresa->empresa_id!=$empresa_id) {
+				$case=3;//enderecoempresa does not belong to current empresa resource
+			}
+
+		}
+		if (!null==$route->getParameter('contabancaria')) {
+			$contabancaria_id=$route->getParameter('contabancaria');
+			$contabancaria=Contabancaria::find($contabancaria_id);
+			if ($contabancaria==null) {
+				$case=4;//contabancaria does not exist
+			} else if ($contabancaria->empresa_id!=$empresa_id) {
+				$case=5;//contabancaria does not belong to current empresa resource
+			}
+
+		}
+		if (!null==$route->getParameter('convenio')) {
+			$convenio_id=$route->getParameter('convenio');
+			$convenio=Convenio::find($convenio_id);
+			if ($convenio==null) {
+				$case=6;//convenio does not exist
+			} else if ($convenio->empresa_id!=$empresa_id) {
+				$case=7;//convenio does not belong to current empresa resource
+			}
+			else if (!null==$route->getParameter('produtofatura')) {
+				$produtofatura_id=$route->getParameter('produtofatura');
+				$produtofatura=Produtofatura::find($produtofatura_id);
+				if ($produtofatura==null) {
+					$case=701;
+				}
+				else if ($produtofatura->convenio_id!=$convenio_id) {
+					$case=702;
+				}
+			}
+			else if (!null==$route->getParameter('fatura')) {
+				$fatura_id=$route->getParameter('fatura');
+				$fatura=Fatura::find($fatura_id);
+				if ($fatura==null) {
+					$case=703;
+				}
+				else if ($fatura->convenio_id!=$convenio_id) {
+					$case=704;
+				}
+			}
+
+		}
+		if (!null==$route->getParameter('funcionario')) {
+			$funcionario_id=$route->getParameter('funcionario');
+			$funcionario=Funcionario::find($funcionario_id);
+			if ($funcionario==null) {
+				$case=8;//funcionario does not exist
+			} else if ($funcionario->empresa_id!=$empresa_id) {
+				$case=9;//funcionario does not belong to current empresa resource
+			}
+			else if (!null==$route->getParameter('resumoatividade')) {
+				$resumoatividade_id=$route->getParameter('resumoatividade');
+				$resumoatividade=Resumoatividade::find($resumoatividade_id);
+				if ($resumoatividade==null) {
+					$case=901;
+				} else if ($resumoatividade->funcionario_id!=$funcionario_id) {
+					$case=902;
+				}
+			}
+
+		}
+		if (!null==$route->getParameter('resumofinanceiro')) {
+			$resumofinanceiro_id=$route->getParameter('resumofinanceiro');
+			$resumofinanceiro=Resumofinanceiro::find($resumofinanceiro_id);
+			if ($resumofinanceiro==null) {
+				$case=10;//resumofinanceiro does not exist
+			} else if ($resumofinanceiro->empresa_id!=$empresa_id) {
+				$case=11;//resumofinanceiro does not belong to current empresa resource
+			}
+
+		}
+		if (!null==$route->getParameter('resumoempresacliente')) {
+			$resumoempresacliente_id=$route->getParameter('resumoempresacliente');
+			$resumoempresacliente=Resumofinanceiro::find($resumoempresacliente_id);
+			if ($resumoempresacliente==null) {
+				$case=12;//resumoempresacliente does not exist
+			} else if ($resumoempresacliente->empresa_id!=$empresa_id) {
+				$case=13;//resumoempresacliente does not belong to current empresa resource
+			}
+		}
+	}
+
+	if ($case>0) {
+		switch ($case) {
+			case '1':$case='Empresa does not exist';
+				break;
+			case '2':$case='Enderecoempresa does not exist';
+				break;
+			case '3':$case='Enderecoempresa does not belong to current empresa resource';
+				break;
+			case '4':$case='contabancaria does not exist';
+				break;
+			case '5':$case='contabancaria does not belong to current empresa resource';
+				break;
+			case '6':$case='convenio does not exist';
+				break;
+			case '7':$case='convenio does not belong to current empresa resource';
+				break;
+			case '701':$case='produtofatura does not exist';
+				break;
+			case '702':$case='produtofatura does not belong to current convenio resource';
+				break;
+			case '703':$case='fatura does not exist';
+				break;
+			case '704':$case='fatura does not belong to current convenio resource';
+				break;
+			case '8':$case='funcionario does not exist';
+				break;
+			case '9':$case='funcionario does not belong to current empresa resource';
+				break;
+			case '901':$case='resumoatividade does not exist';
+				break;
+			case '902':$case='resumoatividade does not belong to current funcionario resource';
+				break;
+			case '10':$case='resumofinanceiro does not exist';
+				break;
+			case '11':$case='resumofinanceiro does not belong to current empresa resource';
+				break;
+			case '12':$case='resumoempresacliente does not exist';
+				break;
+			case '13':$case='resumoempresacliente does not belong to current empresa resource';
+				break;
+		}
+		$d=new StandardResponse;
+		$mssg=$d->responsedata(
+			'empresa',
+			false,
+			'resource',
+			$case
+			)
+		;
+		$response=Response::json($mssg,400);
+	}
+	return $response;
+	
+});
+
+Route::filter('classe',function($route,$request){
+	$response=null;
+	$case=0;
+	if (!null==$route->getParameter('classe')) {
+		$classe_id=$route->getParameter('classe');
+		$classe=Classe::find($classe_id);
+		if ($classe==null) {
+			$case=1;//classe does not exist
+		} else {
+			if (!null==$route->getParameter('subclasse')) {
+				$subclasse_id=$route->getParameter('subclasse');
+				$subclasse=Subclasse::find($subclasse_id);
+				if ($subclasse==null) {
+					$case=2;//subclasse does not exist
+				} else if ($subclasse->classe_id!=$classe_id) {
+					$case=3;//subclasse does not belong to classe
+				}
+			}
+		}
+		if ($case>0) {
+			switch ($case) {
+				case 1:$case='classe does not exist';break;
+				case 2:$case='subclasse does not exist';break;
+				case 3:$case='subclasse does not belong to classe';break;
+			}
+			$d=new StandardResponse;
+			$mssg=$d->responsedata(
+				'classe',
+				false,
+				'resource',
+				$case
+				)
+			;
+			$response=Response::json($mssg,400);
+		}
+	}
+	#
+	return $response;
+});
+
 App::before(function($request)
 {
 	//

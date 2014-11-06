@@ -67,7 +67,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on convenio</h4>
+		<h4>nested on empresa.convenio</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">empresa/{empresa_id}/convenio/{convenio_id}/[table name]</spam>
@@ -93,7 +93,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on funcionario</h4>
+		<h4>nested on empresa.funcionario</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources  first:  
 			<spam class="text-info">empresa/{empresa_id}/funcionario/{funcionario_id}/[table name]</spam>
@@ -171,7 +171,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on Estado / Cidade</h4>
+		<h4>nested on Estado.Cidade</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/[table name]</spam>
@@ -197,7 +197,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on Estado / Cidade / Bairro</h4>
+		<h4>nested on Estado.Cidade.Bairro</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/[table name]</spam>
@@ -223,7 +223,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on Estado / Cidade / Bairro / Enderecobase</h4>
+		<h4>nested on Estado.Cidade.Bairro.Enderecobase</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/enderecobase/{enderecobase}/[table name]</spam>
@@ -249,7 +249,7 @@
 		@endforeach
 		</table>
 		<br>
-		<h4>nested on Estado / Cidade / Bairro / Enderecobase / Endereco</h4>
+		<h4>nested on Estado.Cidade.Bairro.Enderecobase.Endereco</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  
 			<spam class="text-info">estado/{estado_id}/cidade/{cidade_id}/bairro/{bairro}/enderecobase/{enderecobase}/endereco/{endereco}/[table name]</spam>

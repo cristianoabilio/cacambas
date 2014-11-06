@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
 
 //Standard response instantiantion for creating all 
 //views and routes.
@@ -86,7 +75,7 @@ foreach ($st_r->allviews() as  $v) {
 
 	//temporary routes, not required in original project
 	Route::get('visible'.$v, ucfirst($v).'Controller@visible');
-	Route::get('showvisible'.$v.'/{id}', ucfirst($v).'Controller@showvisible');
+	Route::get('showvisible'.$v.'/{'.$v.'}', ucfirst($v).'Controller@showvisible');
 }
 
 //Reactivate status (softdelete recovery)
@@ -107,14 +96,14 @@ Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasse
 foreach ($st_r->empresa_nested() as $k=>$v) {
 	Route::resource('empresa.'.$v, $k);
 	Route::get('empresa/{empresa}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{empresa}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 //Nested controllers on empresa.convenio
 foreach ($st_r->empresaconvenio_nested() as $k => $v) {
 	Route::resource('empresa.convenio.'.$v, $k);
 	Route::get('empresa/{empresa}/convenio/{convenio}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{empresa}/convenio/{convenio}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/convenio/{convenio}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 
@@ -122,7 +111,7 @@ foreach ($st_r->empresaconvenio_nested() as $k => $v) {
 foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 	Route::resource('empresa.funcionario.'.$v, $k);
 	Route::get('empresa/{empresa}/funcionario/{funcionario}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{empresa}/funcionario/{funcionario}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('empresa/{empresa}/funcionario/{funcionario}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 
@@ -130,7 +119,7 @@ foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 foreach ($st_r->classe_nested() as $k=>$v) {
 	Route::resource('classe.'.$v, $k);
 	Route::get('classe/{classe}/visible'.$v, $k.'@visible');
-	Route::get('classe/{classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	Route::get('classe/{classe}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 	//Route::post('classe/{classe}/showvisible'.$v.'/{id}',$k.'@reactivate');
 }
 

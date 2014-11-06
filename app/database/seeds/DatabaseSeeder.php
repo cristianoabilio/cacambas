@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('LoginTableSeeder');
 		$this->call('PerfilTableSeeder');
 		$this->call('PlanoTableSeeder');
+		$this->call('ProdutoTableSeeder');
 		$this->call('SubclasseTableSeeder');
 	}
 

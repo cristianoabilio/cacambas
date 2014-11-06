@@ -72,8 +72,8 @@ class StandardResponse extends FormDataCapturer{
 
 	public function empresaconvenio_nested() {
 		return array(
-			'EmpresaConvenioProdutofaturaController'	=>'produtofatura',
-			'EmpresaConvenioFaturaController'	=>'fatura'
+			'EmpresaConvenioProdutofaturaController'=>'produtofatura',
+			'EmpresaConvenioFaturaController'		=>'fatura'
 			)
 		;
 	}
