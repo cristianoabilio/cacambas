@@ -89,6 +89,12 @@ foreach ($st_r->allviews() as  $v) {
 	Route::get('showvisible'.$v.'/{id}', ucfirst($v).'Controller@showvisible');
 }
 
+//Reactivate status (softdelete recovery)
+Route::post('showvisibleclasse/{classe}', 'ClasseController@reactivate');
+Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasseController@reactivate');
+
+
+
 
 /**
 * ---------------------------------------------------------------------------------
@@ -125,6 +131,7 @@ foreach ($st_r->classe_nested() as $k=>$v) {
 	Route::resource('classe.'.$v, $k);
 	Route::get('classe/{classe}/visible'.$v, $k.'@visible');
 	Route::get('classe/{classe}/showvisible'.$v.'/{id}',$k.'@showvisible');
+	//Route::post('classe/{classe}/showvisible'.$v.'/{id}',$k.'@reactivate');
 }
 
 

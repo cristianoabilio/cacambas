@@ -16,4 +16,16 @@ class Subclasse extends Eloquent {
 	public function Custo() { 
 		return $this->hasMany('Custo');
 	}
+
+	//scopes 
+	public function scopeActive ($query) {
+		return $query	->whereStatus(1);
+		;
+	}
+
+	public function scopeInactive ($query) {
+		return $query	->whereStatus('0');
+		;
+	}
+	
 }

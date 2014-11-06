@@ -99,7 +99,7 @@ class PlanoData extends StandardResponse{
 			{
 				$formdata[$k]=$v;
 			} else {
-				$formdata[$key]=null;
+				$formdata[$k]=null;
 			}
 		}
 

@@ -27,7 +27,14 @@ class ClasseData extends StandardResponse{
 	* @param edata retrieves all data from table "empresa"
 	*/
 	public function edata () {
-		return Classe::all();
+		return Classe::whereStatus(1)->get();
+	}
+
+	/**
+	* @param edata retrieves all data from table "empresa"
+	*/
+	public function edatadeleted () {
+		return Classe::whereStatus(0)->get();
 	}
 
 	public function show($id){
@@ -82,7 +89,8 @@ class ClasseController extends \BaseController {
 		$data=array(
 			//all classe
 			'classe'=>$d->edata(),
-			'header'=>$d->header()
+			'header'=>$d->header(),
+			'classe_0'=>$d->edatadeleted()
 			)
 		;
 		return View::make('tempviews.classe.index',$data);
@@ -340,7 +348,10 @@ class ClasseController extends \BaseController {
 				$code=400;
 			}
 
-			Classe::whereId($id)->delete();
+			$c=Classe::find($id);
+			$c->status=0;
+			$c->save();
+			//::whereId($id)->delete();
 			$res=$d->responsedata(
 				'classe',
 				true,
@@ -357,6 +368,44 @@ class ClasseController extends \BaseController {
 				'classe',
 				false,
 				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+		}
+
+		return Response::json($res,$code);
+	}
+
+	public function reactivate ($id) {
+		$d=new ClasseData;
+
+		try{
+			if (Classe::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+				$code=400;
+			}
+
+			$c=Classe::find($id);
+			$c->status=1;
+			$c->save();
+
+			$res=$d->responsedata(
+				'classe',
+				true,
+				'restore',
+				array('msg' => 'Restored resource')
+				)
+			;
+			$code=200;
+
+		}
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'classe',
+				false,
+				'restore',
 				array('msg' => json_decode($e->getMessage()))
 				)
 			;

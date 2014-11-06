@@ -35,7 +35,7 @@
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('classe/'.$id.'/visiblesubclasse')]}">Back to subclasse index</a>
+		<a href="{[URL::to('classe/'.$classe_id.'/visiblesubclasse')]}">Back to subclasse index</a>
 		<br>
 		<br>
 		<br>

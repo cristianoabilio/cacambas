@@ -3,7 +3,7 @@
 </head>
 <div class='container' >
 	<h1>Create a new "plano"</h1>
-	<form action="{[URL::to('plano')]}" method="post">
+	{[Form::open(array('url'=>URL::to('plano')))]}
 		<div class="row">
 			<div class="col-sm-2">
 				nome
@@ -144,7 +144,7 @@
 		<br>
 		<input class='btn btn-primary' type="submit" value='create'>
 		<br>
-	</form>
+	{[Form::close()]}
 	<a href="{[URL::to('plano') ]}">Back to plano index</a>
 
 

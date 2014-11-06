@@ -27,7 +27,11 @@ class ClassesubclasseData extends StandardResponse{
 	* @param edata retrieves all data from table "empresa"
 	*/
 	public function edata ($classe_id) {
-		return Classe::find($classe_id)->subclasse;
+		return Subclasse::whereClasse_id($classe_id)->active()->get();
+	}
+
+	public function edatadeleted ($classe_id) {
+		return Subclasse::whereClasse_id($classe_id)->inactive()->get();
 	}
 
 	public function show($id){
@@ -80,6 +84,7 @@ class ClassesubclasseController extends \BaseController {
 		$data=array(
 			//all subclasse
 			'subclasse'=>$d->edata($id),
+			'subclasse_inactive'=>$d->edatadeleted($id),
 			'header'=>$d->header(),
 			'id'=>$id
 			)
@@ -342,7 +347,11 @@ class ClassesubclasseController extends \BaseController {
 				$code=400;
 			}
 
-			Subclasse::whereId($id)->delete();
+			$c=Subclasse::find($id);
+			$c->status=0;
+			$c->save();
+
+			//Subclasse::whereId($id)->delete();
 			$res=$d->responsedata(
 				'subclasse',
 				true,
@@ -359,6 +368,47 @@ class ClassesubclasseController extends \BaseController {
 				'subclasse',
 				false,
 				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+		}
+
+		return Response::json($res,$code);
+	}
+
+	//restore
+	public function reactivate($classe_id,$id)
+	{
+		$d=new ClassesubclasseData;
+
+		try{
+			if (Subclasse::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+				$code=400;
+			}
+
+			$c=Subclasse::find($id);
+			$c->status=1;
+			$c->save();
+
+			//Subclasse::whereId($id)->delete();
+			$res=$d->responsedata(
+				'subclasse',
+				true,
+				'restore',
+				array('msg' => 'Resource succesfully restored!')
+				)
+			;
+			$code=200;
+
+		}
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'subclasse',
+				false,
+				'restore',
 				array('msg' => json_decode($e->getMessage()))
 				)
 			;
