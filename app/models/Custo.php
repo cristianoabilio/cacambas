@@ -3,9 +3,6 @@
 class Custo extends Eloquent {
 	protected $table = 'custo';
 
-	//Override default PK 'id' from Eloquent  
-	protected $primaryKey = 'id';
-
 	protected $guarded = array();
 	public static $rules = array();
 

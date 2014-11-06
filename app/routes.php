@@ -81,7 +81,8 @@ foreach ($st_r->allviews() as  $v) {
 //Reactivate status (softdelete recovery)
 Route::post('showvisibleclasse/{classe}', 'ClasseController@reactivate');
 Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasseController@reactivate');
-
+Route::post('showvisiblecusto/{classe}', 'CustoController@reactivate');
+//custo/'.$e->id.'/activate
 
 
 

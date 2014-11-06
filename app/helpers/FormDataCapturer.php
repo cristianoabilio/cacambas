@@ -34,8 +34,4 @@ class FormDataCapturer{
 
 		return $form_data;
 	}
-
-	public function test () {
-		return 1;
-	}
 }
