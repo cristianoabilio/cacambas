@@ -3,8 +3,8 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Custo index</h1>
-		<a href="{[URL::to('custo/create')]}" class='hide'>Add new "custo"</a>
+		<h1>Custo index on empresa {[$empresa->nome]}</h1>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/custo/create')]}" class=''>Add new "custo"</a>
 		<br>
 		<table class='table'>
 			<tr>
@@ -25,29 +25,13 @@
 			@foreach($custo as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
 						|
-						<a href="{[URL::to('custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
-							<td>
-								@if($h[0]=='nome')
-								<a href="{[URL::to('custo/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								<ul>
-									@foreach($nested as $k=>$v)
-									<li>
-										<a href="{[URL::to('custo/'.$e->id).'/visible'.$v]}">HTML {[$v]}</a> |
-										<a href="{[URL::to('custo/'.$e->id).'/'.$v]}">JSON {[$v]}</a>
-									</li>
-										
-									@endforeach
-								</ul>
-								@else
-								{[$e->$h[0]  ]}
-								@endif
-								
-							</td>
+							<td>{[$e->$h[0]  ]}</td>
 						@endif
 					@endforeach
 				</tr>
@@ -75,24 +59,17 @@
 			@foreach($deleted as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
 						|
-						<a href="{[URL::to('custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
 					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
-							<td>
-								@if($h[0]=='nome')
-								<a href="{[URL::to('custo/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								@else
-								{[$e->$h[0]  ]}
-								@endif
-								
-							</td>
+							<td>{[$e->$h[0]  ]}</td>
 						@endif
 					@endforeach
 					<td>
-						{[Form::open(array('url'=>URL::to('showvisiblecusto/'.$e->id)))]}
+						{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)))]}
 						<input type="submit" value='reactivate' class='btn btn-link'>
 						{[Form::close()]}
 					</td>

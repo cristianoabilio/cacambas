@@ -82,6 +82,7 @@ foreach ($st_r->allviews() as  $v) {
 Route::post('showvisibleclasse/{classe}', 'ClasseController@reactivate');
 Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasseController@reactivate');
 Route::post('showvisiblecusto/{classe}', 'CustoController@reactivate');
+Route::post('empresa/{empresa}/showvisiblesubcusto/{custo}', 'EmpresaCustoController@reactivate');
 //custo/'.$e->id.'/activate
 
 

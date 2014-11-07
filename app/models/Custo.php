@@ -22,4 +22,15 @@ class Custo extends Eloquent {
 		return $this->belongsTo('Equipamento');
 	}
 
+	public function scopeActive ($query) {
+		return $query	->whereStatus_custo(1);
+		;
+	}
+
+	public function scopeNoactive ($query) {
+		return $query	->whereStatus_custo(0);
+		;
+	}
+	
+
 }

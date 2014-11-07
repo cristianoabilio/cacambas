@@ -63,6 +63,7 @@ class StandardResponse extends FormDataCapturer{
 			'EmpresaEnderecoempresaController'	=>'enderecoempresa'
 			,'EmpresaContabancariaController'	=>'contabancaria'
 			,'EmpresaConvenioController'		=>'convenio'
+			,'EmpresaCustoController'			=>'custo'
 			,'EmpresaFuncionarioController'		=>'funcionario'
 			,'EmpresaResumofinanceiroController'=>'resumofinanceiro'
 			,'EmpresaResumoempresaclienteController'=>'resumoempresacliente'
