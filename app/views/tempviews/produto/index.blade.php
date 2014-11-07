@@ -7,7 +7,9 @@
 		<br>
 		<a href="{[URL::to('produto/create')]}">Add new "produto"</a>
 		<br>
-		<table>
+		<table class='table'>
+			<tr>
+				<th>Resource</th>
 			<!-- $h var comes from controller produto, containing
 			the header names on table produto -->
 			@foreach($header as $h)
@@ -17,19 +19,18 @@
 					</th>
 				@endif
 			@endforeach
+			</tr>
 
 			@foreach($produto as $e)
 				<tr>
+					<td>
+						<a href="{[URL::to('showvisibleproduto/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						|
+						<a href="{[URL::to('produto/'.$e->id)]}">JSON resource {[$e->id]}</a>
+					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
-							<td>
-								@if($h[0]=='nome')
-								<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								@else
-								{[$e->$h[0]  ]}
-								@endif
-								
-							</td>
+							<td>{[$e->$h[0]  ]}</td>
 						@endif
 					@endforeach
 				</tr>
@@ -37,7 +38,9 @@
 		</table>
 		<h1>Deleted products</h1>
 
-		<table>
+		<table class='table'>
+			<tr>
+				<th>Resource</th>
 			<!-- $h var comes from controller produto, containing
 			the header names on table produto -->
 			@foreach($header as $h)
@@ -47,21 +50,25 @@
 					</th>
 				@endif
 			@endforeach
-
+			<th>action</th>
+			</tr>
 			@foreach($deleted as $e)
 				<tr>
+					<td>
+						<a href="{[URL::to('showvisibleproduto/'.$e->id)]}">HTML resource {[$e->id]}</a>
+						|
+						<a href="{[URL::to('produto/'.$e->id)]}">JSON resource {[$e->id]}</a>
+					</td>
 					@foreach($header as $h)
 						@if($h[1]==1)
-							<td>
-								@if($h[0]=='nome')
-								<a href="{[URL::to('produto/'.$e->id)]}">{[$e->$h[0]  ]}</a>
-								@else
-								{[$e->$h[0]  ]}
-								@endif
-								
-							</td>
+							<td>{[$e->$h[0]  ]}</td>
 						@endif
 					@endforeach
+					<td>
+						{[Form::open(array('url'=>URL::to('showvisibleproduto/'.$e->id)))]}
+						<input type="submit" value='restore' class='btn btn-link'>
+						{[Form::close()]}
+					</td>
 				</tr>
 			@endforeach
 		</table>

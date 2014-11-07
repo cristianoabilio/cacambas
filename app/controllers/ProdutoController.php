@@ -13,19 +13,17 @@ class ProdutoData extends StandardResponse{
 		*/
 		$produtoheader=array(	
 			array('nome',1)
-			,array('descricao',1)
-			,array('requisitos',1)
-			,array('url_imagem',1)
-			,array('url_video',1)
-			,array('valor',1)
-			,array('custo_extra',1)
+			,array('descricao',0)
+			,array('requisitos',0)
+			,array('url_imagem',0)
+			,array('url_video',0)
+			,array('valor',0)
+			,array('custo_extra',0)
 			,array('servico',1)
-			,array('limite',1)
-			,array('status',1)
-			,array('observacao',1)
-			,array('perfil_id',1)
-			,array('sessao_id',1)
-			,array('dthr_cadastro',1)
+			,array('limite',0)
+			,array('status',0)
+			,array('observacao',0)
+			,array('perfil_id',0)
 			)
 		;	
 		return $produtoheader;
@@ -225,11 +223,16 @@ class ProdutoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show ($id) {
+		$d=new ProdutoData;
+		return $d->show($id);
+	}
+
+	public function showvisible($id)
 	{
 		$d=new ProdutoData;
 		try {
-			if (Produto::whereId($id)->whereStatus(1)->count()==0) {
+			if (Produto::whereId($id)->count()==0) {
 				$res=$d->responsedata(
 					'produto',
 					false,
@@ -264,7 +267,7 @@ class ProdutoController extends \BaseController {
 	{
 		$d=new ProdutoData;
 		try {
-			if (Produto::whereId($id)->whereStatus(1)->count()==0) {
+			if (Produto::whereId($id)->count()==0) {
 				$res=$d->responsedata(
 					'produto',
 					false,
@@ -367,7 +370,7 @@ class ProdutoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new comprasdata;
+		$d=new ProdutoData;
 		try{
 			if (Produto::whereId($id)->whereStatus(1)->count()==0 ) {
 				throw new Exception(json_encode($d->noexist));
@@ -394,6 +397,44 @@ class ProdutoController extends \BaseController {
 				'produto',
 				false,
 				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+
+		}
+		return Response::json($res,$code);
+	}
+
+	public function reactivate($id)
+	{
+		$d=new ProdutoData;
+		try{
+			if (Produto::whereId($id)->whereStatus(0)->count()==0 ) {
+				throw new Exception(json_encode($d->noexist));
+			}
+			$e=Produto::find($id);
+
+			//Register is considered as "deleted" when status=0;
+			$e->status=1;
+			$e->save();
+			//
+			$res=$d->responsedata(
+				'produto',
+				true,
+				'reactivate',
+				array('msg' => 'Resource was succesfully restored!')
+				)
+			;
+			$code=200;
+		}
+
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'produto',
+				false,
+				'reactivate',
 				array('msg' => json_decode($e->getMessage()))
 				)
 			;

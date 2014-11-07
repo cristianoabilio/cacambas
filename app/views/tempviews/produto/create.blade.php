@@ -97,6 +97,9 @@
 			<br>
 			
 		{[Form::close()]}
-		<a href="{[URL::to('produto') ]}">Back to produto index</a>
+		<a href="{[URL::to('visibleproduto') ]}">Back to produto index</a>
+		<br>
+		<br>
+		<br>
 	</div>
 </body>
