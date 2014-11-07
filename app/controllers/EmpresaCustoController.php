@@ -240,9 +240,10 @@ class EmpresaCustoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'custo'	=>$d->show($id),
-				'header'		=>$d->header(),
-				'id'			=>$id
+				'custo'		=>$d->show($id),
+				'header'	=>$d->header(),
+				'empresa_id'=>$empresa_id,
+				'id'		=>$id
 				)
 			;
 			return View::make('tempviews.EmpresaCusto.show',$data);
@@ -279,6 +280,7 @@ class EmpresaCustoController extends \BaseController {
 			$data=array(
 				'custo'	=>$d->show($id),
 				'header'		=>$d->header(),
+				'empresa_id'=>$empresa_id,
 				'id'			=>$id
 				)
 			;

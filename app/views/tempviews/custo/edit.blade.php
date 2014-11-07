@@ -114,7 +114,6 @@
 
 		
 		<hr>
-		<a href="{[URL::to('custo/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
 		<br>
 		<a href="{[URL::to('visiblecusto')]}  ">Back to custo</a>
