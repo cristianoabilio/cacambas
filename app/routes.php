@@ -84,7 +84,8 @@ Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasse
 Route::post('showvisiblecusto/{classe}', 'CustoController@reactivate');
 Route::post('empresa/{empresa}/showvisiblecusto/{custo}', 'EmpresaCustoController@reactivate');
 Route::post('showvisibleproduto/{produto}', 'ProdutoController@reactivate');
-//custo/'.$e->id.'/activate
+Route::post('showvisibleempresaclienteanotacoes/{empresaclienteanotacoes}', 'EmpresaClienteAnotacoesController@reactivate');
+
 
 
 
