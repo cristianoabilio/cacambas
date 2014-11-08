@@ -216,11 +216,21 @@ Route::filter('empresa',function($route,$request){
 		}
 		if (!null==$route->getParameter('resumoempresacliente')) {
 			$resumoempresacliente_id=$route->getParameter('resumoempresacliente');
-			$resumoempresacliente=Resumofinanceiro::find($resumoempresacliente_id);
+			$resumoempresacliente=Resumoempresacliente::find($resumoempresacliente_id);
 			if ($resumoempresacliente==null) {
 				$case=12;//resumoempresacliente does not exist
 			} else if ($resumoempresacliente->empresa_id!=$empresa_id) {
 				$case=13;//resumoempresacliente does not belong to current empresa resource
+			}
+		}
+
+		if (!null==$route->getParameter('caminhao')) {
+			$caminhao_id=$route->getParameter('caminhao');
+			$caminhao=Caminhao::find($caminhao_id);
+			if ($caminhao==null) {
+				$case=14;//caminhao does not exist
+			} else if ($caminhao->empresa_id!=$empresa_id) {
+				$case=15;//caminhao does not belong to current empresa resource
 			}
 		}
 	}
@@ -264,6 +274,10 @@ Route::filter('empresa',function($route,$request){
 			case '12':$case='resumoempresacliente does not exist';
 				break;
 			case '13':$case='resumoempresacliente does not belong to current empresa resource';
+				break;
+			case '14':$case='caminhao does not exist';
+				break;
+			case '15':$case='caminhao does not belong to current empresa resource';
 				break;
 		}
 		$d=new StandardResponse;
@@ -319,6 +333,8 @@ Route::filter('classe',function($route,$request){
 	#
 	return $response;
 });
+
+
 
 App::before(function($request)
 {

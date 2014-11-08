@@ -63,6 +63,7 @@ class StandardResponse extends FormDataCapturer{
 		return array(
 			//Controller => route name / subname
 			'EmpresaEnderecoempresaController'	=>'enderecoempresa'
+			,'EmpresaCaminhaoController'		=>'caminhao'
 			,'EmpresaContabancariaController'	=>'contabancaria'
 			,'EmpresaConvenioController'		=>'convenio'
 			,'EmpresaCustoController'			=>'custo'

@@ -88,6 +88,7 @@ Route::post('empresa/{empresa}/showvisiblecusto/{custo}', 'EmpresaCustoControlle
 Route::post('showvisibleproduto/{produto}', 'ProdutoController@reactivate');
 Route::post('showvisibleempresaclienteanotacoes/{empresaclienteanotacoes}', 'EmpresaClienteAnotacoesController@reactivate');
 Route::post('showvisiblecaminhao2/{caminhao2}', 'Caminhao2Controller@reactivate');
+Route::post('empresa/{empresa}/showvisiblecaminhao/{caminhao}', 'EmpresaCaminhaoController@reactivate');
 
 
 
