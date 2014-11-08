@@ -1,10 +1,9 @@
 <?php
-
 /**
  * [Table]Data class only contains data related to
  * the table 
  */
-class ClasseData extends StandardResponse{
+class CaminhaoData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -16,10 +15,16 @@ class ClasseData extends StandardResponse{
 		1 (visible) or 2 (not shown)
 		*/
 		$header=array(	
-			array('nome',1)
-			,array('descricao',1)
-
-		);	
+			array('empresa_id',1)
+			,array('placa',1)
+			,array('renavan',0)
+			,array('marca',0)
+			,array('modelo',0)
+			,array('apelido',0)
+			//,array('status',0)
+			,array('gps',0)
+			)
+		;	
 		return $header;
 	}
 	
@@ -27,49 +32,53 @@ class ClasseData extends StandardResponse{
 	* @param edata retrieves all data from table "empresa"
 	*/
 	public function edata () {
-		return Classe::whereStatus(1)->get();
+		return Caminhao::whereStatus(1)->get();
 	}
 
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
 	public function edatadeleted () {
-		return Classe::whereStatus(0)->get();
+		return Caminhao::whereStatus(0)->get();
 	}
 
 	public function show($id){
-		return Classe::find($id);
+		return Caminhao::find($id);
 	}
 
 	/**
 	* @param formdata returns array with form values
 	*/
 	public function form_data(){
-
-		return array(
-				'nome'			=>Input::get('nome')
-				,'descricao'	=>Input::get('descricao')
-				//,'status'		=>Input::get('status')
-
-				)
+		$fillable=array(
+			'empresa_id',
+			'marca',
+			'modelo',
+			'placa'
+			)
 		;
+		//
+		$nullable=array(
+			'renavan',
+			'apelido',
+			'gps'
+			)
+		;
+		return $this->formCapture ($fillable,$nullable);
 	}
 
 	public function validrules(){
 		return array(
-			'nome'		=>	'required'
-			,'descricao'=>	'required'
+			'marca'		=>	'required'
+			,'modelo'	=>	'required'
+			,'placa'	=>	'required'
 			)
 		;
 	}
+
 }
 
-class ClasseController extends \BaseController {
-
-	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('classe');
-	}
+class Caminhao2Controller extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -78,22 +87,20 @@ class ClasseController extends \BaseController {
 	 */
 	public function index()
 	{
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 		return $d->edata();
-
 	}
 
-	public function visible()
-	{
-		$d=new ClasseData;
+	public function visible () {
+		$d=new CaminhaoData;
 		$data=array(
-			//all classe
-			'classe'=>$d->edata(),
+			//all caminhao
+			'caminhao'=>$d->edata(),
 			'header'=>$d->header(),
-			'classe_0'=>$d->edatadeleted()
+			'caminhao_0'=>$d->edatadeleted()
 			)
 		;
-		return View::make('tempviews.classe.index',$data);
+		return View::make('tempviews.caminhao2.index',$data);
 	}
 
 
@@ -105,8 +112,7 @@ class ClasseController extends \BaseController {
 	public function create()
 	{
 		$data=array();
-		return View::make('tempviews.classe.create',$data);
-
+		return View::make('tempviews.caminhao2.create',$data);
 	}
 
 
@@ -121,7 +127,7 @@ class ClasseController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 
 		$success=$d->form_data();
 
@@ -146,7 +152,7 @@ class ClasseController extends \BaseController {
 				;
 			}
 
-			$e=new Classe;	
+			$e=new Caminhao;	
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -160,7 +166,7 @@ class ClasseController extends \BaseController {
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				true,
 				'store',
 				$success
@@ -171,7 +177,7 @@ class ClasseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				false,
 				'store',
 				$validator->messages()
@@ -189,20 +195,19 @@ class ClasseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
-		$d=new ClasseData;
+	public function show($id)
+	{
+		$d=new CaminhaoData;
 		return $d->show($id);
 	}
 
-	//
-	public function showvisible($id)
-	{
-		$d=new ClasseData;
+	public function showvisible($id) {
+		$d=new CaminhaoData;
 
 		try {
-			if (Classe::whereId($id)->count()==0) {
+			if (Caminhao::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'classe',
+					'caminhao',
 					false,
 					'show',
 					$d->noexist
@@ -212,19 +217,16 @@ class ClasseController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'classe'	=>$d->show($id),
+				'caminhao'	=>$d->show($id),
 				'header'	=>$d->header(),
 				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.classe.show',$data);
+			return View::make('tempviews.caminhao2.show',$data);
 
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-
-			
-
 	}
 
 
@@ -236,11 +238,11 @@ class ClasseController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 		try {
-			if (Classe::whereId($id)->count()==0) {
+			if (Caminhao::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'classe',
+					'caminhao',
 					false,
 					'edit',
 					$d->noexist
@@ -250,12 +252,12 @@ class ClasseController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'classe'	=>$d->show($id),
+				'caminhao'	=>$d->show($id),
 				'header'	=>$d->header(),
 				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.classe.edit',$data);
+			return View::make('tempviews.caminhao2.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -275,7 +277,7 @@ class ClasseController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 		$success=$d->form_data();
 
 		try{
@@ -299,7 +301,7 @@ class ClasseController extends \BaseController {
 				;
 			}
 
-			$e=Classe::find($id);
+			$e=Caminhao::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -309,7 +311,7 @@ class ClasseController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				true,
 				'update',
 				$success
@@ -320,7 +322,7 @@ class ClasseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				false,
 				'update',
 				$validator->messages()
@@ -340,20 +342,20 @@ class ClasseController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 
 		try{
-			if (Classe::whereId($id)->count()==0) {
+			if (Caminhao::whereId($id)->count()==0) {
 				throw new Exception(json_encode($d->noexist));
 				$code=400;
 			}
 
-			$c=Classe::find($id);
+			$c=Caminhao::find($id);
 			$c->status=0;
 			$c->save();
 			//::whereId($id)->delete();
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -365,7 +367,7 @@ class ClasseController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))
@@ -378,20 +380,20 @@ class ClasseController extends \BaseController {
 	}
 
 	public function reactivate ($id) {
-		$d=new ClasseData;
+		$d=new CaminhaoData;
 
 		try{
-			if (Classe::whereId($id)->count()==0) {
+			if (Caminhao::whereId($id)->count()==0) {
 				throw new Exception(json_encode($d->noexist));
 				$code=400;
 			}
 
-			$c=Classe::find($id);
+			$c=Caminhao::find($id);
 			$c->status=1;
 			$c->save();
 
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				true,
 				'restore',
 				array('msg' => 'Restored resource')
@@ -403,7 +405,7 @@ class ClasseController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'classe',
+				'caminhao',
 				false,
 				'restore',
 				array('msg' => json_decode($e->getMessage()))
@@ -414,6 +416,8 @@ class ClasseController extends \BaseController {
 
 		return Response::json($res,$code);
 	}
+
+
 
 
 }

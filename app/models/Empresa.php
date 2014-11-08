@@ -14,6 +14,10 @@ class Empresa extends Eloquent {
 			return $this->hasMany('Enderecoempresa');
 	}
 
+	public function caminhao () {
+		return $this->hasMany('Caminhao');
+	}
+
 	public function Convenio() {
 		return $this->hasMany('Convenio');
 	}

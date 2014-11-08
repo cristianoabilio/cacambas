@@ -19,6 +19,10 @@ class Caminhao extends Eloquent {
 			return $this->hasMany('Custo');
 	}
 
+	public function empresa () {
+		return $this->belongsTo('Empresa');
+	}
+
 
 
 }

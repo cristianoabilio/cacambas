@@ -16,8 +16,8 @@
 			<tr>
 				<th>indexes as HTML views</th>
 				<th>indexes as JSON responses</th>
-				<th>Index url</th>
-				<th>Show url</th>
+				<th>Index JSON url</th>
+				<th>Show JSON url</th>
 			</tr>
 		
 			@foreach($allviews as $v)

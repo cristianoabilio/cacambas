@@ -14,7 +14,8 @@ class CreateCaminhaoTable extends Migration {
 	{
 		Schema::create('caminhao', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('placa', 45)->nullable();
+			$table->integer('empresa_id');
+			$table->string('placa', 45);
 			$table->string('renavan', 45)->nullable();
 			$table->string('marca', 45)->nullable();
 			$table->string('modelo', 45)->nullable();

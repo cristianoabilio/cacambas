@@ -56,6 +56,8 @@ Route::get('/jsontest',function(){
 	return View::make('tempviews.jsonchecker');
 })
 ;
+
+Route::controller('fakelogin','AutomatedloginfakerController');
 /**
 * ---------------------------------------------------------------------------------
 * End of temporary routes.
@@ -85,6 +87,7 @@ Route::post('showvisiblecusto/{classe}', 'CustoController@reactivate');
 Route::post('empresa/{empresa}/showvisiblecusto/{custo}', 'EmpresaCustoController@reactivate');
 Route::post('showvisibleproduto/{produto}', 'ProdutoController@reactivate');
 Route::post('showvisibleempresaclienteanotacoes/{empresaclienteanotacoes}', 'EmpresaClienteAnotacoesController@reactivate');
+Route::post('showvisiblecaminhao2/{caminhao2}', 'Caminhao2Controller@reactivate');
 
 
 

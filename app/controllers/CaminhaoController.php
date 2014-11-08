@@ -31,16 +31,16 @@ class CaminhoesController extends BaseController {
 		try{
 
 			$validator = Validator::make(
-			                             Input::All(),
-			                             array(
-			                                   'marca' => 'required',
-			                                   'modelo' => 'required',
-			                                   'placa' => 'required'
-			                                   ),
-			                             array(
-			                                   'required' => 'Preencha o campo :attribute.',
-			                                   )
-			                             );
+			Input::All(),
+			 array(
+			       'marca' => 'required',
+			       'modelo' => 'required',
+			       'placa' => 'required'
+			       ),
+			 array(
+			       'required' => 'Preencha o campo :attribute.',
+			       )
+			 );
 
 			if ($validator->fails())
 				throw new Exception(json_encode(array('validation_errors'=>$validator->messages()->all())));

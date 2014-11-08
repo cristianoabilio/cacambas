@@ -34,6 +34,7 @@ class StandardResponse extends FormDataCapturer{
 			'subclasse',
 			'compras',
 			'contabancaria',
+			'caminhao2',
 			'convenio',
 			'custo',
 			'empresa',
