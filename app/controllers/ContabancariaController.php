@@ -87,7 +87,7 @@ class ContabancariaData extends StandardResponse {
 class ContabancariaController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		////$this->beforeFilter('csrf', array('on' => 'post'));
 	}
 
 	/**

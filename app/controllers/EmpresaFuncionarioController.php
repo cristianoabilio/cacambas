@@ -83,8 +83,8 @@ class EmpresaFuncionarioData extends StandardResponse{
 class EmpresaFuncionarioController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('empresa');
+		//$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('empresa');
 	}
 
 	/**

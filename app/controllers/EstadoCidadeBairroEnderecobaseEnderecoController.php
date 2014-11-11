@@ -67,7 +67,7 @@ class EstadoCidadeBairroEnderecobaseEnderecoData extends StandardResponse{
 class EstadoCidadeBairroEnderecobaseEnderecoController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->beforeFilter('geoendereco');
 	}
 

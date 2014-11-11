@@ -101,11 +101,18 @@ Route::post('empresa/{empresa}/showvisiblecaminhao/{caminhao}', 'EmpresaCaminhao
 */
 
 //Nested controllers on empresa
-foreach ($st_r->empresa_nested() as $k=>$v) {
-	Route::resource('empresa.'.$v, $k);
-	Route::get('empresa/{empresa}/visible'.$v, $k.'@visible');
-	Route::get('empresa/{empresa}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
-}
+Route::group(
+	array(
+		'before'=>'empresa',
+		//'prefix'=>'empresa'
+		),function() use($st_r) {
+	foreach ($st_r->empresa_nested() as $k=>$v) {
+		Route::resource('empresa.'.$v, $k);
+		Route::get('empresa/{empresa}/visible'.$v, $k.'@visible');
+		Route::get('empresa/{empresa}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+	}
+});
+	
 
 //Nested controllers on empresa.convenio
 foreach ($st_r->empresaconvenio_nested() as $k => $v) {

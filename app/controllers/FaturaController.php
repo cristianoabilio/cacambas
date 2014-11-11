@@ -109,7 +109,7 @@ class FaturaData  extends StandardResponse{
 class FaturaController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('csrf', array('on' => 'post'));
 	}
 
 	/**

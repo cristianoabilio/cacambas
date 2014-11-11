@@ -151,7 +151,7 @@ class PlanoData extends StandardResponse{
 class PlanoController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('csrf', array('on' => 'post'));
 	}
 
 	/**

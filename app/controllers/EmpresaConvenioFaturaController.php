@@ -119,8 +119,8 @@ class EmpresaConvenioFaturaData extends StandardResponse{
 class EmpresaConvenioFaturaController extends BaseController{
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('empresa');
+		////$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('empresa');
 	}
 
 	public function index ($empresa_id,$convenio_id) {

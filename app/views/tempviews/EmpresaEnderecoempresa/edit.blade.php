@@ -87,7 +87,7 @@
 		<a href="" id="change_enderecobase">change</a>
 		<div id="select_new_enderecobase" class='select_new'>
 			<div class="row">
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					new enderecobase
 					<br>
 					<select name="enderecobase_id" id="enderecobase_id" class='form-control'>
@@ -96,6 +96,26 @@
 							<option value="{[$eb->id]}">{[$eb->cep_base]}</option>
 						@endforeach
 					</select>
+					<a href="" id="add_enderecobase">Add enderecobase (if not found on list)</a>
+					<div id="add_enderecobase_form">
+						<div class="text-warning">Warning: before saving verify that entered enderecobase matches with proper bairro, cidade and estado</div>
+						<input type="text" placeholder='enderecobase cep' id='cep_base' class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='logradouro' id='logradouro'class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='regiao' id='regiao' class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='numero inicio' id='numero_inicio' class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='numero fim' id='numero_fim' class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='restricao inicio' id='restricao_hr_inicio_base' class='form-control e_b'>
+						<br>
+						<input type="text" placeholder='restricao fim' id='restricao_hr_fim_base' class='form-control e_b'>
+						<br>
+						<button class='btn btn-default' id='new_enderecobase'>new enderecobase</button>
+					</div>
+					<br>
 					<a href="" id="cancel_new_enderecobase">cancel</a>
 				</div>
 			</div>	
@@ -223,6 +243,7 @@ $(function(){
 		e.preventDefault();
 		$('#enderecobase_id').val( $('#def_enderecobase_id').text()  );
 		$('#select_new_enderecobase').hide('fast');
+		$('#add_enderecobase_form').hide('fast');
 		restoreenderecoval();
 	});
 
@@ -381,6 +402,57 @@ $(function(){
 		}
 		)
 	;
+
+	$('#add_enderecobase_form').hide();
+
+	$('#add_enderecobase').click(function(e){
+		e.preventDefault();
+		$('#add_enderecobase_form').show('fast');
+	});
+
+	$('#new_enderecobase').click(function(e){
+		e.preventDefault();
+		//URI parameters
+		var estado=$('#estado').val();
+		var cidade=$('#cidade').val();
+		var bairro=$('#bairro').val();
+		//
+		//Controller parameters
+		var cep_base=$('#cep_base').val();
+		var logradouro=$('#logradouro').val();
+		var regiao=$('#regiao').val();
+		var numero_inicio=$('#numero_inicio').val();
+		var numero_fim=$('#numero_fim').val();
+		var restricao_hr_inicio_base=$('#restricao_hr_inicio_base').val();
+		var restricao_hr_fim_base=$('#restricao_hr_fim_base').val();
+		//
+		var base=$('#base').html();
+		//
+		$.post(
+			base+'/estado/'+estado+'/cidade/'+cidade+'/bairro/'+bairro+'/enderecobase',
+			{
+				cep_base:cep_base,
+				logradouro:logradouro,
+				regiao:regiao,
+				numero_inicio:numero_inicio,
+				numero_fim:numero_fim,
+				restricao_hr_inicio_base:restricao_hr_inicio_base,
+				restricao_hr_fim_base:restricao_hr_fim_base
+			},
+			function(d){
+				$.each(d,function(k,v){
+					$('#enderecobase_id').html('').append(
+						'<option value="'+v.id+'">'+cep_base+
+						'</option>'
+						)
+					;
+				});
+				$('.e_b').val('');
+				$('#add_enderecobase_form').hide('fast');
+			}
+			);
+	});
+	//
 
 	function adjustenderecobaseonbairro(estado,cidade,bairro){
 		var current_enderecobase=$('#def_enderecobase_id').text();

@@ -170,8 +170,8 @@ class EmpresaConvenioData extends StandardResponse{
 class EmpresaConvenioController extends \BaseController {
 
 	public function __construct(){
-		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('empresa');
+		////$this->beforeFilter('csrf', array('on' => 'post'));
+		//$this->beforeFilter('empresa');
 	}
 
 	/**

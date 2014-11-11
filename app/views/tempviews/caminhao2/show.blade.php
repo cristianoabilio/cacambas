@@ -16,7 +16,6 @@
 		<br>
 		<br>
 		{[ Form::model($caminhao, array('route' => array('caminhao2.destroy', $id), 'method' => 'DELETE')) ]}
-		Pending to delete children subcaminhaos of current caminhao (not set yet)
 		<input type='submit' value='DELETE'>
 		{[Form::close()]}
 

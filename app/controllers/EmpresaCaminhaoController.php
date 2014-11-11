@@ -80,7 +80,7 @@ class EmpresaCaminhaoData extends StandardResponse{
 
 class EmpresaCaminhaoController extends \BaseController {
 	public function __construct() {
-		$this->beforeFilter('empresa');
+		//$this->beforeFilter('empresa');
 	}
 
 	/**
