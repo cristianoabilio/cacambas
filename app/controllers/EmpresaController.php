@@ -48,17 +48,17 @@ class EmpresaData extends StandardResponse{
 	public function formdata(){
 
 		return array(
-				'nome'			=>Input::get('nome'),
-				'nome_fantasia'	=>Input::get('nome_fantasia'),
-				'cnpj'			=>Input::get('cnpj'),
-				'insc_estadual'	=>Input::get('insc_estadual'),
-				'responsavel'	=>Input::get('responsavel'),
-				'email'			=>Input::get('email'),
-				'telefone'		=>Input::get('telefone'),
-				'celular'		=>Input::get('celular'),
-				'observacao'	=>Input::get('observacao'),
-				'afiliado'		=>Input::get('afiliado')
-				)
+			'nome'			=>Input::get('nome'),
+			'nome_fantasia'	=>Input::get('nome_fantasia'),
+			'cnpj'			=>Input::get('cnpj'),
+			'insc_estadual'	=>Input::get('insc_estadual'),
+			'responsavel'	=>Input::get('responsavel'),
+			'email'			=>Input::get('email'),
+			'telefone'		=>Input::get('telefone'),
+			'celular'		=>Input::get('celular'),
+			'observacao'	=>Input::get('observacao'),
+			'afiliado'		=>Input::get('afiliado')
+			)
 		;
 	}
 
@@ -83,7 +83,18 @@ class EmpresaData extends StandardResponse{
 class EmpresaController extends \BaseController {
 
 	public function __construct(){
-		////$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter(
+			'empresarestricted',
+			array(
+				'only'=>array(
+					'show',
+					'edit',
+					'update',
+					'destroy'
+					)
+				)
+			)
+		;
 	}
 
 	/**

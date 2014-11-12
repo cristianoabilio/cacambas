@@ -5,11 +5,11 @@
 	<title>Cacambas temporal view</title>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
+	<div id="base" class='hide'>{[URL::to('/')]}</div>
 	<div class="container">
-		
 		<h1>Temporary RESTfull controllers tester.</h1>
+		@include('tempviews.loginfaker')
 
 		<br>
 		<table class="table table-condensed">

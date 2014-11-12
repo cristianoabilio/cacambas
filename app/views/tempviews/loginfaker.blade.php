@@ -1,5 +1,26 @@
 <div id="form_token">{[Form::token()]}</div>
 <div class="row">
+	<div class="col-sm-12">
+		@if(Auth::check())
+		Note: if you see this message user is logged with next attributes:
+		<ul>
+			<li>
+				User: {[Auth::user()->nome]}
+			</li>
+			<li>
+				Profile: 
+				@foreach(Auth::user()->perfil as $p)
+					- {[$p->nome]}
+				@endforeach
+			</li>
+			<li>
+				Company: {[Auth::user()->empresa->nome]} ({[Auth::user()->empresa->id]})
+			</li>
+		</ul>
+		@endif
+	</div>
+</div>
+<div class="row">
 	<div class="col-sm-3">
 		<h3>Login faker</h3>
 		<small class="text-muted">Automated login session faker</small>
@@ -25,6 +46,12 @@
 		
 	@endforeach
 </div>
+<div class="row">
+	<div class="col-sm-12">
+		<a href="{[URL::to('fakelogin/logout')]}">Log out</a>
+		-{[!Auth::check()]}-
+	</div>
+</div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -40,11 +67,14 @@ $(function(){
 		$('#fakelogin'+id).click(function(){
 			var base=$('#base').html();
 			var _token=$('#form_token input').val();
+			id=id.replace('fakelogin','');
 			$.post(
 				base+'/fakelogin/login',
 				{_token:_token,id:id},
 				function(d){
-					$('#fakelogin'+id).html(d);
+					if (d==1) {
+						window.location.href=base+'/myproduction';
+					}
 				}
 				)
 			;

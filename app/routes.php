@@ -57,7 +57,7 @@ Route::get('/jsontest',function(){
 })
 ;
 
-Route::controller('fakelogin','AutomatedloginfakerController');
+Route::controller('fakelogin','FakeloginController');
 /**
 * ---------------------------------------------------------------------------------
 * End of temporary routes.
@@ -103,7 +103,7 @@ Route::post('empresa/{empresa}/showvisiblecaminhao/{caminhao}', 'EmpresaCaminhao
 //Nested controllers on empresa
 Route::group(
 	array(
-		'before'=>'empresa',
+		'before'=>'empresa|empresarestricted',
 		//'prefix'=>'empresa'
 		),function() use($st_r) {
 	foreach ($st_r->empresa_nested() as $k=>$v) {

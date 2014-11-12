@@ -30,6 +30,10 @@ class Empresa extends Eloquent {
 		return $this->hasMany('Loginperfil');
 	}
 
+	public function login () {
+		return $this->hasMany('Login');
+	}
+
 	public function Empresaclienteanotacoes() {
 		return $this->hasMany('Empresaclienteanotacoes');
 	}

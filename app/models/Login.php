@@ -32,9 +32,13 @@ class Login extends Eloquent implements UserInterface, RemindableInterface  {
         return $this->belongsTo('Funcionario');
     }
 
+    public function empresa () {
+        return $this->belongsTo('Empresa');
+    }
+
 
     public function Perfil() {
-        return $this->belongsToMany('Perfil', 'loginperfil')->withPivot('status', 'empresa_id')/*->wherePivot('status', 1) //IF need by status */;
+        return $this->belongsToMany('Perfil', 'loginperfil');//->withPivot('status', 'empresa_id')/*->wherePivot('status', 1) //IF need by status */;
     }
 
     /**
