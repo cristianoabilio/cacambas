@@ -18,6 +18,10 @@
 			</li>
 		</ul>
 		@endif
+		<?php 
+		$perfil=array('admin_cacambas');
+		echo !in_array('admin_cacambas', $perfil);
+		 ?>
 	</div>
 </div>
 <div class="row">

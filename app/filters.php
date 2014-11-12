@@ -132,7 +132,7 @@ Route::filter('empresarestricted',function($route,$request){
 	$redirect_to='/myproduction';//pending to change
 	$i=0;
 	foreach ($user->perfil as $p) {
-		$perfil[$i]=$p;
+		$perfil[$i]=$p->nome;
 		$i++;
 	}
 	if (!Auth::check()) {
