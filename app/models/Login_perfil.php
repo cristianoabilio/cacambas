@@ -1,13 +1,7 @@
 <?php
 
-class Loginperfil extends Eloquent {
-
-	protected $table = 'loginperfil';
-
-
-	//Override default PK 'id' from Eloquent  
-	protected $primaryKey = 'id';
-
+class Login_perfil extends Eloquent {
+	
 	protected $guarded = array();
 	public static $rules = array();
 

@@ -12,7 +12,7 @@ class Perfil extends Eloquent {
 
 
 	public function Login(){
-		return $this->belongsToMany('Login', 'loginperfil');
+		return $this->belongsToMany('Login'/*, 'loginperfil'*/);
 	}
 
 

@@ -9,6 +9,7 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run()
 	{
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 		Eloquent::unguard();
 
 		$this->call('BairroTableSeeder');
@@ -24,12 +25,16 @@ class DatabaseSeeder extends Seeder {
 		$this->call('EquipamentoTableSeeder');
 		$this->call('EstadoTableSeeder');
 		$this->call('LimiteTableSeeder');
-		$this->call('LoginPerfilTableSeeder');
-		$this->call('LoginTableSeeder');
-		$this->call('PerfilTableSeeder');
-		$this->call('PlanoTableSeeder');
 		$this->call('ProdutoTableSeeder');
+		$this->call('PlanoTableSeeder');
 		$this->call('SubclasseTableSeeder');
+		$this->call('LoginTableSeeder');
+		$this->command->info('login table has been seeded!');
+		$this->call('PerfilTableSeeder');
+		$this->command->info('Perfil table has been seeded!');
+		$this->call('LoginPerfilTableSeeder');
+		$this->command->info('LoginPerfil table has been seeded!');
+
 	}
 
 }

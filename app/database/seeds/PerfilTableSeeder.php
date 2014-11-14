@@ -4,22 +4,33 @@ class PerfilTableSeeder extends Seeder {
 
 	public function run()
 	{
+		DB::table('perfil')->truncate();
 
-    $total = 15;
+		$perfil=array(
+			'admin_cacambas',
+			'company',
+			'administrador', 
+			'operacional', 
+			'financeiro', 
+			'motorista', 
+			'cliente'
+			)
+		;
+		foreach ($perfil as $v) {
+			if (Perfil::whereNome($v)->count()==0) {
 
-    DB::table('perfil')->truncate();
-    $perfis = array('administrador', 'operacional', 'financeiro', 'motorista', 'cliente');
-    $total = count($perfis);
-    for ($i=1;$i <= $total; $i++){
-      DB::table('perfil')->insert(array(
-                                       'perfil_id_pai' => $i,
-                                       'nome' => $perfis[$i-1],
-                                       'descricao' => $perfis[$i-1],
-                                       'status' => 1,
-                                       'dthr_cadastro' => date("Y-m-d H:i:s"),
-                                       'sessao_id' => 0
-                                       ));
-    }
-  }
+				//
+				DB::table('perfil')->insert(array(
+					'nome' =>$v,
+					'status' => 1,
+					'dthr_cadastro' => date("Y-m-d H:i:s"),
+					'sessao_id' => 0
+					)
+				)
+				;
+			}
+				
+		}
+	}
 
 }

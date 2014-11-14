@@ -13,7 +13,7 @@ class CreateLoginTable extends Migration {
 	public function up()
 	{
 		Schema::create('login', function(Blueprint $table) {
-			$table->increments('id');//Parent key for Cliente, Loginperfil
+			$table->increments('id');//Parent key for Cliente
 			$table->integer('empresa_id');
 			$table->string('nome', 255);
 			$table->string('email', 100);

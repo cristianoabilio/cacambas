@@ -10,7 +10,12 @@
 	<div class="container">
 		<h1>Temporary RESTfull controllers tester.</h1>
 		@include('tempviews.loginfaker')
-
+		<br>
+		<a href="{[URL::to('/allusers')]}">All users (as JSON object)</a> (URL: [base URL]/allusers)
+		<br>
+		<a href="{[URL::to('/currentuser')]}">currentuser </a> (URL: [base URL]/currentuser)
+		
+		<hr>
 		<br>
 		<table class="table table-condensed">
 			<tr>

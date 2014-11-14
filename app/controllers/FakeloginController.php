@@ -21,6 +21,62 @@
 * 
 * 
 */
+/**
+ * [Table]Data class only contains data related to
+ * the table 
+ */
+class LoginData extends StandardResponse{
+	/** 
+	* function name: header.
+	* @param header with headers of empresa table
+	*/
+	public function header(){
+		/*
+		$header= headers on table empresas
+		In order to display or hide on HTML table, set as
+		1 (visible) or 2 (not shown)
+		*/
+		$header=array(	
+			array('nome',1)
+			,array('email',1)
+			,array('login',1)
+		);
+
+		return $header;
+	}
+	
+	/**
+	* @param edata retrieves all data from table "empresa"
+	*/
+	public function edata () {
+		return Login::all();
+	}
+
+	public function show($id){
+		return Login::find($id);
+	}
+
+	/**
+	* @param formdata returns array with form values
+	*/
+	public function form_data(){
+
+		return array(
+				/*'nome'		=>Input::get('nome'),
+				'regiao'			=>Input::get('regiao')*/
+				)
+		;
+	}
+
+	public function validrules(){
+		return array(
+			//'nome'	=>	'required'
+			//,'regiao'		=>	'required'
+			)
+		;
+	}
+
+}
 
 
 class FakeloginController extends \BaseController {
@@ -38,7 +94,7 @@ class FakeloginController extends \BaseController {
 		//checking if admin_cacambas profile exists
 		if (Perfil::whereNome('admin_cacambas')->count()==0) {
 			$p=new Perfil;
-			$p->perfil_id_pai=7;
+			//$p->perfil_id_pai=7;
 			$p->nome='admin_cacambas';
 			$p->descricao='Superuser adminstrator profile';
 			$p->status=1;
@@ -48,17 +104,19 @@ class FakeloginController extends \BaseController {
 		//checking if company profile exists
 		if (Perfil::whereNome('company')->count()==0) {
 			$p=new Perfil;
-			$p->perfil_id_pai=8;
+			//$p->perfil_id_pai=8;
 			$p->nome='company';
 			$p->descricao='Company profile, user can access only to company he works for';
 			$p->status=1;
 			$p->save();
 		}
+
+		//$perfil=Perfil::find($p_id)
 		
 		$l=Login::whereLogin($u)->first();
 		//Setting variables for desired profile
 		if ($u=='superuser') {
-			$company=9999;
+			$company=1;
 			$perfil=Perfil::whereNome('admin_cacambas')->first()->id;
 		} else if ($u=='empresa3user') {
 			$company=3;
@@ -139,9 +197,9 @@ class FakeloginController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function getIndex()
 	{
-		//
+		return Login::all();
 	}
 
 	/**

@@ -130,6 +130,9 @@ Route::filter('empresarestricted',function($route,$request){
 	$user=Auth::user();
 	$empresa=$route->getParameter('empresa');
 	$redirect_to='/myproduction';//pending to change
+	if (!Auth::check()) {
+		return Redirect::to(URL::to($redirect_to));
+	}
 	$i=0;
 	foreach ($user->perfil as $p) {
 		$perfil[$i]=$p->nome;

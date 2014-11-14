@@ -46,6 +46,7 @@ class StandardResponse extends FormDataCapturer{
 			'produtofatura',
 			'produtocompra',
 			'limite',
+			'perfil',
 			'plano',
 			'produto',
 			'resumoatividade',
@@ -54,7 +55,8 @@ class StandardResponse extends FormDataCapturer{
 			'funcionario',
 			'bairro',
 			'cidade',
-			'estado'
+			'estado',
+			'sessao'
 			)
 		;
 	}

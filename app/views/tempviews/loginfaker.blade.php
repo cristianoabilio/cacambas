@@ -24,11 +24,14 @@
 		 ?>
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-sm-3">
+
 		<h3>Login faker</h3>
 		<small class="text-muted">Automated login session faker</small>
 		<div class="text-danger"><small>Warning: ensure removing this "php-included" file on the original project</small></div>
+		<a href="{[URL::to('dologin')]}"><small>Login with form fields</small></a>
 	</div>
 	<?php 
 	$userprofile=array(

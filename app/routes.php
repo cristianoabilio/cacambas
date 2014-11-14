@@ -58,6 +58,13 @@ Route::get('/jsontest',function(){
 ;
 
 Route::controller('fakelogin','FakeloginController');
+
+Route::get('dologin',function(){
+	return View::make('tempviews.login.login');
+});
+Route::post('dologin','LoginController@doLogin');
+Route::get('allusers','LoginController@allusers');
+Route::get('currentuser','LoginController@index');
 /**
 * ---------------------------------------------------------------------------------
 * End of temporary routes.
