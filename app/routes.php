@@ -63,8 +63,12 @@ Route::get('dologin',function(){
 	return View::make('tempviews.login.login');
 });
 Route::post('dologin','LoginController@doLogin');
-Route::get('allusers','LoginController@allusers');
-Route::get('currentuser','LoginController@index');
+Route::get('session','LoginController@getSession');
+Route::get('allusers','LoginController@index');
+Route::get('userslist','LoginController@visible');
+Route::get('currentuser','LoginController@logged');
+Route::get('login/{login}','LoginController@show');
+Route::get('showvisiblelogin/{login}','LoginController@showvisible');
 /**
 * ---------------------------------------------------------------------------------
 * End of temporary routes.

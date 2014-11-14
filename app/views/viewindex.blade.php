@@ -11,9 +11,52 @@
 		<h1>Temporary RESTfull controllers tester.</h1>
 		@include('tempviews.loginfaker')
 		<br>
-		<a href="{[URL::to('/allusers')]}">All users (as JSON object)</a> (URL: [base URL]/allusers)
+		<h3>Login routes and controllers</h3>
+		<?php  
+		$login_methods=array(
+			'Login|no|LoginController@doLogin|Authenticates user',
+			'Log out|no|LoginController@logout|Logs user out',
+			'getSession|session|LoginController@getSession|Returns current session',
+			'all users (JSON)|allusers|LoginController@index|Index JSON object',
+			'Users table (HTML)|userslist|LoginController@visible|All users as HTML table',
+			'logged|currentuser|LoginController@logged|currently loged user data as JSON',
+			'store|no|LoginController@store|Saves new user',
+			'JSON user resource|no|LoginController@show(id)|go to users table and choose resource',
+			'HTML user resource|no|LoginController@showvisible(id)|go to users table and choose resource',
+			'update|no|LoginController@update|Updates user (login) data',
+			'destroy|no|LoginController@destroy|specify route before using'
+			)
+		;
+		?>
+		<table class="table">
+			<tr>
+				<th>Action</th>
+				<th>test url (set definitive on routes)</th>
+				<th>resource controller</th>
+				<th>Comment</th>
+			</tr>
+			@foreach($login_methods as $l)
+			<?php $l=explode('|', $l); ?>
+			<tr>
+				@foreach($l as $k=>$v)
+				<td>
+					@if($k=='1')
+						@if($v=='no')
+							no
+						@else 
+							<a href="{[URL::to($v)]}">http.../{[$v ]}</a>
+						@endif
+					@else
+					{[$v ]}
+					@endif
+				</td>
+				@endforeach
+				
+			</tr>
+				
+			@endforeach
+		</table>
 		<br>
-		<a href="{[URL::to('/currentuser')]}">currentuser </a> (URL: [base URL]/currentuser)
 		
 		<hr>
 		<br>

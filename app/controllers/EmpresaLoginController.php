@@ -12,6 +12,12 @@ class EmpresaLoginController extends \BaseController {
 		//
 	}
 
+	public function visible()
+	{
+		//
+	}
+
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -42,6 +48,11 @@ class EmpresaLoginController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id)
+	{
+		//
+	}
+
+	public function showvisible($id)
 	{
 		//
 	}

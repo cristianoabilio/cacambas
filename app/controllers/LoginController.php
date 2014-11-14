@@ -185,13 +185,31 @@ public function getSession(){
     /*============================
     =            CRUD            =
     ============================*/
+    public $header=array(
+        array('empresa_id',1),
+        array('login',1),
+        array('nome',1),
+        array('email',1)
+        )
+    ;
 
-    public function allusers () {
+    public function index() {
     	return Login::all();
     }
 
+    public function visible() {
+        $header=$this->header;
+        $login=Login::all();
+        return View::make(
+            'tempviews.login.index'
+            ,compact(
+                'header',
+                'login'
+                )
+            );
+    }
 
-    public function index(){
+    public function logged(){
     	if(Auth::check())
             // Return the response in json, with the user data and current session
     		return Response::json([
@@ -276,6 +294,24 @@ public function getSession(){
 
     	return Response::json($res);
 
+    }
+
+    public function show ($id) {
+        return Login::find($id);
+    }
+
+    public function showvisible($id) {
+        $header=$this->header;
+        $login=Login::find($id);
+        return View::make(
+            'tempviews.login.show',
+            compact(
+                'id',
+                'header',
+                'login'
+                )
+            )
+        ;
     }
 
 
