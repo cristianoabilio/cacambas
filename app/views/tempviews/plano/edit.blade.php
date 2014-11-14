@@ -147,5 +147,7 @@
 		{[ Form::model($plano, array('route' => array('plano.destroy', $plano->id), 'method' => 'DELETE')) ]}
 		<input type="submit" value='DELETE'>
 	{[Form::close()]}
+		<br>
+		<a href="{[URL::to('visibleplano')]}">Back to plano</a>
 	</div>
 </body>

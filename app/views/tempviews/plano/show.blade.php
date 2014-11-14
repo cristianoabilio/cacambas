@@ -30,7 +30,7 @@
 			<input type="submit" value='DELETE'>
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('plano')]}">Back to plano</a>
+		<a href="{[URL::to('visibleplano')]}">Back to plano</a>
 	</div>
 </body>
 

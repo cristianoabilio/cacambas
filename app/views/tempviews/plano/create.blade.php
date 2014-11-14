@@ -145,7 +145,5 @@
 		<input class='btn btn-primary' type="submit" value='create'>
 		<br>
 	{[Form::close()]}
-	<a href="{[URL::to('plano') ]}">Back to plano index</a>
-
-
+	<a href="{[URL::to('visibleplano') ]}">Back to plano index</a>
 </div>
