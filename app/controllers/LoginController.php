@@ -257,10 +257,38 @@ public function getSession(){
     			array(
     				'required' => 'Preencha o campo :attribute.',
     				)
-    			);
+    			)
+            ;
 
-    		if ($validator->fails())
-    			throw new Exception(json_encode(array('validation_errors'=>$validator->messages()->all())));
+            //check if username is already on use
+            if (Login::whereLogin($login)->count()>0) {
+                $mssg='login name already on use';
+                throw new Exception(
+                     ('login name already on use')
+                    )
+                ;
+            }
+
+            //check if email is already on use
+            /*if (Login::whereEmail($success['email'])->count()>0) {
+                $datamssg='';
+                throw new Exception(
+                     ('Email already on use, choose a different one')
+                    )
+                ;
+            }*/
+
+    		if ($validator->fails()) {
+                $mssg=array('validation_errors'=>$validator->messages()->all());
+                throw new Exception(
+                    json_encode(
+                        array(
+                            'validation_errors'=>$validator->messages()->all())
+                        )
+                    )
+                ;
+            }
+    			
 
     		$r = new Login;
     		$r->login = $login;
@@ -287,7 +315,11 @@ public function getSession(){
 
     		SysAdminHelper::NotifyError($e->getMessage());
 
-    		$res = array('status'=>'error','msg' => json_decode($e->getMessage()));
+    		$res = array(
+                'status'=>'error',
+                'msg' => $mssg//json_decode($e->getMessage())
+                )
+            ;
 
     	}
 

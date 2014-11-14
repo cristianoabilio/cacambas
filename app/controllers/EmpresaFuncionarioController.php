@@ -1,7 +1,7 @@
 <?php
 /**
- * FuncionarioData class only contains data related to
- * the table Funcionario 
+ * [ControllerName]Data class only contains data related to
+ * the table it represents 
  */
 class EmpresaFuncionarioData extends StandardResponse{
 	/** 

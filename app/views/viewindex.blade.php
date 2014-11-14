@@ -56,11 +56,9 @@
 				
 			@endforeach
 		</table>
-		<br>
-		
 		<hr>
-		<br>
-		<table class="table table-condensed">
+		<h3>No nested resources controllers</h3>
+		<table class="table">
 			<tr>
 				<th>indexes as HTML views</th>
 				<th>indexes as JSON responses</th>
