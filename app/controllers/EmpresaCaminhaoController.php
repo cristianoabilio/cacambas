@@ -92,6 +92,7 @@ class EmpresaCaminhaoController extends \BaseController {
 	{
 		$d=new EmpresaCaminhaoData;
 		return $d->edata($empresa_id);
+		//return 1;
 	}
 
 	public function visible ($empresa_id) {

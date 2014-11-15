@@ -42,6 +42,8 @@ class StandardResponse extends FormDataCapturer{
 			'enderecoempresa',
 			'endereco',
 			'enderecobase',
+			'equipamentobase',
+			'equipamentobasepreco',
 			'fatura',
 			'produtofatura',
 			'produtocompra',

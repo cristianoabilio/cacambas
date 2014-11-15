@@ -2,11 +2,6 @@
 
 class LoginController extends BaseController {
 
-	//protected $layout = 'templates.login';
-
-    //public function __construct() {
-      // $this->beforeFilter('csrf-check', array('on'=>'post'));
-    //}
 
     /*======================================
     =            Auth Functions            =

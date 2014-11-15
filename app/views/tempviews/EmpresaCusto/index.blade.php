@@ -23,6 +23,7 @@
 			</tr>
 
 			@foreach($custo as $e)
+				@if($e->status_custo==1)
 				<tr>
 					<td>
 						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
@@ -35,6 +36,8 @@
 						@endif
 					@endforeach
 				</tr>
+				@endif
+				
 			@endforeach
 		</table>
 		<br>
@@ -56,24 +59,26 @@
 			<th>Action</th>
 			</tr>
 
-			@foreach($deleted as $e)
-				<tr>
-					<td>
-						<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
-						|
-						<a href="{[URL::to('empresa/'.$empresa_id.'/custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
-					</td>
-					@foreach($header as $h)
-						@if($h[1]==1)
-							<td>{[$e->$h[0]  ]}</td>
-						@endif
-					@endforeach
-					<td>
-						{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)))]}
-						<input type="submit" value='reactivate' class='btn btn-link'>
-						{[Form::close()]}
-					</td>
-				</tr>
+			@foreach($custo as $e)
+				@if($e->status_custo==0)
+					<tr>
+						<td>
+							<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)]}">HTML resource {[$e->id]}</a>
+							|
+							<a href="{[URL::to('empresa/'.$empresa_id.'/custo/'.$e->id)]}">JSON resource {[$e->id]}</a>
+						</td>
+						@foreach($header as $h)
+							@if($h[1]==1)
+								<td>{[$e->$h[0]  ]}</td>
+							@endif
+						@endforeach
+						<td>
+							{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/showvisiblecusto/'.$e->id)))]}
+							<input type="submit" value='reactivate' class='btn btn-link'>
+							{[Form::close()]}
+						</td>
+					</tr>
+				@endif
 			@endforeach
 		</table>
 	</div>

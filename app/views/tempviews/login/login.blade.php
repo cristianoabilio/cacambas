@@ -57,9 +57,8 @@ $(function(){
 		var usuario=$('#usuario').val();
 		var senha=$('#senha').val();
 		var base=$('#base').html();
-		$('#result_here').html(token);
 		$.post(base+'/dologin',{_token:token,usuario:usuario,senha:senha},function(d){
-			$('#result_here').html(1);
+			window.location.href=base+'/myproduction';
 		});
 	});
 });

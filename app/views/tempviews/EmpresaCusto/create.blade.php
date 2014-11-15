@@ -2,9 +2,35 @@
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<div id="base" class="hide">{[URL::to('/')]}</div>
+	<div id="empresa" class="hide">{[$empresa_id]}</div>
 	<div class="container">
 		<h1>Add a new "Custo" to empresa "{[$empresa->nome]}"</h1>
 		{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/custo')))]}
+		Custo type
+		<div class="row">
+			<div class="col-sm-2">
+				<select id='custotype' class="form-control">
+					<option></option>
+					<option value="0">general</option>
+					<option value="caminhao">caminhao</option>
+					<option value="equipamento">equipamento</option>
+					<option value="funcionario">funcionario</option>
+				</select>
+			</div>
+		</div>
+		<div id="specific_custo_type" class='hide'>
+			select available element
+			<div class="row">
+				<div class="col-sm-2">
+					<select name="custotypeselect" id="custotypeselect" class="form-control">
+						<option value=""></option>
+					</select>
+				</div>
+			</div>
+			
+		</div>
+		<h1>Pending to add cascade method: truck, equipment, employee, empty, after selecting choose available trucks, equipment or employee.  After choosing display available cost items</h1>
 			<div class="row">
 				<div class="col-sm-2">
 					tipo
@@ -129,4 +155,39 @@
 		<br>
 		<br>
 	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </body>
+<script type="text/javascript">
+	$(function(){
+		$('#custotype').change(function(){
+			if ($(this).val()==0) {
+				$('#specific_custo_type').addClass('hide');
+				$('#custotypeselect').html('');
+			} else {
+				var empresa=$('#empresa').html();
+				var element=$('#custotype').val();
+				var _token=$('input[name=_token]').val();
+				$('#specific_custo_type').removeClass('hide');
+				$('#custotypeselect').html('');
+				$('#custotypeselect').append('<option></option>');
+				var base=$('#base').html();
+				$.get(
+					base+'/empresa/'+empresa+'/'+element,
+					{},
+					function(d){
+						$.each(d,function(k,v){
+							var show='';
+							if (v.placa!=null) {
+								show=v.placa;
+							}
+							$('#custotypeselect').append(
+								"<option>"+show+"</option>"
+								)
+							;
+						});
+							
+				});
+			}
+		});
+	});
+</script>

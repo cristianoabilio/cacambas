@@ -5,7 +5,7 @@ class Empresa extends Eloquent {
 	protected $table = 'empresa';
 
 	//Override default PK 'id' from Eloquent
-	protected $primaryKey = 'id';
+	//protected $primaryKey = 'id';
 
 	protected $guarded = array();
 	public static $rules = array();
@@ -24,6 +24,10 @@ class Empresa extends Eloquent {
 
 	public function Contrato() {
 		return $this->hasMany('Contrato');
+	}
+
+	public function custo () {
+		return $this->hasManyThrough('Custo', 'Custogrouper');
 	}
 
 	public function Loginperfil() {

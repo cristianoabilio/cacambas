@@ -12,18 +12,18 @@ class EmpresaCustoData extends StandardResponse{
 		1 (visible) or 2 (not shown)
 		*/
 		$header=array(	
-				array('equipamento_id',1)
-				,array('caminhao_id',0)
-				,array('funcionario_id',0)
-				,array('dt_inicio',0)
-				,array('dt_fim',0)
-				,array('valor',0)
-				,array('status_financeiro',0)
-				,array('prestadora',0)
-				,array('detalhe',0)
+				//array('equipamento_id',1)
+				//,array('caminhao_id',0)
+				//,array('funcionario_id',0)
+				//,array('dt_inicio',0)
+				//,array('dt_fim',0)
+				//,array('valor',0)
+				//,array('status_financeiro',0)
+				//,array('prestadora',0)
+				//,array('detalhe',0)
 				//,array('status_custo',0)
 				//,array('classe_id',1)
-				,array('subclasse_id',0)
+				//,array('subclasse_id',0)
 				//,array('sessao_id',1)
 				//,array('dthr_cadastro',1)
 			)
@@ -36,12 +36,16 @@ class EmpresaCustoData extends StandardResponse{
 	*/
 	public function edata ($empresa_id) {
 		//return Custo::whereStatus_custo(1)->get();
-		return Custo::whereEmpresa_id($empresa_id)->active()->get();
+		return  Empresa::find($empresa_id)->custo;
+		//Custo::all();
+		//Custo::all();
+		//return Custo::whereEmpresa_id($empresa_id)->active()->get();
 	}
 
 	public function edatainactive ($empresa_id) {
 		//return Custo::whereStatus_custo(0)->get();
-		return Custo::whereEmpresa_id($empresa_id)->Noactive()->get();
+		//return array(1);//Custo::whereEmpresa_id($empresa_id)->Noactive()->get();
+		return Custo::all();
 	}
 
 	public function show($id){

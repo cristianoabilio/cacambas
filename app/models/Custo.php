@@ -1,12 +1,15 @@
 <?php
 
 class Custo extends Eloquent {
-	protected $table = 'custo';
 
 	protected $guarded = array();
 	public static $rules = array();
 
-	public function Subclasse() { 
+	public function custogrouper () {
+		return $this->belongsTo('Custogrouper');
+	}
+
+	/*public function Subclasse() { 
 			return $this->belongsTo('Subclasse');
 	}
 
@@ -21,7 +24,7 @@ class Custo extends Eloquent {
 	public function Equipamento() { 
 		return $this->belongsTo('Equipamento');
 	}
-
+*/
 	public function scopeActive ($query) {
 		return $query	->whereStatus_custo(1);
 		;

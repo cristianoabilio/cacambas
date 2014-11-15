@@ -14,7 +14,7 @@
 		<h3>Login routes and controllers</h3>
 		<?php  
 		$login_methods=array(
-			'Login|no|LoginController@doLogin|Authenticates user',
+			'Login|no|LoginController@doLogin|Authenticates user (post action)',
 			'Log out|no|LoginController@logout|Logs user out',
 			'getSession|session|LoginController@getSession|Returns current session',
 			'all users (JSON)|allusers|LoginController@index|Index JSON object',
