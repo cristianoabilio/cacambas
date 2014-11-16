@@ -27,7 +27,7 @@
 			@foreach($login as $e)
 				<tr>
 					<td>
-						<a href="{[URL::to('showvisiblelogin/'.$e->id)]}">HTML resource numbe {[$e->id]}</a>
+						<a href="{[URL::to('showvisiblelogin/'.$e->id)]}">HTML resource number {[$e->id]}</a>
 						|
 						<a href="{[URL::to('login/'.$e->id)]}">JSON resource number {[$e->id]}</a>
 					</td>
