@@ -29,7 +29,7 @@ class Login extends Eloquent implements UserInterface, RemindableInterface  {
 
 
 	public function Funcionario() {
-		return $this->belongsTo('Funcionario');
+		return $this->hasOne('Funcionario');
 	}
 
 	public function empresa () {

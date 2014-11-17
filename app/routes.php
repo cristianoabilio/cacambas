@@ -203,3 +203,7 @@ Route::get('categorias/create', function()
 	
 });
 
+Route::get('empresa/{empresa}/funcionarioLogin','EmpresaFuncionarioController@funcionarioLogin');
+Route::get('empresa/{empresa}/equipamentoprecoebase','EmpresaEquipamentobaseprecoController@Equipamentbaseandpreco');
+
+

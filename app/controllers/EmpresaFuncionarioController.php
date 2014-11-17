@@ -69,8 +69,8 @@ class EmpresaFuncionarioData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'nome'		=>	'required'
-			,'funcao'	=>	'required'
+			/*'nome'		=>	'required'
+			,*/'funcao'	=>	'required'
 			,'telefone'	=>	'required'
 			// ,'dthr_cadastro'=> timestamp, not required
 			// ,'sessao_id'=> sessao, not required
@@ -127,8 +127,15 @@ class EmpresaFuncionarioController extends \BaseController {
 	 */
 	public function create($empresa_id)
 	{
-		$data=compact('empresa_id');
-		return View::make('tempviews.empresafuncionario.create',$data);
+		$empresa=Empresa::find($empresa_id);
+		return View::make(
+			'tempviews.empresafuncionario.create',
+			compact(
+				'empresa_id',
+				'empresa'
+				)
+			)
+		;
 	}
 
 
@@ -396,6 +403,32 @@ class EmpresaFuncionarioController extends \BaseController {
 		}
 
 		return Response::json($res,$code);
+	}
+
+	public function funcionarioLogin ($id) {
+		$header=array(
+			'id',
+			'empresa_id',
+			'login_id',
+			'nome',
+			'funcao',
+			'telefone',
+			'status',
+			'sessao_id',
+			'dthr_cadastro'
+			)
+		;
+		//
+		$funcionariologin=array();
+		$i=0;
+		foreach (Empresa::find($id)->funcionario as $key => $fc) {
+			foreach ($header as $k => $v) {
+				$funcionariologin[$i][$v]=$fc->$v;
+			}
+			$funcionariologin[$i]['username']=$fc->login->login;
+			$i++;
+		}
+		return $funcionariologin;
 	}
 
 

@@ -33,6 +33,6 @@ class Funcionario extends Eloquent {
 	}
 
 	public function Login() {
-        return $this->hasOne('Login');
+        return $this->belongsTo('Login');
     }
 }

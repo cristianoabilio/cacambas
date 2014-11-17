@@ -422,4 +422,32 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 
 		return Response::json($res,$code);
 	}
+
+	public function Equipamentbaseandpreco  ($id) {
+		$header=array(
+			'id',
+			'equipamentobase_id',
+			'empresa_id',
+			'preco_base',
+			'periodo_minimo',
+			'dia_extra',
+			'preco_extra',
+			'taxa_extra',
+			'multa',
+			'status',
+			'sessao_id',
+			'dthr_cadastro'
+			)
+		;
+		$equip_b_p=array();
+		$i=0;
+		foreach (Empresa::find($id)->equipamentobasepreco as $key => $e) {
+			$equip_b_p[$i]['classe']=$e->equipamentobase->classe;
+			foreach ($header as $v) {
+				$equip_b_p[$i][$v]=$e->$v;
+			}
+			$i++;
+		}
+		return $equip_b_p;
+	}
 }

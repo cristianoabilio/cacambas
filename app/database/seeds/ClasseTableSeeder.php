@@ -28,19 +28,6 @@ class ClasseTableSeeder extends Seeder {
 				)
 			)
 		;
-
-		//faking an errased record
-		DB::table('classe')->insert(
-			array(
-				'id'			=>3
-				,'nome'			=>'testing inactive record'
-				,'descricao'	=>'testing inactive record category'
-				,'status'		=>0
-				,'dthr_cadastro'=>date('Y-m-d')
-				,'sessao_id'	=>null
-				)
-			)
-		;
 	}
 }
 

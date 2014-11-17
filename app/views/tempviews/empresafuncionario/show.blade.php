@@ -3,7 +3,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Funcionario number {[$id]} </h1>
+		<h1>Funcionario number {[$id]} (username {[$funcionario->Login->login]} )</h1>
 		@foreach($header as $h)
 		<div class="row">
 			<div class="col-sm-2">{[$h[0] ]}</div>

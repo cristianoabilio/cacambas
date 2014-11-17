@@ -29,9 +29,16 @@
 									<li>
 										<a href="{[URL::to('empresa/'.$e->id).'/visible'.$v]}">HTML {[$v]}</a> |
 										<a href="{[URL::to('empresa/'.$e->id).'/'.$v]}">JSON {[$v]}</a>
+										<br>
 									</li>
 										
 									@endforeach
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/funcionarioLogin']}">JSON funcionario and Login</a> ( EmpresaFuncionarioController&#64;funcionarioLogin)
+									</li>
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/equipamentoprecoebase']}">JSON equipamento base and preco</a> ( EmpresaEquipamentobaseprecoController&#64;Equipamentbaseandpreco)
+									</li>
 								</ul>
 								@else
 								{[$e->$h[0]  ]}

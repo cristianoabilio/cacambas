@@ -327,6 +327,7 @@
 		<br>
 		<a href="{[URL::to('categorias/create') ]}">Create new categoria</a>
 		<br>
+		<br>
 		<h3><a href="{[URL::to('jsontest') ]}">JSON checker</a></h3>
 		<hr>
 		<br>

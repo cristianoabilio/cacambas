@@ -15,7 +15,7 @@ class Equipamento extends Eloquent {
 	}
 
 	public function Equipamentobasepreco() { 
-		return $this->belongsTo('Equipamentobasepreco',);
+		return $this->belongsTo('Equipamentobasepreco');
 	}
 
 	public function Operador() { 

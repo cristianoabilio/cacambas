@@ -7,9 +7,9 @@
 		{[ Form::model($funcionario, array('route' => array('empresa.funcionario.update', $empresa_id,$funcionario->id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
-				login_id
+				username {[$funcionario->Login->login]}
 				<br>
-				<input type="text" class='form-control' name="login_id" id="login_id" value="{[$funcionario->login_id]}">
+				<input type="hidden" class='form-control' name="login_id" id="login_id" value="{[$funcionario->login_id]}">
 			</div>
 		</div>
 		<br>

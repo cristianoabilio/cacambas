@@ -10,12 +10,12 @@
 		Custo type
 		<div class="row">
 			<div class="col-sm-2">
-				<select id='custotype' class="form-control">
+				<select id='custotype' name='custotype' class="form-control">
 					<option></option>
 					<option value="0">general</option>
 					<option value="caminhao">caminhao</option>
-					<option value="equipamento">equipamento</option>
-					<option value="funcionario">funcionario</option>
+					<option value="equipamentoprecoebase">equipamento</option>
+					<option value="funcionarioLogin">funcionario</option>
 				</select>
 			</div>
 		</div>
@@ -28,44 +28,56 @@
 					</select>
 				</div>
 			</div>
-			
 		</div>
-		<h1>Pending to add cascade method: truck, equipment, employee, empty, after selecting choose available trucks, equipment or employee.  After choosing display available cost items</h1>
+		<div id="wholecustoform">
+			<h4>custodetail fields</h4>
 			<div class="row">
 				<div class="col-sm-2">
-					tipo
+					category
 					<br>
-					<select name="tipo" class='form-control' id="tipo">
+					<select name="" id="subclasse_selector" class='form-control' >
 						<option value=""></option>
-						<option value="caminhao">caminhao</option>
-						<option value="equipamento">equipamento</option>
-						<option value="funcionario">funcionario</option>
+						@foreach(Categorycusto::all() as $c)
+							<option value="{[$c->id]}" subclasse="{[$c->subclasse_id]}">{[$c->description]}</option>
+						@endforeach
 					</select>
 				</div>
 			</div>
+			<input type="hidden" value='' id='subclasse_id' name='subclasse_id'>
+			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					equipamento_id 
+					detalhe
 					<br>
-					<input type="text" class='form-control' name="equipamento_id" id="equipamento_id">
+					<input type="text" class='form-control' name="detalhe" id="detalhe">
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					caminhao_id
+					prestadora
 					<br>
-					<input type="text" class='form-control' name="caminhao_id" id="caminhao_id">
+					<input type="text" class='form-control' name="prestadora" id="prestadora">
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					funcionario_id
+					descricao
 					<br>
-					<input type="text" class='form-control' name="funcionario_id" id="funcionario_id">
+					<input type="text" class='form-control' name="descricao" id="descricao">
 				</div>
 			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-2">
+					observacao
+					<br>
+					<input type="text" class='form-control' name="observacao" id="observacao">
+				</div>
+			</div>
+			<br>
+			<hr>
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
@@ -85,9 +97,25 @@
 			<br>
 			<div class="row">
 				<div class="col-sm-2">
-					valor
+					dt_pagamento
 					<br>
-					<input type="text" class='form-control' name="valor" id="valor">
+					<input type="text" class='form-control' name="dt_pagamento" id="dt_pagamento">
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-2">
+					valor_total
+					<br>
+					<input type="text" class='form-control' name="valor_total" id="valor_total">
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-2">
+					valor_pago
+					<br>
+					<input type="text" class='form-control' name="valor_pago" id="valor_pago">
 				</div>
 			</div>
 			<br>
@@ -99,55 +127,10 @@
 				</div>
 			</div>
 			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					prestadora
-					<br>
-					<input type="text" class='form-control' name="prestadora" id="prestadora">
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					detalhe
-					<br>
-					<input type="text" class='form-control' name="detalhe" id="detalhe">
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					classe_id (autoasigned according to "tipo")
-					<br>
-					<input type="text" class='form-control' name="classe_id" id="classe_id">
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					subclasse_id
-					<br>
-					<input type="text" class='form-control' name="subclasse_id" id="subclasse_id">
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					sessao_id
-					<br>
-					<input type="text" class='form-control' name="sessao_id" id="sessao_id">
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-sm-2">
-					dthr_cadastro
-					<br>
-					<input type="text" class='form-control' name="dthr_cadastro" id="dthr_cadastro">
-				</div>
-			</div>
 			<br>
 			<input type="submit" value='create'>
+		</div>
+			
 		{[Form::close()]}
 		<br>
 		<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecusto')]}  ">Back to custo</a>
@@ -159,11 +142,17 @@
 </body>
 <script type="text/javascript">
 	$(function(){
+		$('#wholecustoform').hide();
+
 		$('#custotype').change(function(){
-			if ($(this).val()==0) {
+			if ($(this).val()=="") {
+				$('#wholecustoform').hide('fast');
+			} else if ($(this).val()==0) {
+				$('#wholecustoform').show('fast');
 				$('#specific_custo_type').addClass('hide');
 				$('#custotypeselect').html('');
 			} else {
+				$('#wholecustoform').hide('fast');
 				var empresa=$('#empresa').html();
 				var element=$('#custotype').val();
 				var _token=$('input[name=_token]').val();
@@ -179,14 +168,38 @@
 							var show='';
 							if (v.placa!=null) {
 								show=v.placa;
-							}
+							} else if (v.username!=null) {
+								show=v.username+' ('+v.funcao+')';
+							} else if (v.classe!=null) {
+								show=v.classe+' ('+v.id+')';
+							};
+							//
 							$('#custotypeselect').append(
-								"<option>"+show+"</option>"
+								"<option value='"+v.id+"'>"+show+"</option>"
 								)
 							;
 						});
 							
 				});
+			}
+		});
+
+		$('#custotypeselect').change(function(e){
+			e.preventDefault();
+			if ($(this).val()=='') {
+				$('#wholecustoform').hide('fast');
+			} else {
+				$('#wholecustoform').show('fast');
+			}
+		});
+
+		$('#subclasse_selector').change(function(e){
+			//e.preventDefault();
+			if ( $(this).val()==''  ) {
+				$('#subclasse_id').val('');
+			} else {
+				var subclasse=$('#subclasse_selector option:selected').attr('subclasse');
+				$('#subclasse_id ').val(subclasse);
 			}
 		});
 	});
