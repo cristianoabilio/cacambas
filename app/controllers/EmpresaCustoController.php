@@ -7,49 +7,136 @@ class EmpresaCustoData extends StandardResponse{
 	*/
 	public function header(){
 		/*
-		$enderecoheader= headers on table enderecos
+		$header= headers on table
 		In order to display or hide on HTML table, set as
 		1 (visible) or 2 (not shown)
 		*/
-		$header=array(	
-				//array('equipamento_id',1)
-				//,array('caminhao_id',0)
-				//,array('funcionario_id',0)
-				//,array('dt_inicio',0)
-				//,array('dt_fim',0)
-				//,array('valor',0)
-				//,array('status_financeiro',0)
-				//,array('prestadora',0)
-				//,array('detalhe',0)
-				//,array('status_custo',0)
-				//,array('classe_id',1)
-				//,array('subclasse_id',0)
-				//,array('sessao_id',1)
-				//,array('dthr_cadastro',1)
+		$header=array(
+			//Custo table headers
+			array('dt_inicio',1)
+			,array('dt_fim',0)
+			,array('valor_total',0)
+			,array('status_financeiro',0)
+			,array('detail_detalhe',0)
+			,array('detail_prestadora',0)
+			,array('detail_descricao',0)
+
+			//custodetail headers
+			,array('detail_detalhe',1)
+			,array('detail_prestadora',0)
+			,array('detail_descricao',0)
+			,array('detail_observacao',0)
 			)
 		;	
 		return $header;
 	}
+	public $custoheaders=array(
+		'id',
+		'dt_inicio',
+		'dt_fim',
+		'dt_pagamento',
+		'valor_total',
+		'valor_pago',
+		'status_financeiro',
+		'status_custo',
+		'sessao_id',
+		'empresa_id'
+		)
+	;
+
+	public $detailsheader=array(
+		'id',
+		'detalhe',
+		'prestadora',
+		'descricao',
+		'observacao'
+		)
+	;
+
+	public $custogrouperheader=array(
+		'custogroup'=>'fkname'
+		)
+	;
 	
 	/**
 	* @param edata retrieves all data from table "limite"
 	*/
 	public function edata ($empresa_id) {
-		//return Custo::whereStatus_custo(1)->get();
-		return  Empresa::find($empresa_id)->custo;
-		//Custo::all();
-		//Custo::all();
-		//return Custo::whereEmpresa_id($empresa_id)->active()->get();
+		$data=Empresa::find($empresa_id)->custo;
+
+		$wholecusto=array();
+		$i=0;
+		foreach ($data as $key => $c) {
+			foreach ($this->custogrouperheader as $ck => $cv) {
+				$cg_name=$c->custogrouper->$cv;
+				$wholecusto[$i][$ck]=$cg_name;
+				$wholecusto[$i]['custogroup_identifier_name']='';
+				$wholecusto[$i]['custogroup_identifier_value']='';
+				if ($cg_name=='caminhao') {
+					$resource=Caminhao::find($c->custogrouper->fkid)->placa;
+					$wholecusto[$i]['custogroup_identifier_name']='placa';
+					$wholecusto[$i]['custogroup_identifier_value']=$resource;
+				} else if ($cg_name=='funcionario') {
+					$resource=Funcionario::find($c->custogrouper->fkid)->login->login;
+					$wholecusto[$i]['custogroup_identifier_name']='username';
+					$wholecusto[$i]['custogroup_identifier_value']=$resource;
+				} else if ($cg_name=='equipamentobasepreco') {
+					$resource=Equipamentobasepreco::find($c->custogrouper->fkid)->id;
+					$wholecusto[$i]['custogroup_identifier_name']='id';
+					$wholecusto[$i]['custogroup_identifier_value']=$resource;
+				}
+			}
+			foreach ($this->custoheaders as $v) {
+				$wholecusto[$i][$v]=$c->$v;
+			}
+			foreach ($this->detailsheader as $vd) {
+				$wholecusto[$i]['detail_'.$vd]=$c->custodetail->$vd;
+			}
+			$wholecusto[$i]['subclasse_nome']=$c->custodetail->subclasse->nome;
+			$wholecusto[$i]['classe_nome']=$c->custodetail->subclasse->classe->nome;
+			$i++;
+		}
+		return $wholecusto;
 	}
 
 	public function edatainactive ($empresa_id) {
-		//return Custo::whereStatus_custo(0)->get();
-		//return array(1);//Custo::whereEmpresa_id($empresa_id)->Noactive()->get();
 		return Custo::all();
 	}
 
 	public function show($id){
-		return Custo::find($id);
+		$data=Custo::find($id);
+		$custo=array();
+		$custo['custogroup_identifier_name']='';
+		$custo['custogroup_identifier_value']='';
+		foreach ($this->custogrouperheader as $ck => $cv) {
+			$cg_name=$data->custogrouper->$cv;
+			$custo[$ck]=$cg_name;
+			if ($cg_name=='caminhao') {
+				$resource=Caminhao::find($data->custogrouper->fkid)->placa;
+				$custo['custogroup_identifier_name']='placa';
+				$custo['custogroup_identifier_value']=$resource;
+			} else if ($cg_name=='funcionario') {
+				$resource=Funcionario::find($data->custogrouper->fkid)->login->login;
+				$custo['custogroup_identifier_name']='username';
+				$custo['custogroup_identifier_value']=$resource;
+			} else if ($cg_name=='equipamentobasepreco') {
+				$resource=Equipamentobasepreco::find($data->custogrouper->fkid)->id;
+				$custo['custogroup_identifier_name']='id';
+				$custo['custogroup_identifier_value']=$resource;
+			}
+		}
+		
+		foreach ($this->custoheaders as $v) {
+			$custo[$v]=$data->$v;
+		}
+		foreach ($this->detailsheader as $vd) {
+			$custo['detail_'.$vd]=$data->custodetail->$vd;
+		}
+		$custo['subclasse_nome']=$data->custodetail->subclasse->nome;
+		$custo['classe_nome']=$data->custodetail->subclasse->classe->nome;
+		
+
+		return $custo;
 	}
 
 	/**
@@ -84,18 +171,12 @@ class EmpresaCustoData extends StandardResponse{
 		}
 		return $custogrouper;
 	}
-	
-
 
 	/**
 	* -----------------------------
 	* Columns for custodetail 
 	* -----------------------------
-	* subclasse_id
-	* detalhe
-	* prestadora
-	* descricao
-	* observacao
+	* 
 	*/
 	public function custodetail_form_data(){
 		$fillable=array(
@@ -119,11 +200,7 @@ class EmpresaCustoData extends StandardResponse{
 	* -----------------------------
 	* Columns for custo table
 	* -----------------------------
-	* subclasse_id
-	* detalhe
-	* prestadora
-	* descricao
-	* observacao
+	* 
 	*/
 	public function custo_form_data(){
 		$fillable=array(
@@ -171,7 +248,6 @@ class EmpresaCustoController extends \BaseController {
 	{
 		$d=new EmpresaCustoData;
 		return $d->edata($empresa_id);
-
 	}
 
 	public function visible ($empresa_id) {
@@ -179,9 +255,9 @@ class EmpresaCustoController extends \BaseController {
 
 		$data=array(
 			'header' 	=> $d->header(),
-			'custo'	=> $d->edata($empresa_id),
-			'deleted'=>$d->edatainactive($empresa_id),
-			'empresa'=>Empresa::find($empresa_id),
+			'custo'		=> $d->edata($empresa_id),
+			'deleted'	=>array(),//$d->edatainactive($empresa_id),
+			'empresa'	=>Empresa::find($empresa_id),
 			'empresa_id'=>$empresa_id
 			)
 		;
@@ -336,6 +412,7 @@ class EmpresaCustoController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
+
 			$data=array(
 				'custo'		=>$d->show($id),
 				'header'	=>$d->header(),
@@ -375,10 +452,10 @@ class EmpresaCustoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'custo'	=>$d->show($id),
-				'header'		=>$d->header(),
+				'custo'		=>$d->show($id),
+				'header'	=>$d->header(),
 				'empresa_id'=>$empresa_id,
-				'id'			=>$id
+				'id'		=>$id
 				)
 			;
 			return View::make('tempviews.EmpresaCusto.edit',$data);

@@ -36,7 +36,7 @@
 	<?php 
 	$userprofile=array(
 		'superuser|superuser@cacambas.com',
-		'empresa3user|e3@empresa.com'
+		'empresa2user|e2@empresa.com'
 		)
 	;
 	?>

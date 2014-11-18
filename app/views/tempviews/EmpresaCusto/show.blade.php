@@ -7,14 +7,14 @@
 		@foreach($header as $h)
 		<div class="row">
 			<div class="col-sm-2">{[$h[0] ]}</div>
-			<div class="col-sm-6">{[$custo->$h[0]   ]}</div>
+			<div class="col-sm-6">{[$custo[ $h[0]  ] ]}</div>
 		</div>
 		@endforeach
 		<a href="{[URL::to('empresa/'.$empresa_id.'/custo/'.$id.'/edit')]} "> ....  Edit .... </a>
 		<br>
 		<br>
 		<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecusto')]}  ">Back to custo</a>
-		{[ Form::model($custo, array('route' => array('empresa.custo.destroy', $custo->id), 'method' => 'DELETE')) ]}
+		{[ Form::model($custo, array('route' => array('empresa.custo.destroy', $custo['id']), 'method' => 'DELETE')) ]}
 		<input type="submit" value='DELETE' class='btn btn-link'>
 		{[Form::close()]}
 	</div>

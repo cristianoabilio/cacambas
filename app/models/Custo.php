@@ -9,6 +9,10 @@ class Custo extends Eloquent {
 		return $this->belongsTo('Custogrouper');
 	}
 
+	public function custodetail () {
+		return $this->belongsTo('Custodetail');
+	}
+
 	/*public function Subclasse() { 
 			return $this->belongsTo('Subclasse');
 	}
@@ -24,7 +28,7 @@ class Custo extends Eloquent {
 	public function Equipamento() { 
 		return $this->belongsTo('Equipamento');
 	}
-*/
+	*/
 	public function scopeActive ($query) {
 		return $query	->whereStatus_custo(1);
 		;

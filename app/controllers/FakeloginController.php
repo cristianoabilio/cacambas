@@ -118,8 +118,8 @@ class FakeloginController extends \BaseController {
 		if ($u=='superuser') {
 			$company=1;
 			$perfil=Perfil::whereNome('admin_cacambas')->first()->id;
-		} else if ($u=='empresa3user') {
-			$company=3;
+		} else if ($u=='empresa2user') {
+			$company=2;
 			$perfil=Perfil::whereNome('company')->first()->id;
 		}
 		if ($l==null) {
