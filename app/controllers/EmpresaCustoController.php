@@ -99,10 +99,6 @@ class EmpresaCustoData extends StandardResponse{
 		return $wholecusto;
 	}
 
-	public function edatainactive ($empresa_id) {
-		return Custo::all();
-	}
-
 	public function show($id){
 		$data=Custo::find($id);
 		$custo=array();
@@ -235,6 +231,45 @@ class EmpresaCustoData extends StandardResponse{
 			)
 		;
 	}
+
+	public function custos_caminhao ($empresa_id) {
+		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
+		->whereFkname('caminhao')->get();
+
+		$custoholder=array();
+		$i=0;
+		foreach ($c_grouper as $k => $c) {
+			$custoholder[$i]=Custo::find($c->id);
+			$i++;
+		}
+		return $custoholder;
+	}
+
+	public function custos_equipamento ($empresa_id) {
+		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
+		->whereFkname('equipamentobasepreco')->get();
+
+		$custoholder=array();
+		$i=0;
+		foreach ($c_grouper as $k => $c) {
+			$custoholder[$i]=Custo::find($c->id);
+			$i++;
+		}
+		return $custoholder;
+	}
+
+	public function custos_funcionario ($empresa_id) {
+		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
+		->whereFkname('funcionario')->get();
+
+		$custoholder=array();
+		$i=0;
+		foreach ($c_grouper as $k => $c) {
+			$custoholder[$i]=Custo::find($c->id);
+			$i++;
+		}
+		return $custoholder;
+	}
 }
 
 class EmpresaCustoController extends \BaseController {
@@ -256,7 +291,7 @@ class EmpresaCustoController extends \BaseController {
 		$data=array(
 			'header' 	=> $d->header(),
 			'custo'		=> $d->edata($empresa_id),
-			'deleted'	=>array(),//$d->edatainactive($empresa_id),
+			//'deleted'	=>array(),//$d->edatainactive($empresa_id),
 			'empresa'	=>Empresa::find($empresa_id),
 			'empresa_id'=>$empresa_id
 			)
@@ -305,9 +340,10 @@ class EmpresaCustoController extends \BaseController {
 		//
 		//
 		$custo_data=$d->custo_form_data();
-		//return $d->custo_form_data();
 		//
 		//
+		//
+		$success=$custo_data;
 		
 		try{
 			$validator= Validator::make(			
@@ -333,6 +369,7 @@ class EmpresaCustoController extends \BaseController {
 			$e_group=new Custogrouper;
 			foreach ($custo_group_data as $key => $value) {
 				$e_group->$key 	=$value;
+				$success['group_'.$key]=$value;
 			}
 			$e_group->empresa_id=$empresa_id;
 			$e_group->save();
@@ -341,6 +378,7 @@ class EmpresaCustoController extends \BaseController {
 			$e_detail=new Custodetail;
 			foreach ($custo_detail_data as $key => $value) {
 				$e_detail->$key 	=$value;
+				$success['detail_'.$key]=$value;
 			}
 			$e_detail->save();
 			$detail_id=$e_detail->id;
@@ -481,7 +519,10 @@ class EmpresaCustoController extends \BaseController {
 		//
 		$d=new EmpresaCustoData;
 		//
-		$success=$d->form_data();
+		$custo_detail_data=$d->custodetail_form_data();
+		//
+		$custo_data=$d->custo_form_data();
+		$success=$custo_data;
 		//return $success;
 		try{
 			$validator= Validator::make(			
@@ -505,13 +546,26 @@ class EmpresaCustoController extends \BaseController {
 			}
 
 			$e=Custo::find($id);
-			foreach ($success as $key => $value) {
+			foreach ($custo_data as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->status_custo=1;
+			//$e->status_custo=1;
 			$e->sessao_id=$fake->sessao_id();
-			$e->dthr_cadastro=date('Y-m-d H:i:s');
+			//$e->dthr_cadastro=date('Y-m-d H:i:s');
 			$e->save();
+
+			$custodetail_id=$e->custodetail->id;
+			$subclasse_id=$e->custodetail->subclasse_id;
+			$e_detail=Custodetail::find($custodetail_id);
+			foreach ($custo_detail_data as $key => $value) {
+				if ($key!='subclasse_id') //skip subclasse id
+				{
+					$e_detail->$key 	=$value;
+					$success['detail_'.$key]=$value;
+				}
+					
+			}
+			$e_detail->save();
 
 			//
 
@@ -619,6 +673,47 @@ class EmpresaCustoController extends \BaseController {
 		}
 
 		return Response::json($res,$code);
+	}
+
+	public function custocaminhao ($empresa_id) {
+		$d=new EmpresaCustoData;
+		return $d->custos_caminhao($empresa_id);
+	}
+
+	public function custoequipamentobasepreco ($empresa_id) {
+		$d=new EmpresaCustoData;
+		return $d->custos_equipamento($empresa_id);
+	}
+
+	public function custofuncionario ($empresa_id) {
+		$d=new EmpresaCustoData;
+		return $d->custos_funcionario($empresa_id);
+	}
+
+
+	public function custofixed ($empresa_id) {
+		$d=new EmpresaCustoData;
+		$data=array();
+		$i=0;
+		foreach ($d->edata($empresa_id) as $key => $value) {
+			if ($value['subclasse_nome']=='Fixas') {
+				$data[$key]=$value;
+			}
+		}
+		return $data;
+	}
+
+	//
+	public function custovariable ($empresa_id) {
+		$d=new EmpresaCustoData;
+		$data=array();
+		$i=0;
+		foreach ($d->edata($empresa_id) as $key => $value) {
+			if ($value['subclasse_nome']=='Variáveis') {
+				$data[$key]=$value;
+			}
+		}
+		return $data;
 	}
 
 

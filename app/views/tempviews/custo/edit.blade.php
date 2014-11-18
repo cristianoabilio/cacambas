@@ -4,7 +4,8 @@
 <body>
 	<div class="container">
 		<h1>Custo resource number {[$id]}</h1>
-		<div class="text-danger">Warning: changes can harm database, be cautios</div>
+		<h2 class="text-danger">From this view you cannot edit this resource</h2>
+		<div class="hide">
 		{[ Form::model($custo, array('route' => array('custo.update', $custo->id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
@@ -111,6 +112,7 @@
 		<br>
 		<input type="submit" value='save changes' class='btn btn-default'>
 		{[Form::close()]}
+		</div>
 
 		
 		<hr>

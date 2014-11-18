@@ -6,6 +6,37 @@
 		<h1>Custo index on empresa {[$empresa->nome]}</h1>
 		<a href="{[URL::to('empresa/'.$empresa_id.'/custo/create')]}" class=''>Add new "custo"</a>
 		<br>
+		<br>
+		<h3>Nested filters on empresa.custo resource</h3>
+		<?php  
+		$filter=array(
+			'caminhao',
+			'equipamentobasepreco',
+			'funcionario',
+			'',
+			'fixed',
+			'variable'
+			)
+		;
+		?>
+		<table class="table">
+			<tr>
+				<th>Link</th>
+				<th>Route</th>
+			</tr>
+			@foreach($filter as $f)
+				<tr>
+					<td>
+						<a href="{[URL::to('empresa/'.$empresa_id.'/custo'.$f  )]}">{[$f]} custos (as JSON response) resources</a>
+					</td>
+					<td>
+						http://... empresa/{empresa}/custo{[$f]}
+					</td>
+				</tr>
+			@endforeach
+		</table>
+		<br>
+		<br>
 		<table class="table">
 			<tr>
 				<th>Resource</th>

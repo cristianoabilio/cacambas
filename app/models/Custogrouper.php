@@ -8,7 +8,7 @@ class Custogrouper extends \Eloquent {
 	}
 
 	public function custo () {
-		return $this->hasMany('custo');
+		return $this->hasOne('custo');
 	}
 
 }

@@ -15,25 +15,56 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-2">
-				~
+				Custotype (uneditable)
 				<br>
-				~
+				{[$custo ['custogroup'] ]}
 			</div>
 		</div>
 		<br>
 		<div class="row">
 			<div class="col-sm-2">
-				~
+				Category
 				<br>
-				~
+				{[$custo['subclasse_nome'] ]}
+				<select name="" id="subclasse_selector" class='form-control hide' >
+					<option value=""></option>
+					@foreach(Categorycusto::all() as $c)
+						<option value="{[$c->id]}" subclasse="{[$c->subclasse_id]}">{[$c->description]}</option>
+					@endforeach
+				</select>
+				<input type="hidden" name='subclasse_id' id='subclasse_id' value="1">
 			</div>
 		</div>
 		<br>
 		<div class="row">
 			<div class="col-sm-2">
-				~
+				detalhe
 				<br>
-				~
+				<input type="text" class='form-control' name="detalhe" id="detalhe" value="{[$custo ['detail_detalhe'] ]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				prestadora
+				<br>
+				<input type="text" class='form-control' name="prestadora" id="prestadora" value="{[$custo ['detail_prestadora'] ]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				descricao
+				<br>
+				<input type="text" class='form-control' name="descricao" id="descricao" value="{[$custo ['detail_descricao'] ]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				observacao
+				<br>
+				<input type="text" class='form-control' name="observacao" id="observacao" value="{[$custo ['detail_observacao'] ]}">
 			</div>
 		</div>
 		<br>
@@ -53,11 +84,28 @@
 			</div>
 		</div>
 		<br>
+		<!-- valor_total":23456,"valor_pago -->
 		<div class="row">
 			<div class="col-sm-2">
-				valor
+				dt_pagamento
 				<br>
-				~
+				<input type="text" class='form-control' name="dt_pagamento" id="dt_pagamento" value="{[$custo ['dt_pagamento'] ]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_total
+				<br>
+				<input type="text" class='form-control' name="valor_total" id="valor_total" value="{[$custo ['valor_total'] ]}">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-2">
+				valor_pago
+				<br>
+				<input type="text" class='form-control' name="valor_pago" id="valor_pago" value="{[$custo ['valor_pago'] ]}">
 			</div>
 		</div>
 		<br>
@@ -69,50 +117,9 @@
 			</div>
 		</div>
 		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				~
-				<br>
-				~
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				~
-				<br>
-				~
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				~
-				<br>
-				~
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				~
-				<br>
-				~
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				~
-				<br>
-				~
-			</div>
-		</div>
 		<br>
 		<input type="submit" value='save changes' class='btn btn-default'>
 		{[Form::close()]}
-
-		
 		<hr>
 		<br>
 		<br>
