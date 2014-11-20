@@ -14,8 +14,7 @@ class CreateEquipamentoTable extends Migration {
 	{
 		Schema::create('equipamento', function(Blueprint $table) {
 			$table->increments('id');//Parent key
-			$table->integer('empresa_id');
-			$table->integer('equipamentobase_id');//Equipamentobasepreco FK
+			$table->integer('equipamentobasepreco_id');
 			$table->string('codigo', 45);
 			$table->text('rfid')->nullable();
 			$table->text('qrcode')->nullable();

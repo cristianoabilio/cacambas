@@ -105,6 +105,9 @@
 				....  Edit .... 
 			</a>
 		<br>
+		{[ Form::model($convenio, array('route' => array('empresa.convenio.destroy', $empresa_id,$id), 'method' => 'DELETE')) ]}
+		<input type="submit" value='DELETE' class='btn btn-link'>
+		{[Form::close()]}
 		<br>
 		<a href="{[URL::to('empresa/'.$empresa_id.'/visibleconvenio') ]}">Back to convenio index</a>
 		<br>

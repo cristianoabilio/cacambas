@@ -15,8 +15,6 @@ class EquipamentobaseData extends StandardResponse {
 			,array('classe',1)
 			,array('subclasse',1)
 			,array('descricao',1)
-			//,array('status',1)
-			//,array('sessao_id',1)
 			)
 		;	
 		return $header;

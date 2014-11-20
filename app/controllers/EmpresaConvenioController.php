@@ -571,5 +571,17 @@ class EmpresaConvenioController extends \BaseController {
 	public function destroy($empresa_id,$id)
 	{
 		$d=new EmpresaConvenioData;
+		$e=Convenio::find($id);
+		$e->dt_fim=date('Y-m-d H:i:s');
+		$e->save();
+		$success=array('Convenio has been finished');
+		$res=$d->responsedata(
+			'convenio',
+			true,
+			'destroy',
+			$success
+			)
+		;
+		return Response::json($res,200);
 	}
 }
