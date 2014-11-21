@@ -31,6 +31,13 @@
 							<a href="{[URL::to('empresa/'.$empresa_id.'/showvisibleequipamento/'.$e->id)]}">HTML resource number {[$e->id]} </a>
 							|
 							<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id)]}">JSON resource number {[$e->id]} </a>
+							<ul>
+								<li>
+									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/visibleitems')]}">Item as HTML view</a>
+									|
+									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/items')]}">Item as JSON string</a>
+								</li>
+							</ul>
 						</td>
 						@foreach($header as $h)
 							@if($h[1]==1)

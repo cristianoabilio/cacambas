@@ -26,6 +26,7 @@ Route::get('/myproduction', function() use ($st_r)
 {
 	$allviews			=$st_r->allviews();
 	$empresanested		=$st_r->empresa_nested();
+	$equipamentonested	=$st_r->empresaequipamento_nested();
 	$convenionested		=$st_r->empresaconvenio_nested();
 	$funcionarionested	=$st_r->empresafuncionario_nested();
 	$classenested		=$st_r->classe_nested();
@@ -39,6 +40,7 @@ Route::get('/myproduction', function() use ($st_r)
 		compact(
 			'allviews',
 			'empresanested',
+			'equipamentonested',
 			'convenionested',
 			'funcionarionested',
 			'classenested',
@@ -152,6 +154,13 @@ foreach ($st_r->empresaconvenio_nested() as $k => $v) {
 	Route::resource('empresa.convenio.'.$v, $k);
 	Route::get('empresa/{empresa}/convenio/{convenio}/visible'.$v, $k.'@visible');
 	Route::get('empresa/{empresa}/convenio/{convenio}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+}
+
+//Nested controllers on empresa.equipamento
+foreach ($st_r->empresaequipamento_nested() as $k => $v) {
+	Route::resource('empresa.equipamento.'.$v, $k);
+	Route::get('empresa/{empresa}/equipamento/{equipamento}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{empresa}/equipamento/{equipamento}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 

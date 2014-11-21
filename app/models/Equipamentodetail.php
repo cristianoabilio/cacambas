@@ -14,11 +14,4 @@ class Equipamentodetail extends \Eloquent {
 	public function taxa () {
 		return $this->hasMany('taxa');
 	}
-	/*
-
-
-belongstTo empresa (through empresa_equipamento)
-belongstTo equipamento (through empresa_equipamento)
-
-*/
 }

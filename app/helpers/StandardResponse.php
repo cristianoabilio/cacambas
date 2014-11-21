@@ -90,6 +90,13 @@ class StandardResponse extends FormDataCapturer{
 		;
 	}
 
+	public function empresaequipamento_nested() {
+		return array(
+			'EmpresaEquipamentoItemController'		=>'items'
+			)
+		;
+	}
+
 	public function empresafuncionario_nested () {
 		return array(
 			'EmpresaFuncionarioResumoatividadeController'	=>'resumoatividade'

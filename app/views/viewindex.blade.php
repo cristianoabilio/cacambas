@@ -139,6 +139,32 @@
 		@endforeach
 		</table>
 		<br>
+		<h4>nested on empresa.equipamento</h4>
+		<small class="text-muted">
+			In order to see resources you must choose all parent resources first:  
+			<spam class="text-info">empresa/{empresa_id}/equipamento/{equipamento}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($equipamentonested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'empresa/{empresa_id}/equipamento/{equipamento}/{[$n]}'  
+				</td>
+				<td>
+					'empresa/{empresa_id}/equipamento/{equipamento}/{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
+		<br>
 		<h4>nested on empresa.funcionario</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources  first:  
