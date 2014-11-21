@@ -7,4 +7,8 @@ class EmpresaEquipamento extends \Eloquent {
 	public function equipamentodetail() {
 		return $this->hasOne('Equipamentodetail');
 	}
+
+	public function equipamento () {
+		return $this->belongsTo('Equipamento');
+	}
 }

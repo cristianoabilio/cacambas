@@ -69,7 +69,7 @@ class StandardResponse extends FormDataCapturer{
 			//Controller => route name / subname
 			'EmpresaEnderecoempresaController'	=>'enderecoempresa'
 			,'EmpresaLoginController'			=>'login'
-			,'EmpresaEquipamentobaseprecoController'=>'equipamentobasepreco'
+			,'EmpresaEquipamentoController'		=>'equipamento'
 			,'EmpresaCaminhaoController'		=>'caminhao'
 			,'EmpresaContabancariaController'	=>'contabancaria'
 			,'EmpresaConvenioController'		=>'convenio'

@@ -4,16 +4,16 @@
 <body>
 	<div class="container">
 		<h1>
-			Add a new "equipamentobasepreco" for empresa {[Empresa::find($empresa_id)->nome]}
+			Add a new "equipamento" for empresa {[Empresa::find($empresa_id)->nome]}
 		</h1>
-		{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/equipamentobasepreco') ))]}
+		{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/equipamento') ))]}
 		<div class="row">
 			<div class="col-sm-3">
-				equipamentobase
+				equipamento to be added
 				<br>
-				<select name="equipamentobase_id" id="equipamentobase_id" class="form-control">
+				<select name="equipamento_id" id="equipamento_id" class="form-control">
 					<option value=""></option>
-					@foreach($equipamentobase as $e)
+					@foreach($equipamento as $e)
 						<option value="{[$e->id]}">{[$e->nome]} - {[$e->classe]}</option>
 					@endforeach
 				</select>
@@ -76,7 +76,7 @@
 
 		{[Form::close()]}
 		<br>
-		<a href="{[URL::to('empresa/'.$empresa_id.'/visibleequipamentobasepreco')]}">Return to equipamentobasepreco index</a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/visibleequipamento')]}">Return to equipamento index</a>
 		<br>
 		<br>
 		<br>
@@ -86,7 +86,7 @@
 <script type="text/javascript">
 	$(function(){
 		$('#preco_form').hide('fast');
-		$('#equipamentobase_id').change(function(e){
+		$('#equipamento_id').change(function(e){
 			e.preventDefault();
 			if ($(this).val()=="") {
 				$('#preco_form').addClass('').hide('fast');

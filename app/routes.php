@@ -91,16 +91,37 @@ foreach ($st_r->allviews() as  $v) {
 	Route::get('showvisible'.$v.'/{'.$v.'}', ucfirst($v).'Controller@showvisible');
 }
 
-//Reactivate status (softdelete recovery)
-Route::post('showvisibleclasse/{classe}', 'ClasseController@reactivate');
-Route::post('classe/{classe}/showvisiblesubclasse/{subclasse}', 'ClasseSubclasseController@reactivate');
-Route::post('showvisiblecusto/{classe}', 'CustoController@reactivate');
-Route::post('empresa/{empresa}/showvisiblecusto/{custo}', 'EmpresaCustoController@reactivate');
-Route::post('showvisibleproduto/{produto}', 'ProdutoController@reactivate');
+
+//Reactivate status (softdelete restore)
+$softdelete=array(
+	'classe',
+	'custo',
+	'equipamento',
+	'produto',
+	'caminhao2'
+	)
+;
+foreach ($softdelete as $s) {
+	Route::post('/showvisible'.$s.'/{'.$s.'}', ucfirst($s).'Controller@reactivate');
+}
+
+
+//nested softdelete reactivate methods
+$nestedsoftdelete=array(
+	'classe|subclasse',
+	'empresa|custo',
+	'empresa|caminhao'
+	)
+;
+foreach ($nestedsoftdelete as $n) {
+	$n=explode('|',$n);
+	Route::post($n[0].'/{'.$n[0].'}/showvisible'.$n[1].'/{'.$n[1].'}', ucfirst($n[0]).ucfirst($n[1]).'Controller@reactivate');
+}
+
+//standalone softdelete reactivate methods
 Route::post('showvisibleempresaclienteanotacoes/{empresaclienteanotacoes}', 'EmpresaClienteAnotacoesController@reactivate');
-Route::post('showvisiblecaminhao2/{caminhao2}', 'Caminhao2Controller@reactivate');
-Route::post('empresa/{empresa}/showvisiblecaminhao/{caminhao}', 'EmpresaCaminhaoController@reactivate');
-Route::post('showvisibleequipamento/{equipamento}', 'EquipamentoController@reactivate');
+
+
 
 
 

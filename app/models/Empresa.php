@@ -42,6 +42,10 @@ class Empresa extends Eloquent {
 		return $this->belongsToMany('Equipamento');
 	}
 
+	public function equipamentodetail () {
+		return $this->hasManyThrough('Equipamentodetail','EmpresaEquipamento');
+	}
+
 	public function Empresaclienteanotacoes() {
 		return $this->hasMany('Empresaclienteanotacoes');
 	}

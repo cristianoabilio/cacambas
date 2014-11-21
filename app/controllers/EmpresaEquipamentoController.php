@@ -1,5 +1,5 @@
 <?php
-class EmpresaEquipamentobaseprecoData extends StandardResponse{
+class EmpresaEquipamentoData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of convenio table
@@ -7,17 +7,13 @@ class EmpresaEquipamentobaseprecoData extends StandardResponse{
 	public function header(){
 
 		$header=array(	
-			array('equipamentobase_id',1)
-			//,array('empresa_id',1)
+			array('empresa_equipamento_id',1)
 			,array('preco_base',1)
 			,array('periodo_minimo',0)
 			,array('dia_extra',0)
 			,array('preco_extra',0)
 			,array('taxa_extra',0)
 			,array('multa',0)
-			//,array('status',1)
-			//,array('sessao_id',1)
-			//,array('dthr_cadastro',1)
 			)
 		;	
 		return $header;
@@ -27,16 +23,16 @@ class EmpresaEquipamentobaseprecoData extends StandardResponse{
 	* @param edata retrieves all data from table "limite"
 	*/
 	public function edata ($empresa_id) {
-		//return Equipamentobasepreco::whereStatus_equipamentobasepreco(1)->get();
-		return  Empresa::find($empresa_id)->equipamentobasepreco;
+		//return Equipamento::whereStatus_equipamento(1)->get();
+		return  Empresa::find($empresa_id)->equipamentodetail;
 	}
 
 	public function edatainactive ($empresa_id) {
-		return Equipamentobasepreco::all();
+		//return Equipamento::all();
 	}
 
 	public function show($id){
-		return Equipamentobasepreco::find($id);
+		return Equipamentodetail::find($id);
 	}
 
 	/**
@@ -44,8 +40,9 @@ class EmpresaEquipamentobaseprecoData extends StandardResponse{
 	*/
 	public function form_data(){
 		$fillable=array(
-			'equipamentobase_id'
-			,'preco_base'
+			//'equipamento_id'
+			//,
+			'preco_base'
 			,'periodo_minimo'
 			//,'status'
 			//,'sessao_id'
@@ -57,16 +54,15 @@ class EmpresaEquipamentobaseprecoData extends StandardResponse{
 			'dia_extra'
 			,'preco_extra'
 			,'taxa_extra'
-			,'multa'
+			,'valor_multa'
 			)
 		;
 		return $this->formCapture ($fillable,$nullable);
-
 	}
 
 	public function validrules(){
 		return array(
-			'equipamentobase_id'=>'required'
+			'equipamento_id'=>'required'
 			,'preco_base'		=>'required'
 			,'periodo_minimo'	=>'required'
 			)
@@ -74,7 +70,7 @@ class EmpresaEquipamentobaseprecoData extends StandardResponse{
 	}
 }
 
-class EmpresaEquipamentobaseprecoController extends \BaseController {
+class EmpresaEquipamentoController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -83,22 +79,22 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	 */
 	public function index($empresa_id)
 	{
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 		return $d->edata($empresa_id);
 		//return 1;
 	}
 
 	public function visible ($empresa_id) {
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 		$data=array(
-			//all equipamentobasepreco
-			'equipamentobasepreco'=>$d->edata($empresa_id),
+			//all equipamento
+			'equipamentodetail'=>$d->edata($empresa_id),
 			'header'=>$d->header(),
-			//'equipamentobasepreco_0'=>$d->edatadeleted($empresa_id),
+			//'equipamento_0'=>$d->edatadeleted($empresa_id),
 			'empresa_id'=>$empresa_id
 			)
 		;
-		return View::make('tempviews.EmpresaEquipamentobasepreco.index',$data);
+		return View::make('tempviews.EmpresaEquipamento.index',$data);
 	}
 
 
@@ -110,11 +106,11 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	public function create($empresa_id)
 	{
 		$data=array(
-			'equipamentobase'=>Equipamentobase::all(),
+			'equipamento'=>Equipamento::all(),
 			'empresa_id'=>$empresa_id
 			)
 		;
-		return View::make('tempviews.EmpresaEquipamentobasepreco.create',$data);
+		return View::make('tempviews.EmpresaEquipamento.create',$data);
 	}
 
 
@@ -129,7 +125,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 
 		$success=$d->form_data();
 
@@ -154,13 +150,20 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 				;
 			}
 
-			$e=new Equipamentobasepreco;
-			$e->empresa_id=$empresa_id;
+			$pivot=new EmpresaEquipamento;
+			$p=$pivot;
+			$p->empresa_id=$empresa_id;
+			$p->equipamento_id=Input::get('equipamento_id');
+			$p->save();
+			$empresa_equipamento_id=$p->id;
+			$ee_id=$empresa_equipamento_id;
+
+			$e=new Equipamentodetail;
+			$e->empresa_equipamento_id=$ee_id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
 			$e->status=1;
-			$e->dthr_cadastro=date('Y-m-d');
 
 			$e->sessao_id		=$fake->sessao_id();
 			//$e->sessao_id		=$this->id_sessao;
@@ -169,7 +172,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				true,
 				'store',
 				$success
@@ -180,7 +183,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				false,
 				'store',
 				$validator->messages()
@@ -200,17 +203,17 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	 */
 	public function show($empresa_id,$id)
 	{
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 		return $d->show($id);
 	}
 
 	public function showvisible($empresa_id,$id) {
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 
 		try {
-			if (Equipamentobasepreco::whereId($id)->count()==0) {
+			if (Equipamento::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamentobasepreco',
+					'equipamento',
 					false,
 					'show',
 					$d->noexist
@@ -220,13 +223,13 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'equipamentobasepreco'	=>$d->show($id),
+				'equipamentodetail'	=>$d->show($id),
 				'header'	=>$d->header(),
 				'id'		=>$id,
 				'empresa_id'=>$empresa_id
 				)
 			;
-			return View::make('tempviews.EmpresaEquipamentobasepreco.show',$data);
+			return View::make('tempviews.EmpresaEquipamento.show',$data);
 
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -242,11 +245,11 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	 */
 	public function edit($empresa_id,$id)
 	{
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 		try {
-			if (Equipamentobasepreco::whereId($id)->count()==0) {
+			if (Equipamentodetail::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamentobasepreco',
+					'equipamento',
 					false,
 					'edit',
 					$d->noexist
@@ -255,15 +258,28 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'equipamentobasepreco'	=>$d->show($id),
-				'equipamentobase'=>Equipamentobase::all(),
-				'header'	=>$d->header(),
-				'id'		=>$id,
-				'empresa_id'=>$empresa_id
+			$equipamentodetail=$d->show($id);
+			$choosen=EmpresaEquipamento::find(
+				$equipamentodetail
+				->empresa_equipamento_id
 				)
+			->equipamento_id;
+
+			//return $choosen;
 			;
-			return View::make('tempviews.EmpresaEquipamentobasepreco.edit',$data);
+			$equipamento=Equipamento::all();
+			$header=$d->header();
+			
+			return View::make('tempviews.EmpresaEquipamento.edit',
+				compact(
+					'equipamentodetail',
+					'choosen',
+					'equipamento',
+					'header',
+					'empresa_id',
+					'id'
+					)
+				);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -283,7 +299,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 		$success=$d->form_data();
 
 		try{
@@ -307,17 +323,22 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 				;
 			}
 
-			$e=Equipamentobasepreco::find($id);
+			$e=Equipamentodetail::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->dthr_cadastro=date('Y-m-d');
+			//$e->dthr_cadastro=date('Y-m-d');
 			$e->sessao_id		=$fake->sessao_id();
 			$e->save();	
 
+			$emp_e=EmpresaEquipamento::find($e->empresa_equipamento_id);
+			$emp_e->equipamento_id=Input::get('equipamento_id');
+			//return Input::get('equipamento_id');
+			$emp_e->save();
+
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				true,
 				'update',
 				$success
@@ -328,7 +349,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				false,
 				'update',
 				$validator->messages()
@@ -348,20 +369,20 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	 */
 	public function destroy($empresa_id,$id)
 	{
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 
 		try{
-			if (Equipamentobasepreco::whereId($id)->count()==0) {
+			if (Equipamento::whereId($id)->count()==0) {
 				throw new Exception(json_encode($d->noexist));
 				$code=400;
 			}
 
-			$c=Equipamentobasepreco::find($id);
+			$c=Equipamento::find($id);
 			$c->status=0;
 			$c->save();
 			//::whereId($id)->delete();
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				true,
 				'delete',
 				array('msg' => 'Registro excluído com sucesso!')
@@ -373,7 +394,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				false,
 				'delete',
 				array('msg' => json_decode($e->getMessage()))
@@ -386,20 +407,20 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 	}
 
 	public function reactivate ($empresa_id,$id) {
-		$d=new EmpresaEquipamentobaseprecoData;
+		$d=new EmpresaEquipamentoData;
 
 		try{
-			if (Equipamentobasepreco::whereId($id)->count()==0) {
+			if (Equipamento::whereId($id)->count()==0) {
 				throw new Exception(json_encode($d->noexist));
 				$code=400;
 			}
 
-			$c=Equipamentobasepreco::find($id);
+			$c=Equipamento::find($id);
 			$c->status=1;
 			$c->save();
 
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				true,
 				'restore',
 				array('msg' => 'Restored resource')
@@ -411,7 +432,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		catch(Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamentobasepreco',
+				'equipamento',
 				false,
 				'restore',
 				array('msg' => json_decode($e->getMessage()))
@@ -441,7 +462,7 @@ class EmpresaEquipamentobaseprecoController extends \BaseController {
 		;
 		$equip_b_p=array();
 		$i=0;
-		foreach (Empresa::find($id)->equipamentobasepreco as $key => $e) {
+		foreach (Empresa::find($id)->equipamento as $key => $e) {
 			$equip_b_p[$i]['classe']=$e->equipamentobase->classe;
 			foreach ($header as $v) {
 				$equip_b_p[$i][$v]=$e->$v;
