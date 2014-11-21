@@ -40,6 +40,8 @@
 		<input type="submit" value='SAVE CHANGES'>
 		{[Form::close()]}
 		<br>
+		{[ $destroy]}
+		<br>
 		<a href="{[URL::to('visibleequipamento')]} ">Back to equipamento index</a>
 	</div>
 </body>

@@ -18,7 +18,13 @@
 		<a href="{[URL::to('equipamento/'.$id.'/edit')]} ">
 			....  Edit .... 
 		</a>
+		<?php 
+
+		//$destroy=new FormDataCapturer;
+		//echo $destroy->modelDestroy($equipamento,'equipamento',$id);
+		?>
 		<br>
+		{[ $destroy]}
 		<br>
 		<a href="{[URL::to('visibleequipamento')]}">Back to equipamento</a>
 		<br>

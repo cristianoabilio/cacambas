@@ -24,7 +24,14 @@ class EquipamentoData extends StandardResponse {
 	* @param edata retrieves all data from table "equipamento"
 	*/
 	public function edata () {
-		return Equipamento::all();
+		return Equipamento::whereStatus(1)->get();
+	}
+
+	/**
+	* @param edata retrieves all data from table "equipamento"
+	*/
+	public function edatadeleted () {
+		return Equipamento::whereStatus(0)->get();
 	}
 
 	public function show($id){
@@ -57,6 +64,13 @@ class EquipamentoData extends StandardResponse {
 			)
 		;
 	}
+
+	public function destroylink ($id) {
+		$model=Equipamento::find($id);
+		$route='equipamento';
+		return $this->modelDestroy ($model,$route,$id);
+		
+	}
 }
 
 class EquipamentoController extends \BaseController {
@@ -76,6 +90,7 @@ class EquipamentoController extends \BaseController {
 		$d=new EquipamentoData;
 		$data=array(
 			'equipamento'=>$d->edata(),
+			'deleted'=>$d->edatadeleted (),
 			'header'=>$d->header()
 			)
 		;
@@ -195,8 +210,19 @@ class EquipamentoController extends \BaseController {
 				'header' 	=>$d->header(),
 				'id' 		=>$id
 				)
+			;$equipamento=$d->show($id);
+			$header=$d->header();
+			$destroy=$d->destroylink ($id);
+			return View::make(
+				'tempviews.equipamento.show',
+				compact(
+					'equipamento',
+					'header',
+					'id',
+					'destroy'
+					)
+				)
 			;
-			return View::make('tempviews.equipamento.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -225,13 +251,20 @@ class EquipamentoController extends \BaseController {
 				$res=json_encode($res);
 				throw new Exception($res);
 			}
-			$data=array(
-				'equipamento' 	=>$d->show($id),
-				'header' 		=>$d->header(),
-				'id' 			=>$id
+			
+			$equipamento=$d->show($id);
+			$header=$d->header();
+			$destroy=$d->destroylink ($id);
+			return View::make(
+				'tempviews.equipamento.edit',
+				compact(
+					'equipamento',
+					'header',
+					'id',
+					'destroy'
+					)
 				)
 			;
-			return View::make('tempviews.equipamento.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -312,7 +345,82 @@ class EquipamentoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$d=new EquipamentoData;
+		try{
+			if (Equipamento::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+				$code=400;
+			}
+
+			$c=Equipamento::find($id);
+			$c->status=0;
+			$c->save();
+
+			//Equipamento::whereId($id)->delete();
+			$res=$d->responsedata(
+				'equipamento',
+				true,
+				'delete',
+				array('msg' => 'Registro excluído com sucesso!')
+				)
+			;
+			$code=200;
+
+		}
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'subclasse',
+				false,
+				'delete',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+		}
+
+		return Response::json($res,$code);
+	}
+
+	//restore
+	public function reactivate($id)
+	{
+		$d=new EquipamentoData;
+
+		try{
+			if (Equipamento::whereId($id)->count()==0) {
+				throw new Exception(json_encode($d->noexist));
+				$code=400;
+			}
+
+			$c=Equipamento::find($id);
+			$c->status=1;
+			$c->save();
+
+			//Equipamento::whereId($id)->delete();
+			$res=$d->responsedata(
+				'equipamento',
+				true,
+				'restore',
+				array('msg' => 'Resource succesfully restored!')
+				)
+			;
+			$code=200;
+
+		}
+		catch(Exception $e){
+			SysAdminHelper::NotifyError($e->getMessage());
+			$res=$d->responsedata(
+				'equipamento',
+				false,
+				'restore',
+				array('msg' => json_decode($e->getMessage()))
+				)
+			;
+			$code=400;
+		}
+
+		return Response::json($res,$code);
 	}
 
 

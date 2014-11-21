@@ -20,9 +20,9 @@
 			$empresa->id
 			)
 			, 'method' => 'DELETE')) ]}
-			<input type="submit" value='DELETE'>
-			</form>
-			<br>
+			<input type="submit" value='DELETE' class='btn btn-link'>
+		{[Form::close()]}
+		<br>
 		<a href="{[URL::to('empresa')]}       ">Back to empresas</a>
 	</div>
 </body>
