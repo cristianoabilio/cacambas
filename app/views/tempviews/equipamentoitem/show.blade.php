@@ -1,0 +1,1 @@
+app/views/tempviews/equipamento/show.blade.php

@@ -5,9 +5,9 @@
 <body>
 	<div class="container">
 		<h1>
-			All registered Equipamentobasepreco
+			All registered Equipamentodetail
 		</h1>
-		<a href="{[URL::to('equipamentobasepreco/create')]}" class=''>Add new "equipamentobasepreco"</a>
+		<a href="{[URL::to('equipamentodetail/create')]}" class=''>Add new "equipamentodetail"</a>
 		<br>
 		<table class='table'>
 			<tr>
@@ -22,11 +22,11 @@
 				
 			@endforeach
 			</tr>
-			@foreach($equipamentobasepreco as $e)
+			@foreach($equipamentodetail as $e)
 			<tr>
 				<td>
-					<a href="{[URL::to('showvisibleequipamentobasepreco/'.$e->id)]}">HTLM equipamentobasepreco {[$e->id]}</a> |
-					<a href="{[URL::to('equipamentobasepreco/'.$e->id)]}">JSON equipamentobasepreco {[$e->id]}</a>
+					<a href="{[URL::to('showvisibleequipamentodetail/'.$e->id)]}">HTLM equipamentodetail {[$e->id]}</a> |
+					<a href="{[URL::to('equipamentodetail/'.$e->id)]}">JSON equipamentodetail {[$e->id]}</a>
 				</td>
 				@foreach($header as $h)
 					@if($h[1]==1)

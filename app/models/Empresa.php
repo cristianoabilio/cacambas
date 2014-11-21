@@ -38,6 +38,10 @@ class Empresa extends Eloquent {
 		return $this->hasMany('Login');
 	}
 
+	public function equipamento () {
+		return $this->belongsToMany('Equipamento');
+	}
+
 	public function Empresaclienteanotacoes() {
 		return $this->hasMany('Empresaclienteanotacoes');
 	}
@@ -62,10 +66,6 @@ class Empresa extends Eloquent {
 		return $this->hasMany('Contabancaria');
 	}
 
-	public function Equipamentobasepreco() {
-		return $this->hasMany('Equipamentobasepreco');
-	}
-
 	public function Funcionario() {
 		return $this->hasMany('Funcionario');
 	}
@@ -73,4 +73,12 @@ class Empresa extends Eloquent {
 	public function Tarefas() {
 		return $this->hasMany('Tarefa', 'IDTarefa', 'IDTarefa');
 	}
+
+	/*Scopes*/
+	//equipamentodetails
+	public function scopeEquipamentodetail ($query) {
+		return $query	->where('')
+		;
+	}
+	
 }

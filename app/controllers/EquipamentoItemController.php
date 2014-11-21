@@ -1,5 +1,10 @@
 <?php
-class EquipamentobaseData extends StandardResponse {
+
+/**
+ * [Table]Data class only contains data related to
+ * the table 
+ */
+class EquipamentoItemData extends StandardResponse{
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -11,90 +16,79 @@ class EquipamentobaseData extends StandardResponse {
 		1 (visible) or 2 (not shown)
 		*/
 		$header=array(	
-			array('nome',1)
-			,array('classe',1)
-			,array('subclasse',1)
-			,array('descricao',1)
-			)
-		;	
+			array('codigo',1)
+			,array('rfid',0)
+			,array('qrcode',0)
+			,array('gps',0)
+
+		);	
 		return $header;
 	}
-
+	
 	/**
-	* @param edata retrieves all data from table "equipamento"
+	* @param edata retrieves all data from table "empresa"
 	*/
 	public function edata () {
-		return Equipamentobase::all();
+		return Equipamentoitem::all();
 	}
 
 	public function show($id){
-		return Equipamentobase::find($id);
+		return Equipamentoitem::find($id);
 	}
 
 	/**
 	* @param formdata returns array with form values
 	*/
 	public function form_data(){
-		$formdata=array(
-			'nome'	=>Input::get('nome')
-			,'classe'	=>Input::get('classe')
-			,'subclasse'	=>Input::get('subclasse')
-			,'descricao'	=>Input::get('descricao')
-			//,'status'	=>Input::get('status')
-			//,'sessao_id'	=>Input::get('sessao_id')
 
-			)
+		return array(
+				'codigo'		=>Input::get('codigo'),
+				'regiao'			=>Input::get('regiao')
+				)
 		;
-
-		$nullable=array(
-			//
-			//
-			)
-		;
-
-		foreach ($nullable as $key => $value) {
-			if ( trim($value)!="" ) {
-				$formdata[$key]=$value;
-			} else {
-				$formdata[$key]=null;
-			}
-		}
-
-		return $formdata;
 	}
 
 	public function validrules(){
 		return array(
-			'nome'		=>	'required'
-			,'classe'	=>	'required'
-			,'subclasse'=>	'required'
-			//,'descricao'=>	'required'
+			'nome'	=>	'required'
+			//,'regiao'		=>	'required'
 			)
 		;
 	}
 }
 
-class EquipamentobaseController extends \BaseController {
+class EquipamentoitemController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
-		$d=new EquipamentobaseData;
+	public function index () {
+		$d=new EquipamentoItemData;
 		return Response::json($d->edata());
 	}
 
-	public function visible () {
-		$d=new EquipamentobaseData;
+
+	/**
+	* Visible action IS NOT A RESTFUL RESOURCE 
+	* but is required for generating the view
+	* with access links to each resource,
+	* this is, the visible index page.
+	* The reason of this method is because the
+	* index resource will throw a JSON object
+	* and no view at all.
+	*/
+	public function visible()
+	{
+		$d=new EquipamentoItemData;
 		$data=array(
-			'equipamentobase'=>$d->edata(),
+			//all equipamento
+			'equipamentoitem'=>$d->edata(),
 			'header'=>$d->header()
 			)
 		;
-		return View::make('tempviews.equipamentobase.index',$data);
+		return View::make('tempviews.equipamentoitem.index',$data);
 	}
 
 
@@ -105,7 +99,8 @@ class EquipamentobaseController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('tempviews.equipamentobase.create');
+		$data=array();
+		return View::make('tempviews.equipamentoitem.create',$data);
 	}
 
 
@@ -120,10 +115,10 @@ class EquipamentobaseController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
-		$d=new EquipamentobaseData;
+
+		$d=new EquipamentoItemData;
 		$success=$d->form_data();
 
-		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),
@@ -145,18 +140,16 @@ class EquipamentobaseController extends \BaseController {
 				;
 			}
 
-			$e=new Equipamentobase;	
+			$e=new Equipamento;	
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->status=1;
-			$e->sessao_id=$fake->sessao_id();
 			$e->save();
 
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'estado',
+				'equipamentoitem',
 				true,
 				'store',
 				$success
@@ -167,7 +160,7 @@ class EquipamentobaseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'estado',
+				'equipamentoitem',
 				false,
 				'store',
 				$validator->messages()
@@ -185,18 +178,17 @@ class EquipamentobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		$d=new EquipamentobaseData;
+	public function show ($id) {
+		$d=new EquipamentoItemData;
 		return $d->show($id);
 	}
-
-	public function showvisible ($id) {
-		$d=new EquipamentobaseData;
+	public function showvisible($id)
+	{
+		$d=new EquipamentoItemData;
 		try {
-			if (Equipamentobase::whereId($id)->count()==0) {
+			if (Equipamentoitem::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamentoempresa',
+					'equipamentoitem',
 					false,
 					'show',
 					$d->noexist
@@ -206,16 +198,17 @@ class EquipamentobaseController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'equipamentobase' 	=>$d->show($id),
-				'header' 	=>$d->header(),
-				'id' 		=>$id
+				'equipamentoitem'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.equipamentobase.show',$data);
+			return View::make('tempviews.equipamentoitem.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
+			
 	}
 
 
@@ -227,11 +220,11 @@ class EquipamentobaseController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$d=new EquipamentobaseData;
+		$d=new EquipamentoItemData;
 		try {
-			if (Equipamentobase::whereId($id)->count()==0) {
+			if (Equipamentoitem::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamentoempresa',
+					'equipamentoitem',
 					false,
 					'edit',
 					$d->noexist
@@ -241,16 +234,17 @@ class EquipamentobaseController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'equipamentobase' 	=>$d->show($id),
-				'header' 		=>$d->header(),
-				'id' 			=>$id
+				'equipamentoitem'	=>$d->show($id),
+				'header'	=>$d->header(),
+				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.equipamentobase.edit',$data);
+			return View::make('tempviews.equipamentoitem.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
+			
 	}
 
 
@@ -262,8 +256,11 @@ class EquipamentobaseController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		//instantiate fake user (for empresa and sessao)
+		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
-		$d=new EquipamentobaseData;
+
+		$d=new EquipamentoItemData;
 		$success=$d->form_data();
 
 		try{
@@ -273,7 +270,7 @@ class EquipamentobaseController extends \BaseController {
 				array(		
 					'required'=>'Required field'	
 					)	
-				)		
+				)
 			;
 
 			if ($validator->fails()){
@@ -287,17 +284,15 @@ class EquipamentobaseController extends \BaseController {
 				;
 			}
 
-			$e=Equipamentobase::find($id);
+			$e=Equipamentoitem::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			$e->dthr_cadastro	=date('Y-m-d H:i:s');
-			$e->sessao_id		=$fake->sessao_id();
 			$e->save();	
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'equipamentobase',
+				'equipamentoitem',
 				true,
 				'update',
 				$success
@@ -308,7 +303,7 @@ class EquipamentobaseController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamentobase',
+				'equipamentoitem',
 				false,
 				'update',
 				$validator->messages()
@@ -316,8 +311,9 @@ class EquipamentobaseController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res);
+		return Response::json($res,$code);
 	}
+	
 
 
 	/**
@@ -326,10 +322,9 @@ class EquipamentobaseController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	/*public function destroy($id)
 	{
 		//
 	}
-
-
+*/
 }

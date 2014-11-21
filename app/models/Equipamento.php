@@ -1,25 +1,14 @@
 <?php
 
-class Equipamento extends Eloquent {
-	protected $table = 'equipamento';
-	
-	//Override default PK 'id' from Eloquent  
-	protected $primaryKey = 'id';
+class Equipamento extends \Eloquent {
+	protected $fillable = [];
 
-	protected $guarded = array();
-	public static $rules = array();
-
-
-	public function Custo() { 
-			return $this->hasMany('Custo');
+	public function empresa () {
+		return $this->belongsToMany('Empresa');
 	}
 
-	public function Equipamentobasepreco() { 
-		return $this->belongsTo('Equipamentobasepreco');
-	}
-
-	public function Operador() { 
-		return $this->hasMany('Operador');
-	}
-
+	/*
+	pending to scope relationship with
+	equipamentodetail
+	*/
 }

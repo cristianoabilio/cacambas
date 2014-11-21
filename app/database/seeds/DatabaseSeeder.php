@@ -21,9 +21,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('EnderecoBaseTableSeeder');
 		$this->call('EnderecoEmpresaTableSeeder');
 		$this->call('EnderecoTableSeeder');
-		$this->call('EquipamentobaseTableSeeder');
-		$this->call('EquipamentobaseprecoTableSeeder');
-		$this->call('EquipamentoTableSeeder');
+		$this->call('EquipamentosTableSeeder');
 		$this->call('EstadoTableSeeder');
 		$this->call('LimiteTableSeeder');
 		$this->call('ProdutoTableSeeder');
@@ -35,7 +33,6 @@ class DatabaseSeeder extends Seeder {
 		$this->command->info('Perfil table has been seeded!');
 		$this->call('LoginPerfilTableSeeder');
 		$this->command->info('LoginPerfil table has been seeded!');
-
 	}
 
 }

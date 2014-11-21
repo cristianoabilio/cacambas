@@ -3,8 +3,8 @@
 </head>
 <body>
 	<div class="container">
-		<h1>From this view you cannot create a new equipamentobasepreco resource</h1>
+		<h1>From this view you cannot create a new equipamentodetail resource</h1>
 		<h2 class="text-muted">you must choose a company (empresa) first</h2>
-		<a href="{[URL::to('visibleequipamentobasepreco')]}">Go back to equipamentobasepreco index</a>
+		<a href="{[URL::to('visibleequipamentodetail')]}">Go back to equipamentodetail index</a>
 	</div>
 </body>

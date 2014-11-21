@@ -14,8 +14,8 @@ class CreateTaxaTable extends Migration {
 	{
 		Schema::create('taxa', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('equipamentobase_id');//Equipamentobasepreco FK
 			$table->integer('empresa_id');
+			$table->integer('equipamentodetail_id');
 			$table->integer('cidade_id');
 			$table->text('zona');
 			$table->integer('bairro_id');

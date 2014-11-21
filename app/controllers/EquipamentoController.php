@@ -1,10 +1,5 @@
 <?php
-
-/**
- * [Table]Data class only contains data related to
- * the table 
- */
-class EquipamentoData extends StandardResponse{
+class EquipamentoData extends StandardResponse {
 	/** 
 	* function name: header.
 	* @param header with headers of empresa table
@@ -17,13 +12,16 @@ class EquipamentoData extends StandardResponse{
 		*/
 		$header=array(	
 			array('nome',1)
-			,array('regiao',1)
-		);	
+			,array('classe',1)
+			,array('subclasse',1)
+			,array('descricao',1)
+			)
+		;	
 		return $header;
 	}
-	
+
 	/**
-	* @param edata retrieves all data from table "empresa"
+	* @param edata retrieves all data from table "equipamento"
 	*/
 	public function edata () {
 		return Equipamento::all();
@@ -37,18 +35,25 @@ class EquipamentoData extends StandardResponse{
 	* @param formdata returns array with form values
 	*/
 	public function form_data(){
-
-		return array(
-				'nome'		=>Input::get('nome'),
-				'regiao'			=>Input::get('regiao')
-				)
+		$fillable=array(
+			'nome',
+			'classe',
+			'subclasse'
+			)
 		;
+		$nullable=array(
+			'descricao'
+			)
+		;
+		return $this->formCapture ($fillable,$nullable);
+		//
 	}
 
 	public function validrules(){
 		return array(
-			'nome'	=>	'required'
-			//,'regiao'		=>	'required'
+			'nome'		=>	'required'
+			,'classe'	=>	'required'
+			,'subclasse'=>	'required'
 			)
 		;
 	}
@@ -61,26 +66,15 @@ class EquipamentoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index () {
+	public function index()
+	{
 		$d=new EquipamentoData;
 		return Response::json($d->edata());
 	}
 
-
-	/**
-	* Visible action IS NOT A RESTFUL RESOURCE 
-	* but is required for generating the view
-	* with access links to each resource,
-	* this is, the visible index page.
-	* The reason of this method is because the
-	* index resource will throw a JSON object
-	* and no view at all.
-	*/
-	public function visible()
-	{
+	public function visible () {
 		$d=new EquipamentoData;
 		$data=array(
-			//all equipamento
 			'equipamento'=>$d->edata(),
 			'header'=>$d->header()
 			)
@@ -96,8 +90,7 @@ class EquipamentoController extends \BaseController {
 	 */
 	public function create()
 	{
-		$data=array();
-		return View::make('tempviews.equipamento.create',$data);
+		return View::make('tempviews.equipamento.create');
 	}
 
 
@@ -112,10 +105,10 @@ class EquipamentoController extends \BaseController {
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
-
 		$d=new EquipamentoData;
 		$success=$d->form_data();
 
+		//
 		try{
 			$validator= Validator::make(			
 				Input::All(),
@@ -141,12 +134,14 @@ class EquipamentoController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->status=1;
+			$e->sessao_id=$fake->sessao_id();
 			$e->save();
 
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'equipamento',
+				'estado',
 				true,
 				'store',
 				$success
@@ -157,7 +152,7 @@ class EquipamentoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'equipamento',
+				'estado',
 				false,
 				'store',
 				$validator->messages()
@@ -175,17 +170,18 @@ class EquipamentoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
+	public function show($id)
+	{
 		$d=new EquipamentoData;
 		return $d->show($id);
 	}
-	public function showvisible($id)
-	{
+
+	public function showvisible ($id) {
 		$d=new EquipamentoData;
 		try {
 			if (Equipamento::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamento',
+					'equipamentoempresa',
 					false,
 					'show',
 					$d->noexist
@@ -195,9 +191,9 @@ class EquipamentoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'equipamento'	=>$d->show($id),
-				'header'	=>$d->header(),
-				'id'		=>$id
+				'equipamento' 	=>$d->show($id),
+				'header' 	=>$d->header(),
+				'id' 		=>$id
 				)
 			;
 			return View::make('tempviews.equipamento.show',$data);
@@ -205,7 +201,6 @@ class EquipamentoController extends \BaseController {
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
 	}
 
 
@@ -221,7 +216,7 @@ class EquipamentoController extends \BaseController {
 		try {
 			if (Equipamento::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'equipamento',
+					'equipamentoempresa',
 					false,
 					'edit',
 					$d->noexist
@@ -231,9 +226,9 @@ class EquipamentoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'equipamento'	=>$d->show($id),
-				'header'	=>$d->header(),
-				'id'		=>$id
+				'equipamento' 	=>$d->show($id),
+				'header' 		=>$d->header(),
+				'id' 			=>$id
 				)
 			;
 			return View::make('tempviews.equipamento.edit',$data);
@@ -241,7 +236,6 @@ class EquipamentoController extends \BaseController {
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
 	}
 
 
@@ -253,10 +247,7 @@ class EquipamentoController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
-
 		$d=new EquipamentoData;
 		$success=$d->form_data();
 
@@ -267,7 +258,7 @@ class EquipamentoController extends \BaseController {
 				array(		
 					'required'=>'Required field'	
 					)	
-				)
+				)		
 			;
 
 			if ($validator->fails()){
@@ -285,6 +276,7 @@ class EquipamentoController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->sessao_id		=$fake->sessao_id();
 			$e->save();	
 
 			//response structure required for angularjs
@@ -308,9 +300,8 @@ class EquipamentoController extends \BaseController {
 			;
 			$code=400;
 		}
-		return Response::json($res,$code);
+		return Response::json($res);
 	}
-	
 
 
 	/**
@@ -319,9 +310,10 @@ class EquipamentoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	public function destroy($id)
 	{
 		//
 	}
-*/
+
+
 }

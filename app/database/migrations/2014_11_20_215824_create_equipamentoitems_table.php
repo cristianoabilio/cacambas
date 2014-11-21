@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateEquipamentoTable extends Migration {
+class CreateEquipamentoitemsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,16 +12,16 @@ class CreateEquipamentoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('equipamento', function(Blueprint $table) {
-			$table->increments('id');//Parent key
-			$table->integer('equipamentobasepreco_id');
-			$table->string('codigo', 45);
+		Schema::create('equipamentoitems', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('equipamentodetail_id');
+			$table->string('codigo');
 			$table->text('rfid')->nullable();
 			$table->text('qrcode')->nullable();
 			$table->text('gps')->nullable();
-			$table->tinyInteger('status');
+			$table->tinyinteger('status');
 			$table->integer('sessao_id');
-			$table->datetime('dthr_cadastro');
 			$table->timestamps();
 		});
 	}
@@ -34,7 +34,7 @@ class CreateEquipamentoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('equipamento');
+		Schema::drop('equipamentoitems');
 	}
 
 }
