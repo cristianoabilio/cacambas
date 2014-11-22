@@ -18,7 +18,11 @@
 				@foreach($header as $h)
 					@if($h[1]==1)
 						<th>
+							@if($h[0] =='empresa_equipamento_id')
+							Equipamento
+							@else 
 							{[$h[0]  ]}
+							@endif
 						</th>
 					@endif
 				@endforeach
@@ -33,9 +37,9 @@
 							<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id)]}">JSON resource number {[$e->id]} </a>
 							<ul>
 								<li>
-									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/visibleitems')]}">Item as HTML view</a>
+									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/visibleitems')]}">Items as HTML view</a>
 									|
-									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/items')]}">Item as JSON string</a>
+									<a href="{[URL::to('empresa/'.$empresa_id.'/equipamento/'.$e->id.'/items')]}">Items as JSON string</a>
 								</li>
 							</ul>
 						</td>

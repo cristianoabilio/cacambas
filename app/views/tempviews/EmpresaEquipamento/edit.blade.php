@@ -8,15 +8,10 @@
 	
 		<div class="row">
 			<div class="col-sm-3">
-				equipamento 
+				equipamento: {[$currentequipamento->classe]} ({[$currentequipamento->nome]}) 
+				<small class="text-muted">-uneditable-</small>
 				<br>
-				<select name="equipamento_id" id="equipamento_id" class="form-control">
-					<option value=""></option>
-					@foreach($equipamento as $e)
-					<?php $sel=''; if ($e->id==$choosen) { $sel='selected';} ?>
-						<option value="{[$e->id]}" {[$sel]}>{[$e->nome]} - {[$e->classe]}</option>
-					@endforeach
-				</select>
+				<input type="hidden" name="equipamento_id" id="equipamento_id" value='{[$choosen]}'>
 			</div>
 		</div>
 		<br>

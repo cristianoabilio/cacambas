@@ -62,7 +62,7 @@ class EmpresaEquipamentoData extends StandardResponse{
 
 	public function validrules(){
 		return array(
-			'equipamento_id'=>'required'
+			'equipamento_id'	=>'required'
 			,'preco_base'		=>'required'
 			,'periodo_minimo'	=>'required'
 			)
@@ -129,6 +129,8 @@ class EmpresaEquipamentoController extends \BaseController {
 
 		$success=$d->form_data();
 
+		$mssg='';
+
 		try{
 			$validator= Validator::make(			
 				Input::All(),
@@ -140,6 +142,7 @@ class EmpresaEquipamentoController extends \BaseController {
 			;
 
 			if ($validator->fails()){
+				$mssg=$validator->messages();
 				throw new Exception(
 					json_encode(
 						array(
@@ -150,10 +153,38 @@ class EmpresaEquipamentoController extends \BaseController {
 				;
 			}
 
+			//EXCEPTION FOR REPEATED EQUIPAMENTO RESOURCE
+			//Each equipamento can exist only once for each empresa
+			//if repeated, code will throw an exception
+
+			//1. retrieving id of equipamento to be added
+			$equipamento_id=Input::get('equipamento_id');
+
+			//2. current empresa_equipamento (pivot) records
+			$current_empresa_equipamentos=
+			EmpresaEquipamento::whereEmpresa_id($empresa_id)
+			->get();
+			;
+
+			//3. array with current equipamentos id for empresa resource
+			$current_equipamentos=array();
+			$i=0;
+			foreach ($current_empresa_equipamentos as $c) {
+				$current_equipamentos[$i]=$c->equipamento->id;
+				$i++;
+			}
+
+			//returning exception
+			if (in_array($equipamento_id, $current_equipamentos)) {
+				$mssg='equipamento already exists for this empresa, it cannot be added twice!';
+				throw new Exception($mssg);
+			}
+			//return "saved action was blocked, no worries!";
+
 			$pivot=new EmpresaEquipamento;
 			$p=$pivot;
 			$p->empresa_id=$empresa_id;
-			$p->equipamento_id=Input::get('equipamento_id');
+			$p->equipamento_id=$equipamento_id;
 			$p->save();
 			$empresa_equipamento_id=$p->id;
 			$ee_id=$empresa_equipamento_id;
@@ -182,11 +213,12 @@ class EmpresaEquipamentoController extends \BaseController {
 		}
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
+
 			$res=$d->responsedata(
 				'equipamento',
 				false,
 				'store',
-				$validator->messages()
+				$mssg
 				)
 			;
 			$code=400;
@@ -264,6 +296,7 @@ class EmpresaEquipamentoController extends \BaseController {
 				->empresa_equipamento_id
 				)
 			->equipamento_id;
+			$currentequipamento=Equipamento::find($choosen);
 
 			//return $choosen;
 			;
@@ -274,6 +307,7 @@ class EmpresaEquipamentoController extends \BaseController {
 				compact(
 					'equipamentodetail',
 					'choosen',
+					'currentequipamento',
 					'equipamento',
 					'header',
 					'empresa_id',
@@ -327,14 +361,9 @@ class EmpresaEquipamentoController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			//$e->dthr_cadastro=date('Y-m-d');
+			//
 			$e->sessao_id		=$fake->sessao_id();
 			$e->save();	
-
-			$emp_e=EmpresaEquipamento::find($e->empresa_equipamento_id);
-			$emp_e->equipamento_id=Input::get('equipamento_id');
-			//return Input::get('equipamento_id');
-			$emp_e->save();
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
