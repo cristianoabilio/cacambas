@@ -41,6 +41,7 @@ class EmpresaEquipamentoData extends StandardResponse{
 			$equipamento=Equipamento::find($equipamento_id);
 			$eq_details[$i]['nome']=$equipamento->nome;
 			$eq_details[$i]['classe']=$equipamento->classe;
+			$i++;
 		}
 		return $eq_details;
 	}
@@ -65,7 +66,6 @@ class EmpresaEquipamentoData extends StandardResponse{
 			//,'status'
 			//,'sessao_id'
 			//,'dthr_cadastro'
-
 			)
 		;
 		$nullable=array(

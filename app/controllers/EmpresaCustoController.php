@@ -149,8 +149,8 @@ class EmpresaCustoData extends StandardResponse{
 				$resource=Funcionario::find($data->custogrouper->fkid)->login->login;
 				$custo['custogroup_identifier_name']='username';
 				$custo['custogroup_identifier_value']=$resource;
-			} else if ($cg_name=='equipamentobasepreco') {
-				$resource=Equipamentobasepreco::find($data->custogrouper->fkid)->id;
+			} else if ($cg_name=='equipamentodetail') {
+				$resource=Equipamentodetail::find($data->custogrouper->fkid)->id;
 				$custo['custogroup_identifier_name']='id';
 				$custo['custogroup_identifier_value']=$resource;
 			}
@@ -175,31 +175,30 @@ class EmpresaCustoData extends StandardResponse{
 	* -----------------------------
 	* custotype for fk name.  Must be replaced=
 	*   - caminhao 						caminhao
-	*   - equipamentoprecoebase 		equipamentobasepreco
+	*   - equipamento 					equipamentodetail
 	*   - funcionarioLogin 				funcionario
 	* custotypeselect
+	* 
 	*/
 	public function custogrouper_form_data(){
 		$fillable=array();
 		$nullable=array(
-			'custotype' //custogrouper associated table name
-			,'custotypeselect' //custogrouper associated table FK
+			//custotype: select input [name].  It contains 
+			// "0, caminhao,equipamento,funcionarioLogin" 
+			//as options.
+			'custotype' 
+
+			//custotypeselect: select input [name].  Contains
+			//ajax response with options for each case on
+			//table to be associated, whether is "caminhao",
+			//"funcionario" or "equipamentodetail".
+			//Values on ajax response are the ids of
+			//records in where custos will be set.
+			,'custotypeselect' 
 			)
 		;
-		$cgfd=$this->formCapture ($fillable,$nullable);
-		$custogrouper=array();
-		if ($cgfd['custotype']!=null) {
-			switch ($cgfd['custotype']) {
-				case 'caminhao':$custogrouper['fkname']='caminhao';
-				break;
-				case 'equipamentoprecoebase':$custogrouper['fkname']='equipamentobasepreco';
-				break;
-				case 'funcionarioLogin':$custogrouper['fkname']='funcionario';
-				break;
-			}
-			$custogrouper['fkid']=$cgfd['custotypeselect'];
-		}
-		return $custogrouper;
+		//data to be stored (updated), in custogroupers table
+		return $this->formCapture ($fillable,$nullable);
 	}
 
 	/**
@@ -220,6 +219,7 @@ class EmpresaCustoData extends StandardResponse{
 			'observacao'
 			)
 		;
+		//data to be stored (updated), in custodetails table
 		return $this->formCapture ($fillable,$nullable);
 	}
 
@@ -245,8 +245,8 @@ class EmpresaCustoData extends StandardResponse{
 			,'valor_pago'	
 			)
 		;
+		//data to be stored (updated), in custos table
 		return $this->formCapture ($fillable,$nullable);
-
 	}
 
 	public function validrules(){
@@ -266,6 +266,13 @@ class EmpresaCustoData extends StandardResponse{
 		;
 	}
 
+	/**
+	* -----------------------------
+	* custos_caminhao
+	* -----------------------------
+	* All custogroupers records for choosen empresa that matches
+	* with caminhao costs
+	*/
 	public function custos_caminhao ($empresa_id) {
 		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
 		->whereFkname('caminhao')->get();
@@ -279,9 +286,17 @@ class EmpresaCustoData extends StandardResponse{
 		return $custoholder;
 	}
 
+
+	/**
+	* -----------------------------
+	* custos_equipamento
+	* -----------------------------
+	* All custogroupers records for choosen empresa that matches
+	* with equipamentodetail costs
+	*/
 	public function custos_equipamento ($empresa_id) {
 		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
-		->whereFkname('equipamento')->get();
+		->whereFkname('equipamentodetail')->get();
 
 		$custoholder=array();
 		$i=0;
@@ -292,6 +307,13 @@ class EmpresaCustoData extends StandardResponse{
 		return $custoholder;
 	}
 
+	/**
+	* -----------------------------
+	* custos_funcionario
+	* -----------------------------
+	* All custogroupers records for choosen empresa that matches
+	* with funcionario costs
+	*/
 	public function custos_funcionario ($empresa_id) {
 		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
 		->whereFkname('funcionario')->get();
