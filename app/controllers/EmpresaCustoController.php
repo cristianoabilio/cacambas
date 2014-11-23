@@ -30,6 +30,8 @@ class EmpresaCustoData extends StandardResponse{
 		;	
 		return $header;
 	}
+
+	//$custoheaders: column names on custo table
 	public $custoheaders=array(
 		'id',
 		'dt_inicio',
@@ -44,6 +46,7 @@ class EmpresaCustoData extends StandardResponse{
 		)
 	;
 
+	//$detailsheader column names on custodetails table
 	public $detailsheader=array(
 		'id',
 		'detalhe',
@@ -53,6 +56,7 @@ class EmpresaCustoData extends StandardResponse{
 		)
 	;
 
+	//$custogrouperheader column names on custogroupers table
 	public $custogrouperheader=array(
 		'custogroup'=>'fkname'
 		)
@@ -62,36 +66,66 @@ class EmpresaCustoData extends StandardResponse{
 	* @param edata retrieves all data from table "limite"
 	*/
 	public function edata ($empresa_id) {
+
+		//$data: all custos for empresa resource
 		$data=Empresa::find($empresa_id)->custo;
 
+		//$wholecusto: all custos depending on custoheader;
 		$wholecusto=array();
 		$i=0;
 		foreach ($data as $key => $c) {
+
+			//custogrouperheader only contains "fkname" value
 			foreach ($this->custogrouperheader as $ck => $cv) {
+
+				//cg_name contains the array value "fkname"
+				//stored in register -caminhao, funcionario, equipamentodetail-
 				$cg_name=$c->custogrouper->$cv;
+
+				//adding 'fkname' to array with its value
 				$wholecusto[$i][$ck]=$cg_name;
+
+				//custogroup_identifier_name ($key) contains the column that is
+				//displayed on json object, according to fkname.
+				//caminhao is fetched with "placa", funcionario
+				//with "username" and equipamentodetail with "id"
 				$wholecusto[$i]['custogroup_identifier_name']='';
+
+				//custogroup_identifier_value ($key) contains value
+				//according to identifier name (previous comment)
 				$wholecusto[$i]['custogroup_identifier_value']='';
+
+				//Query for caminhao fkname value, retrieving "placa" value
 				if ($cg_name=='caminhao') {
 					$resource=Caminhao::find($c->custogrouper->fkid)->placa;
 					$wholecusto[$i]['custogroup_identifier_name']='placa';
 					$wholecusto[$i]['custogroup_identifier_value']=$resource;
-				} else if ($cg_name=='funcionario') {
+				} 
+				//Query for funcionario fkname value, retrieving "username" value
+				else if ($cg_name=='funcionario') {
 					$resource=Funcionario::find($c->custogrouper->fkid)->login->login;
 					$wholecusto[$i]['custogroup_identifier_name']='username';
 					$wholecusto[$i]['custogroup_identifier_value']=$resource;
-				} else if ($cg_name=='equipamentobasepreco') {
-					$resource=Equipamentobasepreco::find($c->custogrouper->fkid)->id;
+				} 
+				//Query for equipamentodetail fkname value, retrieving "id" value
+				else if ($cg_name=='equipamentodetail') {
+					$resource=Equipamentodetail::find($c->custogrouper->fkid)->id;
 					$wholecusto[$i]['custogroup_identifier_name']='id';
 					$wholecusto[$i]['custogroup_identifier_value']=$resource;
 				}
 			}
+
+			//retrieving custos values on custos table
 			foreach ($this->custoheaders as $v) {
 				$wholecusto[$i][$v]=$c->$v;
 			}
+
+			//retrieving custodetails values on custodetails table
 			foreach ($this->detailsheader as $vd) {
 				$wholecusto[$i]['detail_'.$vd]=$c->custodetail->$vd;
 			}
+
+			//adding subclasse and classe custos type -fixed, variable, etc-
 			$wholecusto[$i]['subclasse_nome']=$c->custodetail->subclasse->nome;
 			$wholecusto[$i]['classe_nome']=$c->custodetail->subclasse->classe->nome;
 			$i++;
@@ -247,7 +281,7 @@ class EmpresaCustoData extends StandardResponse{
 
 	public function custos_equipamento ($empresa_id) {
 		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
-		->whereFkname('equipamentobasepreco')->get();
+		->whereFkname('equipamento')->get();
 
 		$custoholder=array();
 		$i=0;
@@ -680,7 +714,7 @@ class EmpresaCustoController extends \BaseController {
 		return $d->custos_caminhao($empresa_id);
 	}
 
-	public function custoequipamentobasepreco ($empresa_id) {
+	public function custoequipamento ($empresa_id) {
 		$d=new EmpresaCustoData;
 		return $d->custos_equipamento($empresa_id);
 	}

@@ -14,7 +14,7 @@
 					<option></option>
 					<option value="0">general</option>
 					<option value="caminhao">caminhao</option>
-					<option value="equipamentoprecoebase">equipamento</option>
+					<option value="equipamento">equipamento</option>
 					<option value="funcionarioLogin">funcionario</option>
 				</select>
 			</div>
@@ -165,13 +165,13 @@
 					{},
 					function(d){
 						$.each(d,function(k,v){
-							var show='';
+							var show=v.id;
 							if (v.placa!=null) {
 								show=v.placa;
 							} else if (v.username!=null) {
 								show=v.username+' ('+v.funcao+')';
 							} else if (v.classe!=null) {
-								show=v.classe+' ('+v.id+')';
+								show=v.classe+' ('+v.nome+')';
 							};
 							//
 							$('#custotypeselect').append(

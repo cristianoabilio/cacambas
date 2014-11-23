@@ -10,10 +10,10 @@
 		<h3>Nested filters on empresa.custo resource</h3>
 		<?php  
 		$filter=array(
-			'caminhao',
-			'equipamentobasepreco',
-			'funcionario',
 			'',
+			'caminhao',
+			'equipamento',
+			'funcionario',
 			'fixed',
 			'variable'
 			)

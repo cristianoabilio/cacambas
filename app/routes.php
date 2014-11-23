@@ -238,7 +238,7 @@ Route::get('empresa/{empresa}/funcionarioLogin','EmpresaFuncionarioController@fu
 Route::get('empresa/{empresa}/equipamentoprecoebase','EmpresaEquipamentobaseprecoController@Equipamentbaseandpreco');
 
 Route::get('empresa/{empresa}/custocaminhao','EmpresaCustoController@custocaminhao');
-Route::get('empresa/{empresa}/custoequipamentobasepreco','EmpresaCustoController@custoequipamentobasepreco');
+Route::get('empresa/{empresa}/custoequipamento','EmpresaCustoController@custoequipamento');
 Route::get('empresa/{empresa}/custofuncionario','EmpresaCustoController@custofuncionario');
 Route::get('empresa/{empresa}/custofixed','EmpresaCustoController@custofixed');
 Route::get('empresa/{empresa}/custovariable','EmpresaCustoController@custovariable');

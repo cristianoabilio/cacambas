@@ -23,8 +23,26 @@ class EmpresaEquipamentoData extends StandardResponse{
 	* @param edata retrieves all data from table "limite"
 	*/
 	public function edata ($empresa_id) {
-		//return Equipamento::whereStatus_equipamento(1)->get();
-		return  Empresa::find($empresa_id)->equipamentodetail;
+		$eq_details_columns=
+		'id|preco_base|periodo_minimo|dia_extra|preco_extra|taxa_extra|valor_multa|status|sessao_id|created_at|updated_at'
+		;
+		$eq_details_columns=explode('|', $eq_details_columns);
+		$eq_details=array();
+		$i=0;
+		//$equipamento=Equipamento::all();
+		foreach (Empresa::find($empresa_id)->equipamentodetail as $e) {
+			foreach ($eq_details_columns as $k => $v) {
+				$eq_details[$i][$v]=$e->$v;
+			}
+			$empresa_equipamento_id=$e->empresa_equipamento_id;
+			$equipamento_id=EmpresaEquipamento::find($empresa_equipamento_id)
+			->equipamento_id;
+
+			$equipamento=Equipamento::find($equipamento_id);
+			$eq_details[$i]['nome']=$equipamento->nome;
+			$eq_details[$i]['classe']=$equipamento->classe;
+		}
+		return $eq_details;
 	}
 
 	public function edatainactive ($empresa_id) {
