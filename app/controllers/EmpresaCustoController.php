@@ -79,7 +79,7 @@ class EmpresaCustoData extends StandardResponse{
 			foreach ($this->custogrouperheader as $ck => $cv) {
 
 				//cg_name contains the array value "fkname"
-				//stored in register -caminhao, funcionario, equipamentodetail-
+				//stored in register -caminhao, funcionario, equipamento-
 				$cg_name=$c->custogrouper->$cv;
 
 				//adding 'fkname' to array with its value
@@ -108,7 +108,7 @@ class EmpresaCustoData extends StandardResponse{
 					$wholecusto[$i]['custogroup_identifier_value']=$resource;
 				} 
 				//Query for equipamentodetail fkname value, retrieving "id" value
-				else if ($cg_name=='equipamentodetail') {
+				else if ($cg_name=='equipamento') {
 					$resource=Equipamentodetail::find($c->custogrouper->fkid)->id;
 					$wholecusto[$i]['custogroup_identifier_name']='id';
 					$wholecusto[$i]['custogroup_identifier_value']=$resource;
@@ -149,7 +149,7 @@ class EmpresaCustoData extends StandardResponse{
 				$resource=Funcionario::find($data->custogrouper->fkid)->login->login;
 				$custo['custogroup_identifier_name']='username';
 				$custo['custogroup_identifier_value']=$resource;
-			} else if ($cg_name=='equipamentodetail') {
+			} else if ($cg_name=='equipamento') {
 				$resource=Equipamentodetail::find($data->custogrouper->fkid)->id;
 				$custo['custogroup_identifier_name']='id';
 				$custo['custogroup_identifier_value']=$resource;
@@ -198,7 +198,11 @@ class EmpresaCustoData extends StandardResponse{
 			)
 		;
 		//data to be stored (updated), in custogroupers table
-		return $this->formCapture ($fillable,$nullable);
+		$raw_custogrouper= $this->formCapture ($fillable,$nullable);
+		//$custogrouper=array();
+		$custogrouper['fkname']=$raw_custogrouper['custotype'];
+		$custogrouper['fkid']=$raw_custogrouper['custotypeselect'];
+		return $custogrouper;
 	}
 
 	/**
@@ -296,7 +300,7 @@ class EmpresaCustoData extends StandardResponse{
 	*/
 	public function custos_equipamento ($empresa_id) {
 		$c_grouper=Custogrouper::whereEmpresa_id($empresa_id)
-		->whereFkname('equipamentodetail')->get();
+		->whereFkname('equipamento')->get();
 
 		$custoholder=array();
 		$i=0;

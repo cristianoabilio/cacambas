@@ -14,7 +14,7 @@
 					<option></option>
 					<option value="0">general</option>
 					<option value="caminhao">caminhao</option>
-					<option value="equipamentodetail">equipamento</option>
+					<option value="equipamento">equipamento</option>
 					<option value="funcionario">funcionario</option>
 				</select>
 			</div>

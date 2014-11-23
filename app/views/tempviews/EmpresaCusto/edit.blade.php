@@ -4,7 +4,7 @@
 <body>
 	<div class="container">
 		<h1>Custo resource number {[$id]}</h1>
-		<div class="text-danger">Warning: changes can harm database, be cautios</div>
+		<div class="text-danger">Warning: changes can harm database, be cautious</div>
 		{[ Form::model($custo, array('route' => array('empresa.custo.update', $empresa_id,$id), 'method' => 'PUT')) ]}
 		<div class="row">
 			<div class="col-sm-2">
