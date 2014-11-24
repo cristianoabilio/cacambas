@@ -22,6 +22,16 @@ Route::get('/', array('as' => 'app.view', function(){
 * THESE ROUTES CAN BE REMOVED FROM THE ORIGINAL PROJECT
 * 
 */
+
+//The "start" route temporarily works as a redirection path for
+//unauthorized access.  THIS ROUTE REPRESENTS A MAJOR SECURITY
+//RISK SINCE ANY USER CAN LOGIN AS A SUPERADMINISTRATOR, HAVING
+//ACCESS TO ANY SECURED RESOURCE!!!
+Route::get('/start',function(){
+	return View::make('tempviews.start');
+});
+
+
 Route::get('/myproduction', function() use ($st_r)
 {
 	$allviews			=$st_r->allviews();
