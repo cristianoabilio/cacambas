@@ -16,10 +16,10 @@ class EmpresaLoginData extends StandardResponse{
 		*/
 		$header=array(
 			array('nome',1)
-			,array('email',1)
+			,array('email',0)
 			,array('login',1)
-			,array('dthr_cadastro',1)
-			,array('dthr_ultimoacesso',1)
+			,array('dthr_cadastro',0)
+			,array('dthr_ultimoacesso',0)
 			,array('remember_token',0)
 		);	
 		return $header;
@@ -107,7 +107,8 @@ class EmpresaLoginController extends \BaseController {
 			//all login
 			'login'=>$d->edata($empresa_id),
 			'header'=>$d->header(),
-			'empresa_id'=>$empresa_id
+			'empresa_id'=>$empresa_id,
+			'nested'=>$d->empresalogin_nested()
 			)
 		;
 		return View::make('tempviews.empresalogin.index',$data);

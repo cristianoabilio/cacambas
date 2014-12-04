@@ -191,6 +191,32 @@
 		@endforeach
 		</table>
 		<br>
+		<h4>nested on empresa.login</h4>
+		<small class="text-muted">
+			In order to see resources you must choose all parent resources  first:  
+			<spam class="text-info">empresa/{empresa_id}/login/{login_id}/[table name]</spam>
+		</small>
+		<table class="table">
+			<tr>
+				<th>index name</th>
+				<th>Index url (as JSON view)</th>
+				<th>Show url (as JSON view)</th>
+			</tr>
+		@foreach($loginnested as $n)
+			<tr>
+				<td>
+					{[$n]}
+				</td>
+				<td>
+					 'empresa/{empresa_id}/login/{login_id}/{[$n]}'  
+				</td>
+				<td>
+					'empresa/{empresa_id}/login/{login_id}/{[$n]}/{id}'
+				</td>
+			</tr>
+		@endforeach
+		</table>
+		<br>
 		<h4>nested on classe</h4>
 		<small class="text-muted">
 			In order to see resources you must choose all parent resources first:  

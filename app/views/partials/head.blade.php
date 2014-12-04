@@ -23,6 +23,9 @@
         <link href="<?= $path_front; ?>/packages/animate-css/animate.min.css" rel="stylesheet">
         <link href="<?= $path_front; ?>/css/bootstrap.css" rel="stylesheet">
         <link href="<?= $path_front; ?>/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?= $path_front; ?>/packages/trNgGrid/release/src/css/trNgGrid.css">
+
         
         <link href="<?= $path_login; ?>" rel="stylesheet">
         <link href="<?= $path_css; ?>" rel="stylesheet">

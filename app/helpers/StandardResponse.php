@@ -105,6 +105,14 @@ class StandardResponse extends FormDataCapturer{
 		
 	}
 
+	public function empresalogin_nested () {
+		return array(
+			'EmpresaLoginAnotacoesController'	=>'anotacoes'
+			)
+		;
+		
+	}
+
 	public function classe_nested() {
 		return array(
 			'ClasseSubclasseController'	=>'subclasse'

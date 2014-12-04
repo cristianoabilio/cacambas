@@ -12,6 +12,7 @@
 			<!-- $h var comes from controller, containing
 			the header names on table  -->
 			<tr>
+				<th>Resource</th>
 			@foreach($header as $h)
 				@if($h[1]==1)
 					<th>
@@ -24,17 +25,25 @@
 
 				@if($e->status==1)
 					<tr>
+						<td>
+							<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblelogin/'.$e->id)]}">HTML resource {[$e->id  ]}</a>
+							|
+							<a href="{[URL::to('empresa/'.$empresa_id.'/login/'.$e->id)]}">JSON {[$e->id  ]}</a>
+							<ul>
+								@foreach($nested as $n)
+									<li>
+										<a href="{[URL::to('empresa/'.$empresa_id.'/login/'.$e->id.'/visible'.$n)]}">HTML {[$n]}</a>
+										|
+
+										<a href="{[URL::to('empresa/'.$empresa_id.'/login/'.$e->id.'/'.$n)]}">JSON {[$n]}</a>
+										
+									</li>
+								@endforeach
+							</ul>
+						</td>
 						@foreach($header as $h)
 							@if($h[1]==1)
-								<td>
-									@if($h[0]=='nome')
-									<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblelogin/'.$e->id)]}">HTML {[$e->$h[0]  ]}</a> |
-									<a href="{[URL::to('empresa/'.$empresa_id.'/login/'.$e->id)]}">JSON {[$e->$h[0]  ]}</a>
-									@else
-									{[$e->$h[0]  ]}
-									@endif
-									
-								</td>
+								<td> {[$e->$h[0]  ]}</td>
 							@endif
 						@endforeach
 					</tr>

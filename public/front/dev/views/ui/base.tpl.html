@@ -11,13 +11,12 @@
 
 		<!-- Header (Top Bar - Blue) -->
 	    <ng-include src="ui.header" ng-if="authorized"></ng-include>
-		<!-- SubNav Header (Sub Navigation Bar - White) -->
-	    <ng-include src="ui.subnav" ng-if="authorized"></ng-include>
-		<!-- Sidebar (Left Menu) -->
-	    <ng-include src="ui.sidebar" ng-if="!login_block || authorized"></ng-include>
 
 		<!-- Nested Views (Segments) on First Level -->
 	    <div app-view-segment="1" ng-hide="!authorized"></div>
+
+	    <!-- Sidebar (Left Menu) -->
+	    <ng-include src="ui.sidebar" ng-if="!login_block || authorized"></ng-include>
 
 	</div>
 

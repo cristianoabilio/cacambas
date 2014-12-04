@@ -1,18 +1,19 @@
 <?php
+/**
+* Original cacambas.com routes
+*/
+// Route for make the AngularJS App
+Route::get('/', array('as' => 'app.view', function (){
+    return View::make('app');
+}));
+
+
+
 
 
 //Standard response instantiantion for creating all 
 //views and routes.
 $st_r=new StandardResponse;
-
-// Route for make the AngularJS App
-Route::get('/', array('as' => 'app.view', function(){
-	
-    return //1
-    View::make('app')
-    ;
-}));
-
 
 /**
 * ---------------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::get('/myproduction', function() use ($st_r)
 	$equipamentonested	=$st_r->empresaequipamento_nested();
 	$convenionested		=$st_r->empresaconvenio_nested();
 	$funcionarionested	=$st_r->empresafuncionario_nested();
+	$loginnested		=$st_r->empresalogin_nested();
 	$classenested		=$st_r->classe_nested();
 	$estadonested		=$st_r->estado_nested();
 	$estadocidadenested	=$st_r->estadocidade_nested();
@@ -53,6 +55,7 @@ Route::get('/myproduction', function() use ($st_r)
 			'equipamentonested',
 			'convenionested',
 			'funcionarionested',
+			'loginnested',
 			'classenested',
 			'estadonested',
 			'estadocidadenested',
@@ -179,6 +182,13 @@ foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 	Route::resource('empresa.funcionario.'.$v, $k);
 	Route::get('empresa/{empresa}/funcionario/{funcionario}/visible'.$v, $k.'@visible');
 	Route::get('empresa/{empresa}/funcionario/{funcionario}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+}
+
+//Nested controllers on empresa.login
+foreach ($st_r->empresalogin_nested() as $k => $v) {
+	Route::resource('empresa.login.'.$v, $k);
+	Route::get('empresa/{empresa}/login/{login}/visible'.$v, $k.'@visible');
+	Route::get('empresa/{empresa}/login/{login}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
 

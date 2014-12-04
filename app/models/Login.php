@@ -20,7 +20,12 @@ class Login extends Eloquent implements UserInterface, RemindableInterface  {
 	public static $rules = array(
 		'login' => 'required',
 		'senha' => 'required'
-		);
+		)
+    ;
+
+    public function anotacoe () {
+        return $this->hasMany('Anotacoe');
+    }
 
 
 	public function Cliente() {

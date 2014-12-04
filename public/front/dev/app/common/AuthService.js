@@ -43,16 +43,28 @@ app.service('AuthService', ['$rootScope', '$http', '$q', '$sanitize', 'StorageSe
         // From API response
         var setUser = function(data){
             // Create a custom JSON
+            var user_ar = [];
             var user = {
                 id             : data.id,
-                nome           : data.nome,
+                nome           : data.nome.split(' ')[0],
+                nome_full      : data.nome,
                 email          : data.email, 
                 login          : data.login,
                 remember_token : data.remember_token,
                 last_activity  : data.updated_at 
             };
+            user_ar.push(user);
             // Store the JSON in LocalStorage
-            StorageService.set('user_profile', user);
+            StorageService.set('user_profile', user_ar);
+        };
+
+
+        // Method for set the current session on LocalStorage
+        var setSession = function(data){
+            var session = [];
+            session.push(data);
+            // Store the JSON in LocalStorage
+            StorageService.set('user_session', session);
         };
 
 
@@ -233,7 +245,7 @@ app.service('AuthService', ['$rootScope', '$http', '$q', '$sanitize', 'StorageSe
                         // Set Flag 
                         StorageService.set('authenticated', true);
                         // Set Session
-                        StorageService.set('user_session', response.data.data.sessao);
+                        setSession(response.data.data.sessao);
                         // Set the User Roles
                         setRoles(response.data.data.perfis);
                         // Set the User data (profile)

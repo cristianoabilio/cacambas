@@ -34,6 +34,7 @@
         <script src="<?= $path_packs; ?>/angular-touch/angular-touch.js"></script>
         <script src="<?= $path_packs; ?>/angular-route/angular-route.js"></script>
         <script src="<?= $path_packs; ?>/angular-route-segment/build/angular-route-segment.js"></script>
+        <script src="<?= $path_packs; ?>/trNgGrid/release/trNgGrid.min.js"></script>
 
         <!-- endbower -->
         <!-- endbuild -->
@@ -42,6 +43,7 @@
         <script src="<?= $path_app; ?>/app.js"></script>
         <script src="<?= $path_app; ?>/common/UIBaseService.js"></script>
         <script src="<?= $path_app; ?>/common/UIBaseController.js"></script>
+        <script src="<?= $path_app; ?>/common/UIBaseDirectives.js"></script>
         <script src="<?= $path_app; ?>/common/AuthService.js"></script>
         <script src="<?= $path_app; ?>/modules/login/LoginController.js"></script>
         <script src="<?= $path_app; ?>/modules/usuarios/UsuariosController.js"></script>

@@ -1,5 +1,3 @@
-<ul ng-repeat="vampeta in vampetas">
-    <li>{{ vampeta.id_role }} - {{vampeta.descricao}} - {{vampeta.status}}</li>
-</ul>
+<subnav-items items="{{subnav_items}}" ng-hide="!authorized"></subnav-items>
 
-{{ frota._token }} {{ zica }}
+<div app-view-segment="2" ng-hide="!authorized"></div>

@@ -49,6 +49,14 @@ class EstadoCidadeBairroEnderecobaseEnderecoEnderecoempresaData extends Standard
 	*/
 	public function form_data()
 	{
+		/**
+		* formCapture method converts fillable items in
+		* array 'item_1' => Input::get('item_1'),
+		*       'item_n' => Input::get('item_n') 
+		* and if Input::get('nullable') is not empty
+		* nullable item is added inside the array
+		* @return array
+		*/
 		return $this->formCapture($this->fillable,$this->nullable);
 	}
 

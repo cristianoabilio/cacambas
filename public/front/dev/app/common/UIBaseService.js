@@ -6,9 +6,31 @@
  * Service for install/setup the functions JS of the UI Control
  * like menus, forms, buttons effects, etc.
  */
-app.service('UIBaseService', ['$rootScope', 'jquery',
+app.service('UIBaseService', ['$rootScope', '$location', 'jquery',
 
-    function($rootScope, jquery) {
+    function($rootScope, $location, jquery) {
+
+        // Items of Subnav 
+        this.subnav_items = [];
+
+        /**
+         * Title of header
+         * @param  {String} name [title of the page]
+         */
+        this.title = function(name){
+            $rootScope.title = name;
+        };
+
+        /** 
+         * Change the subtitle for header
+         * @param {[String]} subtitle [for example: lista, add, etc.]
+         */
+        this.setSubTitle = function(subtitle){
+            for (var i = 0, l = this.subnav_items.length; i < l; i++) 
+                if ( this.subnav_items[i].url == $location.path() ) 
+                    $rootScope.title = this.subnav_items[i].title;
+                //  $rootScope.subtitle = this.subnav_items[i].subtitle;
+        };
 
 
         /** 
@@ -24,8 +46,8 @@ app.service('UIBaseService', ['$rootScope', 'jquery',
                 slidingSubmenus: false,
                 dragOpen: true,
                 onClick: {
-                    preventDefault: false,
-                    setSelected: true,
+                    preventDefault: true,
+                    setSelected: false,
                     blockUI: true
                 }
             }, 
@@ -36,12 +58,12 @@ app.service('UIBaseService', ['$rootScope', 'jquery',
 
 
             // Event for trigger the menu open
-            jquery('#open-icon-menu a').click(function(e) {
+           /* jquery('#open-icon-menu a').click(function(e) {
                 e.stopImmediatePropagation();
                 e.preventDefault();
                 // Custom trigger for close and open sidebar
                 side_menu.trigger(side_menu.hasClass('mm-opened') ? 'close.mm' : 'open.mm');
-            });
+            });*/
         };
 
 
@@ -71,11 +93,9 @@ app.service('UIBaseService', ['$rootScope', 'jquery',
                 });
 
 
-             // Tips
-              
-                $('.tTip').tooltip({delay: { show: 400, hide: 100 }});
-                //$('.vampi').tooltip({container: '#ui-base', template: '<div class="tooltip ziao" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
-              
+            // Tips  
+            $('.tip-top').tooltip({delay: { show: 400, hide: 100}, template: '<div class="tooltip tip" role="tooltip"><div class="tooltip-inner"></div></div>'});
+                
 
         };
 

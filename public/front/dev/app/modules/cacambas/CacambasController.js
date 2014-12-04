@@ -7,9 +7,11 @@
  * # UsuariosCtrl
  * Controller of the cacambas_app
  */
-app.controller('CacambasCtrl', ['$scope', '$rootScope', 'paths', 'ui', 'UIBaseService', 'AuthService',
+app.controller('CacambasCtrl', ['$scope', '$rootScope', '$routeSegment', 'paths', 'ui', 'UIBaseService', 'AuthService',
 
-    function($scope, $rootScope, paths, ui, UIBaseService, AuthService) {
+    function($scope, $rootScope, $routeSegment, paths, ui, UIBaseService, AuthService) {
+        // Scope local for route segment
+        $scope.$routeSegment = $routeSegment;
 
         // Configuration of templates path
         $scope.templates = ui;
@@ -25,6 +27,23 @@ app.controller('CacambasCtrl', ['$scope', '$rootScope', 'paths', 'ui', 'UIBaseSe
         // sub_menu
         // voltar
         // adicionar
+        // SubNavigation Array for Usuarios
+        $scope.subnav_items = [{
+            name: 'Lista',
+            icon: '',
+            title: 'Lista dos Cacambas',
+            url: $routeSegment.getSegmentUrl('ui.cacambas'),
+            role: ['administrador'], 
+            css : ''
+        },
+        {
+            name: 'Novo',
+            icon: 'plus',
+            title: 'Cadastrar uma Cacambas',
+            url: $routeSegment.getSegmentUrl('ui.cacambas.add'),
+            role: ['administrador'], 
+            css : ''
+        }];
 
 
 

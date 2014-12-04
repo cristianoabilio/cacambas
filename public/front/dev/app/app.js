@@ -16,7 +16,8 @@ var app = angular.module('cacambas_app', [
     'ngRoute',
     'ngAnimate',
     'route-segment',
-    'view-segment'
+    'view-segment', 
+    "trNgGrid"
 ]);
 
 
@@ -33,6 +34,7 @@ app.constant('paths', (function() {
         views: path + 'views',
         modules: path + 'views/modules',
         ui: path + 'views/ui',
+        partials: path + 'views/partials',
         images: path + 'images',
         videos: path + 'images/videos'
 
@@ -148,11 +150,14 @@ app.config(['$routeSegmentProvider', '$routeProvider', 'roles', 'paths',
 
 
         // Map Routes and your segment names 
-        .when('/login', 'login')
-        .when('/reset/:token', 'reset')
-        .when('/usuarios', 'ui.usuarios')
-        .when('/usuarios/lista', 'ui.usuarios_lista')
-        .when('/cacambas', 'ui.cacambas')
+        .when('/login',              'login')
+        .when('/reset/:token',       'reset')
+
+        .when('/usuarios',           'ui.usuarios')
+        .when('/usuarios/adicionar', 'ui.usuarios.adicionar')
+
+        .when('/cacambas',           'ui.cacambas')
+        .when('/cacambas/add',       'ui.cacambas.add')
 
 
         // Login Segment 
@@ -207,33 +212,57 @@ app.config(['$routeSegmentProvider', '$routeProvider', 'roles', 'paths',
         .within()
 
             .segment('usuarios', {
-                default: true,
-                templateUrl: paths.modules + '/usuarios/usuarios.tpl.html',
-                controller: 'UsuariosCtrl',
-                permissions: {
-                    required: true,
-                    roles: [roles.geral]
-                }
-            })
-            .segment('usuarios_lista', {
-                    default: true,
-                    templateUrl: paths.modules + '/usuarios/usuarios2.tpl.html',
+                    templateUrl: paths.partials + '/section.tpl.html',
                     controller: 'UsuariosCtrl',
                     permissions: {
                         required: true,
-                        roles: [roles.geral]
+                        roles: [roles.administrador]
                     }
                 })
 
+            .within()
+
+                .segment('adicionar', {
+                        templateUrl: paths.modules + '/usuarios/adicionar.tpl.html',
+                        controller: 'UsuariosCtrl',
+                        permissions: {
+                            required: true,
+                            roles: [roles.administrador]
+                        }
+                    })
+
+                .segment('lista', {
+                        default: true, 
+                        templateUrl: paths.modules + '/usuarios/lista.tpl.html',
+                        controller: 'UsuariosCtrl',
+                        permissions: {
+                            required: true,
+                            roles: [roles.administrador]
+                        }
+                    })
+        
+            .up()
                 
             .segment('cacambas', {
-                templateUrl: paths.modules + '/cacambas/cacambas.tpl.html',
+                templateUrl: paths.partials + '/section.tpl.html',
                 controller: 'CacambasCtrl',
                 permissions: {
                     required: true,
                     roles: [roles.operacional]
                 }
             })
+
+             .within()
+
+                .segment('add', {
+                    templateUrl: paths.modules + '/cacambas/add.tpl.html',
+                    controller: 'CacambasCtrl',
+                    permissions: {
+                        required: true,
+                        roles: [roles.operacional]
+                    }   
+                })
+
 
         .up();
 
@@ -408,4 +437,3 @@ app.run(['$rootScope', '$http', '$location', 'AuthService', '$route', '$routeSeg
 
     }
 ]);
-

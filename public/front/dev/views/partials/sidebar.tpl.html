@@ -3,7 +3,7 @@
     
     <ul ng-init="sidebar('#menu')">
         <!-- Items Sidebar -->
-        <li ng-repeat="item in menu_items" ng-if="roles(item.role)" class="{{item.css}}" ng-mouseover="tooltip('side-tip')"  >
+        <li ng-repeat="item in menu_items" ng-if="roles(item.role)" class="{{item.custom_css}} {{item.css}}" ng-mouseover="tooltip('side-tip')" ng-click="setActive(item)">
             <a href="#{{ item.url }}" data-toggle="tooltip" title="{{ item.name }}" data-placement="right" class="side-tip"><i class="fa fa-{{ item.icon }}"></i> <span>{{ item.name }}</span></a>
         </li>
 

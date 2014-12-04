@@ -57,7 +57,31 @@ class EstadoCidadeBairroEnderecobaseData extends StandardResponse {
 	;
 
 	public function form_data(){
-		return $this->formCapture($this->fillable,$this->nullable);
+		$fillable=array(
+			'cep_base',
+			'logradouro',
+			'regiao',
+			'numero_inicio',
+			'numero_fim'
+			)
+		;
+
+		$nullable=array(
+			'restricao_hr_inicio_base',
+			'restricao_hr_fim_base'
+			)
+		;
+		//
+		//
+		/**
+		* formCapture method converts fillable items in
+		* array 'item_1' => Input::get('item_1'),
+		*       'item_n' => Input::get('item_n') 
+		* and if Input::get('nullable') is not empty
+		* nullable item is added inside the array
+		* @return array
+		*/
+		return $this->formCapture($fillable,$nullable);
 	}
 
 	public function validrules(){

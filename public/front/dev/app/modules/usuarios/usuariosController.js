@@ -7,9 +7,9 @@
  * # UsuariosCtrl
  * Controller of the cacambas_app
  */
-app.controller('UsuariosCtrl', ['$scope', '$rootScope', '$routeSegment', 'paths', 'ui', 'UIBaseService',
+app.controller('UsuariosCtrl', ['$scope', '$rootScope', '$location', '$routeSegment', 'paths', 'ui', 'UIBaseService', 'AuthService', '$timeout',
     
-    function($scope, $rootScope, $routeSegment, paths, ui, UIBaseService) {
+    function($scope, $rootScope, $location, $routeSegment, paths, ui, UIBaseService, AuthService, $timeout) {
 
         // Scope local for route segment
         $scope.$routeSegment = $routeSegment;
@@ -21,83 +21,46 @@ app.controller('UsuariosCtrl', ['$scope', '$rootScope', '$routeSegment', 'paths'
         $scope.templates = ui;
 
         // User Interface Title / Heads and SubMenus
-        $rootScope.title = 'Usuários';
+        UIBaseService.title('Usuários');
 
-        // UI configs and make (draw)
-        // ID of Sidebar
-        $scope.geba = function() {
+        // SubNavigation Array for Usuarios
+        $scope.subnav_items = [{
+            name: 'Lista',
+            icon: 'icon ion-person-stalker',
+            title: 'Usuários',
+            subtitle: 'Lista',
+            url: $routeSegment.getSegmentUrl('ui.usuarios'),
+            role: ['administrador'], 
+            css : ''
+        },
+        {
+            name: 'Adicionar',
+            icon: 'icon ion-person-add',
+            title: 'Adicionar Usuário',
+            subtitle: 'Adicionar',
+            url: $routeSegment.getSegmentUrl('ui.usuarios.adicionar'),
+            role: ['administrador'], 
+            css : ''
+        }];
 
-            //angular.element('#menu').remove();
-            //angular.element( "#menu" ).remove();
+        // Set SubNav Items on UIBaseService
+        UIBaseService.subnav_items = $scope.subnav_items;
 
-        };
+        // Set Default SubTitle, based on subnav_items active
+        UIBaseService.setSubTitle(); 
 
-        $scope.buceta = function() {
-            UIBaseService.start();
+        // Set Data from AuthService
+        $scope.usersi = angular.fromJson(AuthService.userRoles());
+        
 
+        $scope.teste = function(){
+             $timeout(function(){ $scope.usersi =  angular.fromJson(AuthService.userRoles());} , 5000); 
         }
-
-
-
-        /*
-
-    $rootScope.title = "Usuários";
-    $scope.name = $rootScope.name;
-    //$scope.token = $rootScope.token || " ";
-    $scope.zica = $rootScope.zica.value;
-    //$scope.porra = teste.porra;
-    $scope.jabu = "";
-
-
-    $scope.$watch('zica', function(old, val){
-       if(val != old)
-          $scope.jabu = jabulani.nome('Alberto');
-   });
-
-*/
-
-
-
-
-
-
-
-
 
     }
 ]);
 
 
-/*
 
-app.directive('myMenu', ['$window',
-  function ($window) {
-    return {
-      restrict: 'AE',
-      template: '',
-      link: function(scope, element, attrs) {
-          var menu = angular.fromJson(attrs.myMenu);
-          var build = function () {
-              var list = '';
-              angular.forEach(menu, function (v, k) {
-                  list = list + '<li><a href="#/' + v.route + '">' + v.title + '</a></li>';
-              });
-              element.html('<ul>' + list + '<ul>');
-              angular.element(element).mmenu({ 
-                  slidingSubmenus : true,
-                    dragOpen  : false,
-                    onClick: {
-                        preventDefault  : false,
-                        setSelected     : false
-                    }
-              });
-          };
-          scope.$watch(attrs.myMenu, function(newValue, oldValue) {
-              menu = angular.fromJson(newValue);
-              build();
-          });
-      }
-    };
-  }
-])
-;*/
+
+

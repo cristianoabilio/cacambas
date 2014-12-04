@@ -52,29 +52,47 @@ app.controller('UIBaseCtrl', ['$scope', '$rootScope', 'ui', 'paths', 'UIBaseServ
             icon: 'users',
             title: 'Lista e Cadastro de Locações',
             url: $routeSegment.getSegmentUrl('ui.usuarios'),
-            role: ['operacional']
+            role: ['operacional'], 
+            css: 'active'
         }, 
         {
-            name: 'Cacambas',
+            name: 'Caçambas',
             icon: 'inbox',
             title: 'Lista e Cadastro de Locações',
             url: $routeSegment.getSegmentUrl('ui.cacambas'),
-            role: ['financeiro']
+            role: ['financeiro'], 
+            css: ''
         }, 
         {
             name: 'Ajuda',
-            icon: 'info-circle',
-            css:  'bottom help',
+            icon: 'info-circle', 
             title: 'Página de Suporte e Ajuda',
             url: '/ajuda',
-            role: ['geral', 'publico']
+            role: ['geral', 'publico'], 
+            css:  '',
+            custom_css: 'bottom help'
         }];
+
+
+        // Set the active item menu
+        $scope.setActive = function(item){
+            var index = $scope.menu_items.indexOf(item);
+            // Set a active item menu
+            for (var i = 0, l = $scope.menu_items.length; i < l; i++)
+                $scope.menu_items[i].css = index === i ? 'active' : '';
+        };
 
 
         // Function for startup the JS of the UI
         $scope.startUI = function() {
             // Make the JS elements of UI
             UIBaseService.start(); 
+
+            // For change the title
+            $rootScope.$on("$routeChangeStart", function(event, current, next) {
+                UIBaseService.setSubTitle();
+            });
+
             // Spin Make, by Spin.js
             $scope.spin = new Spinner($scope.spin_opts).spin();
             // Insert the spin in div (hide initially)
@@ -99,6 +117,12 @@ app.controller('UIBaseCtrl', ['$scope', '$rootScope', 'ui', 'paths', 'UIBaseServ
         }
 
 
+        $scope.toggle_sidebar = function(){
+            var side_menu = jquery('#menu');
+            side_menu.trigger(side_menu.hasClass('mm-opened') ? 'close.mm' : 'open.mm');
+        }
+
+
         /**
          * Create a tooltip for sidemenu
          */
@@ -106,7 +130,8 @@ app.controller('UIBaseCtrl', ['$scope', '$rootScope', 'ui', 'paths', 'UIBaseServ
             // Check if already exists
             if(!$scope.hasTip){
                 // Set the Bootstrap Tooltip
-                jquery('.'+cl).tooltip({
+                var c = '.'+cl;
+                jquery(c).tooltip({
                     container: '#ui-base', 
                     template: '<div class="tooltip sidebar-tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
                 });
@@ -144,6 +169,9 @@ app.controller('UIBaseCtrl', ['$scope', '$rootScope', 'ui', 'paths', 'UIBaseServ
          * Controller for Logout button / link.
          */
         $scope.logout = function() {
+            // Hide MMEnu
+            jquery('#menu').trigger('close.mm');
+
             // Show the overlay
             $scope.overlay_loading = true;
 
