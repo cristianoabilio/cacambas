@@ -1,5 +1,74 @@
 <?php 
 class StandardResponse extends FormDataCapturer{
+
+	//
+	public function cacambasDataParam ($param) {
+		$data=array();
+		$i=0;
+		foreach ($param as $c) {
+			$c=explode(',', $c);
+			$data[$i]=$c;
+			$i++;
+		}
+		return $data;
+	}
+
+	/** 
+	* function name: header.
+	* @param header with headers of empresa table
+	*/
+	public function head($data){
+		$header=array();
+		foreach ($this->cacambasDataParam($data) as $key => $v) {
+			$header[$key]=array($v[0],$v[1]);
+		}
+		return $header;
+	}
+
+	/**
+	* @param form_data returns array with form values
+	*/
+	//
+	public function form_data_fixed($data){
+		$data=$this->cacambasDataParam($data);
+		$fillable=array();
+		$nullable=array();
+		foreach ($data as $k => $v) {
+			if ($v[2]==0) {
+				$nullable[$k]=$v[0];
+			}
+			else if ($v[2]==1) {
+				$fillable[$k]=$v[0];
+			}
+		}
+
+		/**
+		* formCapture method converts fillable items in
+		* array 'item_1' => Input::get('item_1'),
+		*       'item_n' => Input::get('item_n') 
+		* and if Input::get('nullable') is not empty
+		* nullable item is added inside the array
+		* @return array
+		*
+		*/
+
+		return $this->formCapture ($fillable,$nullable);
+	}
+
+
+
+	public function valid_rules($data){
+		$data=$this->cacambasDataParam($data);
+		$rules=array();
+		foreach ($data as $k => $v) {
+			if ($v[3]!='') {
+				$rules[$k]=$v[3];
+			}
+		}
+		return $rules;
+	}
+
+
 	public function responsedata( 
 		$module,
 		$success,
@@ -35,6 +104,7 @@ class StandardResponse extends FormDataCapturer{
 			'compras',
 			'contabancaria',
 			'caminhao2',
+			'cliente',
 			'convenio',
 			'custo',
 			'empresa',

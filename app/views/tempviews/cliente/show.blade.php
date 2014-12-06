@@ -1,0 +1,1 @@
+app/views/tempviews/cliente/show.blade.php
