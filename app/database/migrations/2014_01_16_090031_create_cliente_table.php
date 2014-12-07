@@ -15,7 +15,8 @@ class CreateClienteTable extends Migration {
 		Schema::create('cliente', function(Blueprint $table) {
 			$table->increments('id');//Parent key for Enderecocliente, Mensagemcliente, Contato, Precontrato,
 			$table->integer('login_id')->nullable();
-			$table->string('cpf/cnpj', 45)->nullable();
+			$table->integer('empresa_id');
+			$table->string('cpf_cnpj', 45)->nullable();
 			$table->boolean('pj');
 			$table->string('nome', 140);
 			$table->integer('tipo_cliente')->nullable();

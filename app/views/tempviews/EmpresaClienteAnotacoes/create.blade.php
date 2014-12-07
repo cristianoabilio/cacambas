@@ -3,35 +3,30 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Add a new "Empresaclienteanotacoes"</h1>
-		{[Form::open(array('url'=>URL::to('empresaclienteanotacoes')))]}
-		<div class="row">
-			<div class="col-sm-2">
-				empresa_id
-				<br>
-				<input type="text" class='form-control' name="empresa_id" id="empresa_id">
+		<h1>Adding a new anotacoe </h1>
+		Data associated to
+		<ul>
+			<li>Company :{[ Empresa::find($empresa_id)->nome ]}</li>
+			<li>User: {[ Cliente::find($cliente_id)->cliente ]}</li>
+		</ul>
+		{[Form::open(array('url'=>URL::to('empresa/'.$empresa_id.'/cliente/'.$cliente_id.'/anotacoes')  ) )]}
+			<div class="row">
+				<div class="col-sm-3">
+					anotacoe
+					<br>
+					<input type="text" class="form-control" name="anotacoe" id="anotacoe" placehoder='anotacoe'>
+				</div>
 			</div>
-		</div>
+			<br>
+			<br>
+			<input type="submit" value='create'>
+			<br>
+		{[Form::close()  ]}
 		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				cliente_id
-				<br>
-				<input type="text" class='form-control' name="cliente_id" id="cliente_id">
-			</div>
-		</div>
 		<br>
-		<div class="row">
-			<div class="col-sm-2">
-				anotacao
-				<br>
-				<input type="text" class='form-control' name="anotacao" id="anotacao">
-			</div>
-		</div>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$cliente_id.'/visibleanotacoes') ]}">Back to anotacoes index</a>
 		<br>
-		<input type="submit" value='create'>
 		<br>
-		{[Form::close()]}
-		<a href="{[URL::to('visibleempresaclienteanotacoes')]}">Back to index</a>
+		<br>
 	</div>
 </body>

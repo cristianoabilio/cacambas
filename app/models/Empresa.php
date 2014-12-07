@@ -18,6 +18,10 @@ class Empresa extends Eloquent {
 		return $this->hasMany('Caminhao');
 	}
 
+	public function cliente () {
+		return $this->hasMany('Cliente');
+	}
+
 	public function Convenio() {
 		return $this->hasMany('Convenio');
 	}

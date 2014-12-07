@@ -23,9 +23,9 @@ class Login extends Eloquent implements UserInterface, RemindableInterface  {
 		)
     ;
 
-    public function anotacoe () {
+    /*public function anotacoe () {
         return $this->hasMany('Anotacoe');
-    }
+    }*/
 
 
 	public function Cliente() {

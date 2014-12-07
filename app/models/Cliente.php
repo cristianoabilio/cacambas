@@ -38,4 +38,8 @@ class Cliente extends Eloquent {
         return $this->hasOne('Login');
     }
 
+    public function anotacoe () {
+    	return $this->hasMany('Anotacoe');
+    }
+
 }

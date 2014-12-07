@@ -18,7 +18,7 @@ class CreateAnotacoesTable extends Migration {
 			$table->text('anotacoe');
 			$table->tinyinteger('status');
 			$table->integer('sessao_id');
-			$table->integer('login_id');
+			$table->integer('cliente_id');
 			$table->timestamps();
 		});
 	}

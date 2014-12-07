@@ -22,9 +22,13 @@
 	@foreach($cliente as $e)
 		<tr>
 			<td>
-				<a href="{[URL::to('showvisiblecliente/'.$e->id)]}">HTML resource {[$e->id]}</a>
+				<a href="{[URL::to('empresa/'.$empresa_id.'/showvisiblecliente/'.$e->id)]}">HTML resource {[$e->id]}</a>
 				|
-				<a href="{[URL::to('cliente/'.$e->id)]}">JSON resource {[$e->id]}</a>
+				<a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$e->id)]}">JSON resource {[$e->id]}</a>
+				<ul>
+					<li><a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$e->id.'/visibleanotacoes')]}">Anotacoe HTML resource {[$e->id]}</a></li>
+					<li><a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$e->id.'/anotacoes')]}">Anotacoe JSON resource {[$e->id]}</a></li>
+				</ul>
 			</td>
 			@foreach($header as $h)
 				@if($h[1]==1)

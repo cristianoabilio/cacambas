@@ -14,8 +14,11 @@ class StandardResponse extends FormDataCapturer{
 	}
 
 	/** 
-	* function name: header.
+	* function name: head.
 	* @param header with headers of empresa table
+	* @return array with table headers, 1 for visible
+	* headers at index, 0 invisible.  At "show" method
+	* all headers are visible
 	*/
 	public function head($data){
 		$header=array();
@@ -61,8 +64,8 @@ class StandardResponse extends FormDataCapturer{
 		$data=$this->cacambasDataParam($data);
 		$rules=array();
 		foreach ($data as $k => $v) {
-			if ($v[3]!='') {
-				$rules[$k]=$v[3];
+			if (trim($v[3])!='') {
+				$rules[$v[0] ]=$v[3];
 			}
 		}
 		return $rules;
@@ -108,7 +111,7 @@ class StandardResponse extends FormDataCapturer{
 			'convenio',
 			'custo',
 			'empresa',
-			'empresaclienteanotacoes',
+			//'empresaclienteanotacoes',
 			'enderecoempresa',
 			'endereco',
 			'enderecobase',
@@ -138,6 +141,7 @@ class StandardResponse extends FormDataCapturer{
 		return array(
 			//Controller => route name / subname
 			'EmpresaEnderecoempresaController'	=>'enderecoempresa'
+			,'EmpresaClienteController'			=>'cliente'
 			,'EmpresaLoginController'			=>'login'
 			,'EmpresaEquipamentoController'		=>'equipamento'
 			,'EmpresaCaminhaoController'		=>'caminhao'
@@ -175,13 +179,21 @@ class StandardResponse extends FormDataCapturer{
 		
 	}
 
-	public function empresalogin_nested () {
+	public function empresacliente_nested () {
+		return array(
+			'EmpresaClienteAnotacoesController'	=>'anotacoes'
+			)
+		;
+		
+	}
+
+	/*public function empresalogin_nested () {
 		return array(
 			'EmpresaLoginAnotacoesController'	=>'anotacoes'
 			)
 		;
 		
-	}
+	}*/
 
 	public function classe_nested() {
 		return array(

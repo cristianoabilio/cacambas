@@ -7,10 +7,10 @@
 	<div class="col-sm-6">{[$cliente->$h[0]   ]}</div>
 </div>
 @endforeach
-<a href="{[URL::to('cliente/'.$id.'/edit')]} "> ....  Edit .... </a>
+<a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$id.'/edit')]} "> ....  Edit .... </a>
 <br>
 <br>
-<a href="{[URL::to('visiblecliente')]}  ">Back to cliente</a>
+<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecliente')]}  ">Back to cliente</a>
 
 
 @stop

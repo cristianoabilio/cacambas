@@ -1,66 +1,69 @@
 <?php
-
 /**
  * [Table]Data class only contains data related to
  * the table 
  */
-class EstadoData extends StandardResponse{
-	public $estadoparam=array(
-		'nome,1,1,required'
-		,'regiao,1,2,'
+class EmpresaClienteData extends StandardResponse{
+
+	//more simplified data arrangement
+
+	public $cacambasData=array(
+		//structure must follow next syntax convention for each value
+		// 'field_name,1/0[visible_on_index],1/0[0=skip;1=fillable;2=nullable],valid_rules'
+		'login_id,0,2,'
+		,'cpf/cnpj,0,2,'
+		,'pj,0,1,required'
+		,'nome,1,1,required'
+		,'tipo_cliente,0,2,'
+		,'tipo_pagamento,0,1,required'
+		,'forma_pagamento,0,1,required'
+		,'total_pago,0,2,'
+		,'badge,0,2,'
 		)
 	;
 	
 	/**
 	* @param edata retrieves all data from table "empresa"
 	*/
-	public function edata () {
-		return Estado::all();
+	public function edata ($empresa_id) {
+		return Empresa::find($empresa_id)->cliente;
 	}
 
 	public function show($id){
-		return Estado::find($id);
+		return Cliente::find($id);
 	}
-
 }
 
-class EstadoController extends \BaseController {
-
-	public function __construct(){
-		//$this->beforeFilter('csrf', array('on' => 'post'));
-		//$this->beforeFilter('geoendereco');
-	}
+class EmpresaClienteController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index () {
-		$d=new EstadoData;
-		return Response::json($d->edata());
+	public function index($empresa_id)
+	{
+		$d=new EmpresaClienteData;
+		return Response::json($d->edata($empresa_id));
 	}
 
-
-	/**
-	* Visible action IS NOT A RESTFUL RESOURCE 
-	* but is required for generating the view
-	* with access links to each resource,
-	* this is, the visible index page.
-	* The reason of this method is because the
-	* index resource will throw a JSON object
-	* and no view at all.
-	*/
-	public function visible()
+	public function visible($empresa_id)
 	{
-		$d=new EstadoData;
-		$data=array(
-			//all estado
-			'estado'=>$d->edata(),
-			'header'=>$d->head($d->estadoparam)
+		$d=new EmpresaClienteData;
+		//
+		$cliente=$d->edata($empresa_id);
+		$header=$d->head($d->cacambasData);
+
+		//
+		return View::make(
+			'tempviews.EmpresaCliente.index'
+			,compact(
+				'empresa_id',
+				'cliente',
+				'header'
+				)
 			)
 		;
-		return View::make('tempviews.estado.index',$data);
 	}
 
 
@@ -69,10 +72,12 @@ class EstadoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id)
 	{
-		$data=array();
-		return View::make('tempviews.estado.create',$data);
+		return View::make('tempviews.EmpresaCliente.create',
+			compact('empresa_id')
+			)
+		;
 	}
 
 
@@ -81,20 +86,20 @@ class EstadoController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 		//
 
-		$d=new EstadoData;
-		$success=$d->form_data_fixed($d->estadoparam);
+		$d=new EmpresaClienteData;
+		$success=$d->form_data_fixed($d->cacambasData);
 
 		try{
 			$validator= Validator::make(			
 				Input::All(),
-				$d->valid_rules($d->estadoparam),
+				$d->valid_rules($d->cacambasData),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -112,16 +117,18 @@ class EstadoController extends \BaseController {
 				;
 			}
 
-			$e=new Estado;	
+			$e=new Cliente;	
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->empresa_id=$empresa_id;
+			$e->status=1;
 			$e->save();
 
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'estado',
+				'cliente',
 				true,
 				'store',
 				$success
@@ -132,7 +139,7 @@ class EstadoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'estado',
+				'cliente',
 				false,
 				'store',
 				$validator->messages()
@@ -150,17 +157,19 @@ class EstadoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show ($id) {
-		$d=new EstadoData;
+	public function show($empresa_id,$id)
+	{
+		$d=new EmpresaClienteData;
 		return $d->show($id);
 	}
-	public function showvisible($id)
+
+	public function showvisible($empresa_id,$id)
 	{
-		$d=new EstadoData;
+		$d=new EmpresaClienteData;
 		try {
-			if (Estado::whereId($id)->count()==0) {
+			if (Cliente::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'estado',
+					'cliente',
 					false,
 					'show',
 					$d->noexist
@@ -170,17 +179,17 @@ class EstadoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'estado'	=>$d->show($id),
-				'header'	=>$d->head($d->estadoparam),
-				'id'		=>$id
+				'cliente'	=>$d->show($id),
+				'header'	=>$d->head($d->cacambasData),
+				'id'		=>$id,
+				'empresa_id'=>$empresa_id
 				)
 			;
-			return View::make('tempviews.estado.show',$data);
+			return View::make('tempviews.EmpresaCliente.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
 	}
 
 
@@ -190,13 +199,13 @@ class EstadoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$id)
 	{
-		$d=new EstadoData;
+		$d=new EmpresaClienteData;
 		try {
-			if (Estado::whereId($id)->count()==0) {
+			if (Cliente::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'estado',
+					'cliente',
 					false,
 					'edit',
 					$d->noexist
@@ -206,17 +215,17 @@ class EstadoController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'estado'	=>$d->show($id),
-				'header'	=>$d->head($d->estadoparam),
+				'cliente'	=>$d->show($id),
+				'header'	=>$d->head($d->cacambasData),
+				'empresa_id'=>$empresa_id,
 				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.estado.edit',$data);
+			return View::make('tempviews.EmpresaCliente.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
-			
 	}
 
 
@@ -226,19 +235,19 @@ class EstadoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$id)
 	{
 		//instantiate fake user (for empresa and sessao)
 		//SHOULD BE DELETED IN ORIGINAL PROJECT
 		$fake=new fakeuser;
 
-		$d=new EstadoData;
-		$success=$d->form_data_fixed($d->estadoparam);
+		$d=new EmpresaClienteData;
+		$success=$d->form_data_fixed($d->cacambasData);
 
 		try{
 			$validator= Validator::make(			
 				Input::All(),	
-				$d->valid_rules($d->estadoparam),
+				$d->valid_rules($d->cacambasData),	
 				array(		
 					'required'=>'Required field'	
 					)	
@@ -256,7 +265,7 @@ class EstadoController extends \BaseController {
 				;
 			}
 
-			$e=Estado::find($id);
+			$e=Cliente::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
@@ -264,7 +273,7 @@ class EstadoController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'estado',
+				'cliente',
 				true,
 				'update',
 				$success
@@ -275,7 +284,7 @@ class EstadoController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'estado',
+				'cliente',
 				false,
 				'update',
 				$validator->messages()
@@ -285,7 +294,6 @@ class EstadoController extends \BaseController {
 		}
 		return Response::json($res,$code);
 	}
-	
 
 
 	/**
@@ -294,10 +302,10 @@ class EstadoController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	/*public function destroy($id)
+	public function destroy($empresa_id,$id)
 	{
 		//
 	}
-*/
+
 
 }

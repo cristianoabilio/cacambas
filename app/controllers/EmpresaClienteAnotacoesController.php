@@ -1,68 +1,54 @@
 <?php
-
 class EmpresaClienteAnotacoesData extends StandardResponse{
-
-
-	public function header () {
-		return array(
-			array('empresa_id',1)
-			,array('cliente_id',1)
-			,array('anotacao',1)
-			,array('status',1)
+	//
+	/** 
+	* function name: header.
+	* @param header with headers of table
+	*/
+	public function header(){
+		$header=array(
+			array('anotacoe',1)
+			,array('status',0)
 			)
 		;
+		return $header;
 	}
 
-	public function edata () {
-		return EmpresaClienteAnotacoes::whereStatus(1)->get();
-	}
-
-	public function edatadeleted () {
-		return EmpresaClienteAnotacoes::whereStatus(0)->get();
+	/**
+	* @param edata retrieves all data from table anotacoes
+	*/
+	public function edata ($cliente) {
+		return Cliente::find($cliente)->anotacoe;
 	}
 
 	public function show($id){
-		return EmpresaClienteAnotacoes::find($id);
+		return Anotacoe::find($id);
 	}
 
 	public function form_data(){
-		$fillable=array(
-			'empresa_id'		
-			,'cliente_id'		
-			,'anotacao'
-			)
-		;
-		$nullable=array(
-			//'status'		
-			)
-		;
+		$fillable=array('anotacoe');
+
+		$nullable=array();
 
 		/**
 		* formCapture method converts fillable items in
 		* array 'item_1' => Input::get('item_1'),
 		*       'item_n' => Input::get('item_n') 
 		* and if Input::get('nullable') is not empty
-		* nullable item is added inside the array
-		* @return array
+		* nullable items are added inside the array
 		*
+		* @return array
 		*/
-		return $this->formCapture ($fillable,$nullable);
-
-		
-
+		return $this->formCapture($fillable,$nullable);
 	}
-
 
 	public function validrules(){
 		return array(
-			'empresa_id'	=>	'required'
-			,'cliente_id'	=>	'required'
-			,'anotacao'		=>	'required'
+			'anotacoe'=>'required'
 			)
 		;
 	}
 
-	#
 }
 
 class EmpresaClienteAnotacoesController extends \BaseController {
@@ -72,23 +58,27 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($empresa_id,$cliente_id)
 	{
 		$d=new EmpresaClienteAnotacoesData;
-		return $d->edata();
+		return $d->edata ($cliente_id);
 	}
 
-	public function visible()
+	public function visible($empresa_id,$cliente_id)
 	{
 		$d=new EmpresaClienteAnotacoesData;
-		$data=array(
-			//all classe
-			'empresaClienteAnotacoes'=>$d->edata(),
-			'header'=>$d->header(),
-			'deleted'=>$d->edatadeleted()
+		$anotacoes=$d->edata($cliente_id);
+		$header=$d->header();
+		return View::make(
+			'tempviews.EmpresaClienteAnotacoes.index',
+			compact(
+				'empresa_id',
+				'cliente_id',
+				'anotacoes',
+				'header'
+				)
 			)
 		;
-		return View::make('tempviews.EmpresaClienteAnotacoes.index',$data);
 	}
 
 
@@ -97,10 +87,15 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($empresa_id,$cliente_id)
 	{
-		$d=new EmpresaClienteAnotacoesData;
-		return View::make('tempviews.EmpresaClienteAnotacoes.create');
+		return View::make('tempviews.EmpresaClienteAnotacoes.create',
+			compact(
+				'empresa_id',
+				'cliente_id'
+				)
+			)
+		;
 	}
 
 
@@ -109,15 +104,11 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($empresa_id,$cliente_id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-
 		$d=new EmpresaClienteAnotacoesData;
-
 		$success=$d->form_data();
+		$fake=new fakeuser;
 
 		try{
 			$validator= Validator::make(			
@@ -130,6 +121,7 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 			;
 
 			if ($validator->fails()){
+				$datamssg=$validator->messages();
 				throw new Exception(
 					json_encode(
 						array(
@@ -140,21 +132,20 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 				;
 			}
 
-			$e=new EmpresaClienteAnotacoes;	
+			$e=new Anotacoe;
+			$e->cliente_id= $cliente_id;
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
 			$e->status=1;
-			$e->dthr_cadastro=date('Y-m-d');
+			$e->sessao_id=$fake->sessao_id();
 
-			$e->sessao_id		=$fake->sessao_id();
-			//$e->sessao_id		=$this->id_sessao;
 			$e->save();
 
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'empresaclienteanotacoes',
+				'anotacoe',
 				true,
 				'store',
 				$success
@@ -163,12 +154,20 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 			$code=200;
 		}
 		catch (Exception $e){
+			if (!isset($datamssg)) {
+				$datamssg=$e->getMessage();
+			}
+			else if ($datamssg!=$validator->messages()) {
+				$datamssg=$e->getMessage();
+			}
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'empresaclienteanotacoes',
+				'anotacoe',
 				false,
 				'store',
-				$validator->messages()
+				$datamssg
+				//$e->getMessage()
+				//$validator->messages()
 				)
 			;
 			$code=400;
@@ -183,26 +182,45 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($empresa_id,$cliente_id,$id)
 	{
 		$d=new EmpresaClienteAnotacoesData;
 		return $d->show($id);
 	}
 
-	public function showvisible($id)
+	public function showvisible($empresa_id,$cliente_id,$id)
 	{
 		$d=new EmpresaClienteAnotacoesData;
-		$header=$d->header();
-		$EmpresaClienteAnotacoes=$d->show($id);
-		return View::make(
-			'tempviews.EmpresaClienteAnotacoes.show',
-			compact(
-				'header',
-				'EmpresaClienteAnotacoes',
-				'id'
+		try {
+			if (Anotacoe::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'anotacoe',
+					false,
+					'show',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$anotacoe=$d->show($id);
+			$header=$d->header();
+			
+			return View::make(
+				'tempviews.EmpresaClienteAnotacoes.show',
+				compact(
+					'anotacoe',
+					'header',
+					'empresa_id',
+					'cliente_id',
+					'id'
+					)
 				)
-			)
-		;
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -212,20 +230,39 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($empresa_id,$cliente_id,$id)
 	{
 		$d=new EmpresaClienteAnotacoesData;
-		$header=$d->header();
-		$EmpresaClienteAnotacoes=$d->show($id);
-		return View::make(
-			'tempviews.EmpresaClienteAnotacoes.edit',
-			compact(
-				'header',
-				'EmpresaClienteAnotacoes',
-				'id'
+		try {
+			if (Anotacoe::whereId($id)->count()==0) {
+				$res=$d->responsedata(
+					'anotacoe',
+					false,
+					'edit',
+					$d->noexist
+					)
+				;
+				$res=json_encode($res);
+				throw new Exception($res);
+			}
+			$anotacoe=$d->show($id);
+			$header=$d->header();
+			
+			return View::make(
+				'tempviews.EmpresaClienteAnotacoes.edit',
+				compact(
+					'anotacoe',
+					'header',
+					'empresa_id',
+					'cliente_id',
+					'id'
+					)
 				)
-			)
-		;
+			;
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 
 
@@ -235,19 +272,15 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($empresa_id,$cliente_id,$id)
 	{
-		//instantiate fake user (for empresa and sessao)
-		//SHOULD BE DELETED IN ORIGINAL PROJECT
-		$fake=new fakeuser;
-
 		$d=new EmpresaClienteAnotacoesData;
-
 		$success=$d->form_data();
+		$fake=new fakeuser;
 
 		try{
 			$validator= Validator::make(			
-				Input::All(),
+				Input::All(),	
 				$d->validrules(),	
 				array(		
 					'required'=>'Required field'	
@@ -266,21 +299,18 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 				;
 			}
 
-			$e=EmpresaClienteAnotacoes::find($id);
+			$e=Anotacoe::find($id);
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
-			//$e->status=1;
-			$e->dthr_cadastro=date('Y-m-d');
-
+			//
 			$e->sessao_id		=$fake->sessao_id();
-			//$e->sessao_id		=$this->id_sessao;
-			$e->save();
+			//$e->sessao_id	=$this->id_sessao;
+			$e->save();	
 
-			//$success['id']=$e->id;
-
+			//response structure required for angularjs
 			$res=$d->responsedata(
-				'empresaclienteanotacoes',
+				'anotacoe',
 				true,
 				'update',
 				$success
@@ -291,7 +321,7 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'empresaclienteanotacoes',
+				'anotacoe',
 				false,
 				'update',
 				$validator->messages()
@@ -309,78 +339,9 @@ class EmpresaClienteAnotacoesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($empresa_id,$cliente_id,$id)
 	{
-		$d=new EmpresaClienteAnotacoesData;
-		try{
-			if (EmpresaClienteAnotacoes::whereId($id)->count()==0) {
-				throw new Exception(json_encode($d->noexist));
-				$code=400;
-			}
-
-			$c=EmpresaClienteAnotacoes::find($id);
-			$c->status=0;
-			$c->save();
-			//::whereId($id)->delete();
-			$res=$d->responsedata(
-				'empresaclienteanotacoes',
-				true,
-				'delete',
-				array('msg' => 'Registro excluído com sucesso!')
-				)
-			;
-			$code=200;
-
-		}
-		catch(Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'empresaclienteanotacoes',
-				false,
-				'delete',
-				array('msg' => json_decode($e->getMessage()))
-				)
-			;
-			$code=400;
-		}
-		return Response::json($res,$code);
-	}
-
-
-	public function reactivate ($id) {
-		$d=new EmpresaClienteAnotacoesData;
-		try{
-			if (EmpresaClienteAnotacoes::whereId($id)->count()==0) {
-				throw new Exception(json_encode($d->noexist));
-				$code=400;
-			}
-
-			$c=EmpresaClienteAnotacoes::find($id);
-			$c->status=1;
-			$c->save();
-			//::whereId($id)->delete();
-			$res=$d->responsedata(
-				'empresaclienteanotacoes',
-				true,
-				'restore',
-				array('msg' => 'Resource successfully restored!')
-				)
-			;
-			$code=200;
-
-		}
-		catch(Exception $e){
-			SysAdminHelper::NotifyError($e->getMessage());
-			$res=$d->responsedata(
-				'empresaclienteanotacoes',
-				false,
-				'restore',
-				array('msg' => json_decode($e->getMessage()))
-				)
-			;
-			$code=400;
-		}
-		return Response::json($res,$code);
+		//
 	}
 
 

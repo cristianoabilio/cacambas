@@ -3,26 +3,24 @@
 </head>
 <body>
 	<div class="container">
-		<h1>
-			Resource id {[$EmpresaClienteAnotacoes->id]}
+		<h1>Anotacoe {[$anotacoe->id]} resource <spam class="text-info">({[ $anotacoe->anotacoe]})</spam>
 		</h1>
+		<ul>
+			<li>Company :{[ Empresa::find($empresa_id)->nome ]}</li>
+			<li>User: {[ Cliente::find($cliente_id)->cliente ]}</li>
+		</ul>
 		@foreach($header as $h)
 			<div class="row">
 				<div class="col-sm-2">{[$h[0] ]}</div>
-				<div class="col-sm-6">{[$EmpresaClienteAnotacoes->$h[0]   ]}</div>
+				<div class="col-sm-6">{[$anotacoe->$h[0] ]}</div>
 			</div>
+			
 		@endforeach
-		<a href="{[URL::to('empresaclienteanotacoes/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$cliente_id.'/anotacoes/'.$id.'/edit')]} "> ....  Edit .... </a>
+		<br><br>
+		<a href="{[URL::to('empresa/'.$empresa_id.'/cliente/'.$cliente_id.'/visibleanotacoes')]}">Back to anotacoe</a>
 		<br>
-		{[ Form::model($EmpresaClienteAnotacoes, 
-			array(
-			'route' => array('empresaclienteanotacoes.destroy', 
-			$id
-			)
-			, 'method' => 'DELETE')) ]}
-			<input type="submit" value='DELETE'>
-			{[Form::close()]}
-			<br>
-		<a href="{[URL::to('visibleempresaclienteanotacoes')]}       ">Back to empresaClienteAnotacoes index</a>
+		<br>
+		<br>
 	</div>
 </body>

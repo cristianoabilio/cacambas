@@ -19,7 +19,6 @@ class ClienteData extends StandardResponse{
 		,'forma_pagamento,0,1,required'
 		,'total_pago,0,2,'
 		,'badge,0,2,'
-		,'status,0,0,'
 		)
 	;
 	
@@ -51,8 +50,8 @@ class ClienteController extends \BaseController {
 	public function visible () {
 		$d=new ClienteData;
 		$data=array(
-			//all bairro
-			'bairro'=>$d->edata(),
+			//all cliente
+			'cliente'=>$d->edata(),
 			'header'=>$d->head($d->cacambasData)
 			)
 		;
@@ -117,12 +116,13 @@ class ClienteController extends \BaseController {
 			foreach ($success as $key => $value) {
 				$e->$key 	=$value;
 			}
+			$e->status=1;
 			$e->save();
 
 			$success['id']=$e->id;
 
 			$res=$d->responsedata(
-				'bairro',
+				'cliente',
 				true,
 				'store',
 				$success
@@ -133,7 +133,7 @@ class ClienteController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'bairro',
+				'cliente',
 				false,
 				'store',
 				$validator->messages()
@@ -162,7 +162,7 @@ class ClienteController extends \BaseController {
 		try {
 			if (Cliente::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'bairro',
+					'cliente',
 					false,
 					'show',
 					$d->noexist
@@ -172,12 +172,12 @@ class ClienteController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'bairro'	=>$d->show($id),
-				'header'	=>$d->header(),
+				'cliente'	=>$d->show($id),
+				'header'	=>$d->head($d->cacambasData),
 				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.bairro.show',$data);
+			return View::make('tempviews.cliente.show',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -197,7 +197,7 @@ class ClienteController extends \BaseController {
 		try {
 			if (Cliente::whereId($id)->count()==0) {
 				$res=$d->responsedata(
-					'bairro',
+					'cliente',
 					false,
 					'edit',
 					$d->noexist
@@ -207,12 +207,12 @@ class ClienteController extends \BaseController {
 				throw new Exception($res);
 			}
 			$data=array(
-				'bairro'	=>$d->show($id),
-				'header'	=>$d->header(),
+				'cliente'	=>$d->show($id),
+				'header'	=>$d->head($d->cacambasData),
 				'id'		=>$id
 				)
 			;
-			return View::make('tempviews.bairro.edit',$data);
+			return View::make('tempviews.cliente.edit',$data);
 			
 		} catch (Exception $e) {
 			return $e->getMessage();
@@ -233,7 +233,7 @@ class ClienteController extends \BaseController {
 		$fake=new fakeuser;
 
 		$d=new ClienteData;
-		$success=$d->form_data();
+		$success=$d->form_data_fixed($d->cacambasData);
 
 		try{
 			$validator= Validator::make(			
@@ -264,7 +264,7 @@ class ClienteController extends \BaseController {
 
 			//response structure required for angularjs
 			$res=$d->responsedata(
-				'bairro',
+				'cliente',
 				true,
 				'update',
 				$success
@@ -275,7 +275,7 @@ class ClienteController extends \BaseController {
 		catch (Exception $e){
 			SysAdminHelper::NotifyError($e->getMessage());
 			$res=$d->responsedata(
-				'bairro',
+				'cliente',
 				false,
 				'update',
 				$validator->messages()

@@ -1,7 +1,7 @@
 @extends('tempviews.temporarytemplate')
 @section('content')
 <h1>Edit cliente resource number {[$id]}</h1>
-{[ Form::model($cliente, array('route' => array('cliente.update', $cliente->id), 'method' => 'PUT')) ]}
+{[ Form::model($cliente, array('route' => array('empresa.cliente.update', $empresa_id,$id), 'method' => 'PUT')) ]}
 <div class="row">
 	<div class="col-sm-4">
 		login_id <input type="text" class="form-control" name="login_id" id="login_id" value="{[$cliente->login_id]}">
@@ -22,6 +22,7 @@
 
 
 <input type="submit" value='SAVE CHANGES'>
+<a href="{[URL::to('empresa/'.$empresa_id.'/visiblecliente')]}  ">Back to cliente index</a>
 {[Form::close()]}
 
 @stop
