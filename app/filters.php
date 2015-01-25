@@ -362,6 +362,12 @@ Route::filter('classe',function($route,$request){
 	return $response;
 });
 
+Route::filter('superuser',function(){
+	/*if (Auth::user()->) {
+		# code...
+	}*/
+});
+
 
 
 App::before(function($request)
