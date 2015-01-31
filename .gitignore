@@ -6,11 +6,8 @@ composer.lock
 .env.php
 .DS_Store
 Thumbs.db
-<<<<<<< HEAD
 .project
 .buildpath
 .settings\org.eclipse.php.core.prefs
-=======
-
 app/config/local/database.php
->>>>>>> af18b40ab122ac593f079c0ae36b63567ff96f39
+
