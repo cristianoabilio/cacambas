@@ -13,11 +13,14 @@ class ResumoatividadeData extends StandardResponse{
 		$header=array(				
 			array('funcionario_id',0)			
 			,array('empresa_id',0)			
-			,array('mes_referencia',1)			
-			,array('ano_referencia',1)			
+			,array('data',1)			
 			,array('total_os_colocada',1)			
-			,array('total_os_troca',0)			
-			,array('total_os_retirada',0)			
+			,array('total_os_retirada',1)
+			,array('total_os_troca',1)			
+			,array('total_colocada',1)
+			,array('total_retirada',1)
+			,array('total_troca',1)
+			,array('km_percorrida',1)
 		);				
 		return $header;				
 	}					
@@ -40,12 +43,15 @@ class ResumoatividadeData extends StandardResponse{
 
 		$formdata= array(
 			'funcionario_id'	=>Input::get('funcionario_id'),
-			'mes_referencia'	=>Input::get('mes_referencia'),
-			'ano_referencia'	=>Input::get('ano_referencia'),
+			'data'				=>Input::get('data'),
 			'empresa_id'		=>Input::get('empresa_id'),
 			'total_os_colocada'	=>Input::get('total_os_colocada'),
 			'total_os_troca'	=>Input::get('total_os_troca'),
-			'total_os_retirada'	=>Input::get('total_os_retirada')
+			'total_os_retirada'	=>Input::get('total_os_retirada'),
+			'total_colocada'	=>Input::get('total_colocada'),
+			'total_retirada'	=>Input::get('total_retirada'),
+			'total_troca'		=>Input::get('total_troca'),
+			'km_percorrida'		=>Input::get('km_percorrida'),
 			)
 		;
 

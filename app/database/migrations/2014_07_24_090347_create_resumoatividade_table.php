@@ -16,11 +16,14 @@ class CreateResumoAtividadeTable extends Migration {
 			$table->increments('id');
 			$table->integer('funcionario_id');
 			$table->integer('empresa_id');
-			$table->integer('mes_referencia');
-			$table->integer('ano_referencia');
+			$table->datetime('data');
 			$table->integer('total_os_colocada');
-			$table->integer('total_os_troca');
 			$table->integer('total_os_retirada');
+			$table->integer('total_os_troca');			
+			$table->integer('total_colocada');
+			$table->integer('total_retirada');
+			$table->integer('total_troca');
+			$table->integer('km_percorrida');			
 			$table->timestamps();
 		});
 	}
