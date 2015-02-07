@@ -16,12 +16,13 @@ class CreateEquipamentodetailsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('empresa_equipamento_id');
+			$table->integer('quantidade');
 			$table->float('preco_base');
 			$table->integer('periodo_minimo');
 			$table->tinyinteger('dia_extra')->nullable();
 			$table->float('preco_extra')->nullable();
 			$table->tinyinteger('taxa_extra')->nullable();
-			$table->float('valor_multa')->nullable();
+			$table->float('multa')->nullable();
 			$table->tinyinteger('status')->nullable();
 			$table->integer('sessao_id');
 			$table->timestamps();

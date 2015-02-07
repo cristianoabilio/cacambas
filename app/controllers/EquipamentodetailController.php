@@ -13,6 +13,7 @@ class EquipamentodetailData extends StandardResponse {
 		$header=array(
 			array('equipamentobase_id',1)
 			,array('empresa_id',1)
+			,array('quantidade',1)
 			,array('preco_base',1)
 			,array('periodo_minimo',1)
 			,array('dia_extra',0)
@@ -44,6 +45,7 @@ class EquipamentodetailData extends StandardResponse {
 			//,'empresa_id'	=>Input::get('empresa_id')
 			//,
 			'preco_base'		=>Input::get('preco_base')
+			,'quantidade'		=>Input::get('quantidade')
 			,'periodo_minimo'	=>Input::get('periodo_minimo')
 			,'dia_extra'		=>Input::get('dia_extra')
 			,'preco_extra'		=>Input::get('preco_extra')
