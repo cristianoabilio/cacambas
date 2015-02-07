@@ -36,6 +36,9 @@
 											|
 											<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/resumoatividade')]}">JSON resumoatividade</a>
 										</li>
+										<li>
+											<a href="{[URL::to('empresa/'.$empresa_id.'/funcionario/'.$e->id.'/geolocalizacao')]}">JSON Geolocaliza&ccedil;&atilde;o</a>
+										</li>
 									</ul>
 									@else
 									{[$e->$h[0]  ]}

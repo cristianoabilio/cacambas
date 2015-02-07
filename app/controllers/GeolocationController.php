@@ -1,4 +1,6 @@
 <?php
+use Carbon\Carbon;
+
 class GeolocationData extends StandardResponse{
 	/**
 	 * function name: header.
@@ -24,15 +26,24 @@ class GeolocationData extends StandardResponse{
 	}
 
 	/**
-	 * @param edata retrieves all data from table "geolocation"
+	 * 
+	 * Return all geolocations from the driver
+	 * @param integer $empresa
+	 * @param integer $motorista
+	 * @param datetime $data_inicio
+	 * @param datetime $data_fim
+	 * @return array:
 	 */
-	public function edata ($empresa, $motorista) {
+	public function edata ($empresa, $motorista, $data_inicio, $data_fim) {		
 		$funcionario = Funcionario::find($motorista); 
 		if ($funcionario) {
 			if ($funcionario->empresa_id == $empresa) {
 				return GeolocationModel::
-				where('motorista_id', '=', $motorista)->get();				
+				where('motorista_id', '=', $motorista)
+				->where('data', '>=', $data_inicio)
+				->where('data', '<=', $data_fim)->get();				
 			}
+			
 		}
 		return array();	
 	}
@@ -44,14 +55,36 @@ class GeolocationData extends StandardResponse{
 class GeolocationController extends \BaseController {
 
 	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index($empresa, $motorista)
-	{
+	 * 
+	 * return all drivers´s geolocation
+	 * @param integer $empresa
+	 * @param integer $motorista
+	 * @param date $data_inicio
+	 * @param date $data_fim
+	 * @param time $hora_inicio
+	 * @param time$hora_fim
+	 * @return response
+	 */	
+	public function index($empresa, $motorista, $data_inicio = null, $data_fim = null, $hora_inicio = null, $hora_fim = null)
+	{				
+		$data_inicio = ($data_inicio) ? trim($data_inicio) : date('d-m-Y');
+		$data_fim 	 = ($data_fim) ? trim($data_fim) : date('d-m-Y');
+		$hora_inicio = ($hora_inicio) ? trim($hora_inicio) : '00:00:00';
+		$hora_fim 	 = ($hora_fim) ? trim($hora_fim) : '23:59:59';
+		
+		
+		
+		$data_inicio = explode("-", $data_inicio);
+		$data_fim	 = explode("-", $data_fim);
+		$hora_inicio = explode(":", $hora_inicio);
+		$hora_fim    = explode(":", $hora_fim);
+		$data_inicio = Carbon::create($data_inicio[2], $data_inicio[1], $data_inicio[0], $hora_inicio[0], $hora_inicio[1], $hora_inicio[2])->toDateTimeString();
+		$data_fim    = Carbon::create($data_fim[2], $data_fim[1], $data_fim[0], $hora_fim[0], $hora_fim[1], $hora_fim[2])->toDateTimeString();
+		$data_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $data_inicio)->toDateTimeString();
+		$data_fim 	 = Carbon::createFromFormat('Y-m-d H:i:s', $data_fim)->toDateTimeString();
+				
 		$d=new geolocationData;
-		return Response::json($d->edata($empresa, $motorista));
+		return Response::json($d->edata($empresa, $motorista, $data_inicio, $data_fim));
 	}
 
 
