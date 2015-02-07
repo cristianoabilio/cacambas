@@ -17,8 +17,7 @@ class ResumoempresaclienteData extends StandardResponse{
 		*/
 		$header=array(
 			array('cliente_id',1)
-			,array('mes_referencia',0)
-			,array('ano_referencia',0)
+			,array('data',0)
 			,array('total_locacoes',0)
 			,array('total_aberto',0)
 			,array('total_recebido',0)
@@ -45,8 +44,7 @@ class ResumoempresaclienteData extends StandardResponse{
 
 		return array(
 			'cliente_id'		=>Input::get('cliente_id'),
-			'mes_referencia'	=>Input::get('mes_referencia'),
-			'ano_referencia'	=>Input::get('ano_referencia'),
+			'data'				=>Input::get('data'),
 			'total_locacoes'	=>Input::get('total_locacoes'),
 			'total_aberto'		=>Input::get('total_aberto'),
 			'total_recebido'	=>Input::get('total_recebido'),
@@ -58,7 +56,7 @@ class ResumoempresaclienteData extends StandardResponse{
 	public function validrules(){
 		return array(
 			'cliente_id'		=>	'required'
-			,'mes_referencia'	=>	'required'
+			,'data'				=>	'required'
 			,'ano_referencia'	=>	'required'
 			,'total_locacoes'	=>	'required'
 			,'total_aberto'		=>	'required'

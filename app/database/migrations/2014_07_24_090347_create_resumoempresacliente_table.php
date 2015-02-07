@@ -16,8 +16,7 @@ class CreateResumoEmpresaClienteTable extends Migration {
 			$table->increments('id');
 			$table->integer('empresa_id'); //PK
 			$table->integer('cliente_id'); //PK
-			$table->integer('mes_referencia'); //PK
-			$table->integer('ano_referencia'); //PK
+			$table->datetime('data');
 			$table->integer('total_locacoes');
 			$table->decimal('total_aberto', 10, 5);
 			$table->decimal('total_recebido', 10, 5);
