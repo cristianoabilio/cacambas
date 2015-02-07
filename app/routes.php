@@ -184,6 +184,9 @@ foreach ($st_r->empresafuncionario_nested() as $k => $v) {
 	Route::get('empresa/{empresa}/funcionario/{funcionario}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
 }
 
+// geolocation
+Route::get('empresa/{empresa}/funcionario/{funcionario}/geolocalizacao', 'GeolocationController@index');
+
 //Nested controllers on empresa.cliente
 foreach ($st_r->empresacliente_nested() as $k => $v) {
 	Route::resource('empresa.cliente.'.$v, $k);
@@ -270,3 +273,4 @@ Route::get('empresa/{empresa}/custofuncionario','EmpresaCustoController@custofun
 Route::get('empresa/{empresa}/custofixed','EmpresaCustoController@custofixed');
 Route::get('empresa/{empresa}/custovariable','EmpresaCustoController@custovariable');
 
+Route::resource('geolocation', 'GeolocationController');
