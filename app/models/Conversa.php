@@ -1,9 +1,9 @@
 <?php
 
-class Mensagem extends \Eloquent {
+class Conversa extends \Eloquent {
 	protected $fillable = [];
 	
-	protected $table = 'mensagem';
+	protected $table = 'conversa';
 
 	//Override default PK 'id' from Eloquent  
 	protected $primaryKey = 'id';
