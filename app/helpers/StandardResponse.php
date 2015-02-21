@@ -132,7 +132,11 @@ class StandardResponse extends FormDataCapturer{
 			'bairro',
 			'cidade',
 			'estado',
-			'sessao'
+			'sessao',
+			'conversa',
+			'mensagem',
+			'notificacao',
+			'conversagrupo'
 			)
 		;
 	}
@@ -156,6 +160,18 @@ class StandardResponse extends FormDataCapturer{
 		
 	}
 
+	
+	public function empresalogin_nested() {
+		return array(
+			'NotificacaoController'=>'notificacao',
+			'MensagemController'		=>'mensagem',
+			'ConversaController'		=> 'conversa',
+			'ConversaGrupoController'	=> 'conversagrupo'
+			)
+		;
+	}	
+	
+	
 	public function empresaconvenio_nested() {
 		return array(
 			'EmpresaConvenioProdutofaturaController'=>'produtofatura',

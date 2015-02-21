@@ -36,8 +36,20 @@
 									<li>
 										<a href="{[URL::to('empresa/'.$e->id).'/funcionarioLogin']}">JSON funcionario and Login</a> ( EmpresaFuncionarioController&#64;funcionarioLogin)
 									</li>
-									<li>
+									<li>									
 										<a href="{[URL::to('empresa/'.$e->id).'/equipamentoprecoebase']}">JSON equipamento base and preco</a> ( EmpresaEquipamentobaseprecoController&#64;Equipamentbaseandpreco)
+									</li>
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/notificacao']}">JSON Notifica&ccedil&atilde;o</a> ( NotificacaoController&#64;Notifica&ccedil&atilde;o)
+									</li>									
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/conversa']}">JSON Conversa</a> ( ConversaController&#64;Conversa
+									</li>
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/conversagrupo']}">JSON Conversa Grupo</a> ( ConversaGrupoController&#64;Conversa Grupo
+									</li>									
+									<li>
+										<a href="{[URL::to('empresa/'.$e->id).'/Mensagem']}">JSON Mensagem</a> ( MensagemController&#64;Mensagem
 									</li>
 								</ul>
 								@else

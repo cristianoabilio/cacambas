@@ -38,6 +38,7 @@ Route::get('/myproduction', function() use ($st_r)
 	$allviews			=$st_r->allviews();
 	$empresanested		=$st_r->empresa_nested();
 	$equipamentonested	=$st_r->empresaequipamento_nested();
+	$empresaloginnested	=$st_r->empresalogin_nested();
 	$convenionested		=$st_r->empresaconvenio_nested();
 	$funcionarionested	=$st_r->empresafuncionario_nested();
 	$clientenested		=$st_r->empresacliente_nested();
@@ -53,6 +54,7 @@ Route::get('/myproduction', function() use ($st_r)
 			'allviews',
 			'empresanested',
 			'equipamentonested',
+			'empresaloginnested',
 			'convenionested',
 			'funcionarionested',
 			'clientenested',
@@ -148,6 +150,9 @@ Route::post('showvisibleempresaclienteanotacoes/{empresaclienteanotacoes}', 'Emp
 *
 */
 
+
+
+
 //Nested controllers on empresa
 Route::group(
 	array(
@@ -157,9 +162,15 @@ Route::group(
 	foreach ($st_r->empresa_nested() as $k=>$v) {
 		Route::resource('empresa.'.$v, $k);
 		Route::get('empresa/{empresa}/visible'.$v, $k.'@visible');
-		Route::get('empresa/{empresa}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');
+		Route::get('empresa/{empresa}/showvisible'.$v.'/{'.$v.'}',$k.'@showvisible');			
 	}
 });
+
+
+Route::resource('empresa.login.notificacao', 'NotificationController');
+Route::resource('empresa.login.conversa', 'ConversaController');
+Route::resource('empresa.login.mensagem', 'MensagemController');
+Route::resource('empresa.login.conversagrupo', 'ConversaGrupoCOntroller');		
 	
 
 //Nested controllers on empresa.convenio
@@ -274,9 +285,3 @@ Route::get('empresa/{empresa}/custofixed','EmpresaCustoController@custofixed');
 Route::get('empresa/{empresa}/custovariable','EmpresaCustoController@custovariable');
 
 Route::resource('geolocation', 'GeolocationController');
-// notification
-
-Route::resource('notificacao', 'NotificationController');
-Route::resource('conversa', 'ConversaController');
-Route::resource('mensagem', 'MensagemController');
-Route::resource('conversagrupo', 'ConversaGrupoController');

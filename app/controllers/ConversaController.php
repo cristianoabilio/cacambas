@@ -23,8 +23,8 @@ class ConversaData extends StandardResponse {
 	/**
 	* @param edata retrieves all data from table "equipamento"
 	*/
-	public function edata () {
-		return Conversa::all();
+	public function edata ($login) {
+		return Conversa::find($login);
 	}
 
 	public function show($id){
@@ -81,10 +81,10 @@ class ConversaController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($empresa, $login)
 	{
-		$d=new ConversaData();
-		return Response::json($d->edata());
+		$d=new ConversaData($login);
+		return Response::json($d->edata($login));
 	}
 
 
