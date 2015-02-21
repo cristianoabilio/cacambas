@@ -2,7 +2,7 @@
 class NotificationData extends StandardResponse {
 	/** 
 	* function name: header.
-	* @param header with headers of empresa table
+	* @param header with headers of notification table
 	*/
 	public function header(){
 		/*
@@ -201,7 +201,8 @@ class NotificationController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$d=new NOtificationData();
+		return $d->show($id);		
 	}
 
 

@@ -277,3 +277,6 @@ Route::resource('geolocation', 'GeolocationController');
 // notification
 
 Route::resource('notificacao', 'NotificationController');
+Route::resource('conversa', 'ConversaController');
+Route::resource('mensagem', 'MensagemController');
+Route::resource('conversagrupo', 'ConversaGrupoController');

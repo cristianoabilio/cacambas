@@ -18,7 +18,6 @@ class CreateMensagemTable extends Migration {
 			$table->integer('conversa_id')->nullable();
 			$table->integer('conversa_grupo_id')->nullable();
 			$table->text('texto');
-			$table->datetime('data');
 			$table->integer('status');
 			$table->timestamps();
 		});
