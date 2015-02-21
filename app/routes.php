@@ -274,3 +274,6 @@ Route::get('empresa/{empresa}/custofixed','EmpresaCustoController@custofixed');
 Route::get('empresa/{empresa}/custovariable','EmpresaCustoController@custovariable');
 
 Route::resource('geolocation', 'GeolocationController');
+// notification
+
+Route::resource('notificacao', 'NotificationController');
